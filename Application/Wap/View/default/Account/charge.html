@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{$meta_title}</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="">
+<meta http-equiv="description" content="">
+<link rel="stylesheet" href="__PUBLIC__/Wap/css/style.css"/>
+<link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+</head>
+<body> 
+
+<div class="main main_Pub">
+    <div class="recharge">
+       <div class="title">账户余额：<span class="text-red">{$balance}</span>橙果币</div>
+        <div class="content">
+            <ul class="rechargeList clearfix">
+                <li class="z-sel">
+                    <a href="javascript:;" class="z-sel position-re" ><font>10</font>元<s></s></a>
+                </li>
+                <li class="z-sel">
+                    <a href="javascript:;" class="z-sel  position-re"><font>50</font>元<s></s></a>
+                </li>
+                <li class="z-sel">
+                    <a href="javascript:;" class="z-sel position-re"><font>100</font>元<s></s></a>
+                </li>
+                <li class="z-sel">
+                    <a href="javascript:;" class="z-sel position-re"><font>200</font>元<s></s></a>
+                </li>
+                <li class="z-sel">
+                    <a href="javascript:;" class="z-sel position-re"><font>500</font>元<s></s></a>
+                </li>
+                <li class="z-sel active">
+                    <a href="javascript:;" class="z-sel position-re activeBoder"><font>1000</font>元<s></s></a>
+                </li>
+
+            </ul>
+            <input name="other" placeholder="其他金额" class="form-control" min="1" max="5" type="number" onblur="check_num($(this));" onfocus="check_numIn()"/>
+            <button type="button" class="btn btn-block" style="margin: 20px 0">确定</button>
+            <p class="text-gray">充值可获得橙果币（1元=1橙果币），橙果币可用于参与云购，充值的款项将无法退回。</p>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="huitop"></div>
+<div class="botzhanwei"></div>
+<include file="Public/navigation" />
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script src="__PUBLIC__/Wap/js/layer.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>	
+<script>
+alert(window.location.host)
+    $(function(){
+        $('.z-sel').click(function(){
+            $(this).addClass('active').siblings().removeClass('active');
+            $('input[name="other"]').val('');
+			
+        });
+
+    });
+    //非0开头的数字以及限制最多输入五位数
+    function check_numIn()
+    {
+        $('.z-sel').removeClass('active');
+    }
+    function check_num(obj)
+    {
+        var regVerifyNum_find=/^(0|[1-9][0-9]*)$/;//非0开头的数字
+        var att_num =obj.val();
+        var curLength=obj.val().length;
+        if(!(regVerifyNum_find.test(att_num)))
+        {
+            obj.val('1');
+        }
+        if(curLength>5)
+        {
+            var num=obj.val().substr(0,5);
+            obj.val(num);
+        }
+        else
+        {
+            obj.text(5-obj.val().length);
+        }
+    }
+	
+	//提交表单
+	$('.btn').click(function(){
+			var input_money = parseInt($('input[name="other"]').val());//获取输入框金额
+            var check_money = parseInt($('.rechargeList li.active a font').text());//获取选择框金额
+			var money =0;//alert(input_money);alert(check_money);
+		    if(input_money>0){
+			   money=input_money;
+			}else{
+			   money=check_money;
+			}
+			//alert(money)
+			//发送ajax 提交
+			 $.ajax({
+					type:'POST',
+					url:common_url+'/Recharge/PutRecharge',
+					dataType:'json',
+					data:{
+					rmb:money
+					},
+					success:function(data){
+						if(data['code']==200){
+							alert(data['message']);//成功 操作处理	
+							//window.location.href="index.html"; 
+						}else{
+							alert(data['message']);
+						}
+					}
+				});	
+            return false;
+		});	
+
+</script>
+</body>
+</html>

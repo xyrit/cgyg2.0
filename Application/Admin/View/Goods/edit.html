@@ -1,0 +1,327 @@
+<extend name="Public/base" />
+
+<!-- 子导航 -->
+<block name="sidebar">
+    <include file="sidemenu" />
+</block>
+
+<block name="body">
+	<script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+	<script type="text/javascript" src="__STATIC__/UploadImages.js"></script>
+<div class="main-title cf">
+
+	</div>
+	<!-- 标签页导航 -->
+<div class="tab-wrap">
+	<div class="tab-content">
+	<!-- 表单 -->
+	<form id="form" action="{:U('actions')}" method="post" class="form-horizontal">
+		<!-- 基础文档模型 -->
+        <div id="tab1" class="tab-pane in tab1">
+
+            <div class="form-item cf">
+                <label class="item-label">标题<span class="check-tips">（产品标题）</span></label>
+                <div class="controls">
+                    <input class="text input-large" name="title" value="TP-LINK TL-WR886N 450M无线路由器" type="text">                    </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">副标题<span class="check-tips">（产品副标题）</span></label>
+                <div class="controls">
+                    <input class="text input-large" name="f_title" value="FFFF_TP-LINK TL-WR886N 450M无线路由器" type="text">  </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">产品描述</label>
+                <div class="controls">
+                    <label class="textarea input-large">
+                        <textarea name="description">无线路由器</textarea>
+                    </label>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">商品类型</label>
+                <div class="controls">
+                    <label class="radio">
+                        <input type="radio" value="1" name="goods_type" <eq name="data[$field['name']]" value="$key">checked="checked"</eq>>实体商品
+                        <input type="radio" value="2" name="goods_type" <eq name="data[$field['name']]" value="$key">checked="checked"</eq>> 虚拟商品
+                    </label>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">缩略图</label>
+                <div class="controls">
+                    <input type="file" id="upload_picture_thumb">
+                    <input type="hidden" name="thumb" id="cover_id_thumb" value=""/>
+                    <div class="upload-img-box">
+                        <notempty name="data[$field['name']]">
+                            <div class="upload-pre-item"><img src="{$data[$field['name']]|get_cover='path'}"/></div>
+                        </notempty>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    //上传图片
+                    /* 初始化上传插件 */
+                    $("#upload_picture_thumb").uploadify({
+                        "height"          : 30,
+                        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+                        "fileObjName"     : "download",
+                        "buttonText"      : "上传图片",
+                        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+                        "width"           : 120,
+                        'removeTimeout'	  : 1,
+                        'fileTypeExts'	  : '*.jpg; *.png; *.gif;',
+                        "onUploadSuccess" : uploadPicturethumb,
+                    'onFallback' : function() {
+                        alert('未检测到兼容版本的Flash.');
+                    }
+                    });
+                    function uploadPicturethumb(file, data){
+                        var data = $.parseJSON(data);
+                        var src = '';
+                        if(data.status){
+                            $("#cover_id_thumb").val(data.url);
+                            src = data.url || '__ROOT__' + data.path
+                            $("#cover_id_thumb").parent().find('.upload-img-box').html(
+                                    '<div class="upload-pre-item"><img src="' + src + '"/></div>'
+                            );
+                        } else {
+                            updateAlert(data.info);
+                            setTimeout(function(){
+                                $('#top-alert').find('button').click();
+                                $(that).removeClass('disabled').prop('disabled',false);
+                            },1500);
+                        }
+                    }
+                </script>
+
+             </div>
+            <div class="form-item cf">
+                <label class="item-label">市场价</label>
+                <div class="controls">
+                    <input class="text  input-mid" name="marketprice" value="1" type="text">                    </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">云购单次价格</label>
+                <div class="controls">
+                    <input class="text  input-mid" name="single_price" value="2" type="text">                    </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">最大期数</label>
+                <div class="controls">
+                    <input class="text  input-mid" name="max_period" value="3" type="text">                    </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">单人限购次数</label>
+                <div class="controls">
+                    <input class="text  input-mid" name="purchase_frequency" value="4" type="text">                    </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">推荐位</label>
+                <div class="controls">
+                    <label class="radio">
+                        <input type="radio" value="1" name="position" <eq name="data[$field['name']]" value="$key">checked="checked"</eq>>首页推荐
+                    </label>                  </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">排序</label>
+                <div class="controls">
+                    <input class="text  input-mid" name="sort" value="5" type="text"> </div>
+            </div>
+        </div>
+
+        <div class="form-item cf">
+            <label class="item-label">图集</label>
+            <!-- 多图上传 -->
+            <input type="file" id="upload_picture_images">
+            <input type="hidden" name="images" value="" class="icon images" />
+            <php> if($data[$field['name']])
+                {
+                $valArr= explode(',',$data[$field['name']]);
+                }
+                else{
+                $valArr="";}
+            </php>
+            <div class="upload-img-box">
+                <notempty name="valArr">
+                    <volist name="valArr" id="v">
+                        <div class="upload-pre-item">
+                            <img src="{$v|get_cover='path'}" data-id="{$v}"/>
+                            <span class='btn-close btn-close-images' title='删除图片'onclick='del(event);'></span>
+                        </div>
+                    </volist>
+                </notempty>
+            </div>
+            <script type="text/javascript">
+                //多图上传图片
+                $(function(){
+                    /* 初始化上传插件*/
+                    $("#upload_picture_images").uploadify({
+                        "height"          : 30,
+                        "swf"             : "__STATIC__/uploadify/uploadify.swf",
+                        "fileObjName"     : "download",
+                        "buttonText"      : "上传图片",
+                        "uploader"        : "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+                        "width"           : 120,
+                        'removeTimeout'   : 1,
+                        'fileTypeExts'    : '*.jpg; *.png; *.gif;',
+                        "onUploadSuccess" : uploadPictureimages,
+                        'onFallback' : function() {
+                            alert('未检测到兼容版本的Flash.');
+                        }
+                    });
+
+                })
+                function uploadPictureimages(file, data){
+                    var data = $.parseJSON(data);
+                    var src = '';
+                    if(data.status){
+                        src = data.url || '__ROOT__' + data.path;
+                        upload_img = "<div class='upload-pre-item'><img src=" + src +" title='点击显示大图' data-id="+data.id+"> <span class='btn-close btn-close-images' title='删除图片' onclick='del(event);'></span></div>";
+                        picsbox = $("#upload_picture_images").siblings('.upload-img-box');
+                        picsbox.append(upload_img)
+                        picArr = [];
+                        for (var i = 0; i < picsbox.children().length ; i++) {
+                            picArr.push(picsbox.children('.upload-pre-item:eq('+i+')').find('img').attr('src'));
+                        };
+                        picStr = picArr.join(',');
+                        $('.icon.images').val(picStr);
+                    } else {
+                        updateAlert(data.info);
+                        setTimeout(function(){
+                            $('#top-alert').find('button').click();
+                            $(that).removeClass('disabled').prop('disabled',false);
+                        },1500);
+                    }
+                }
+                function del(event)
+                { //获取事件源
+                    event = event ? event : window.event;
+                    var obj = event.srcElement ? event.srcElement : event.target;
+//这时obj就是触发事件的对象，可以使用它的各个属性
+//还可以将obj转换成jquery对象，方便选用其他元素
+                    str = obj.innerHTML.replace(/<\/?[^>]*>/g,''); //去除HTML tag
+
+                    var $obj = $(obj);
+                    $obj.parents(".upload-pre-item").remove();
+                    picsbox = $("#upload_picture_images").siblings('.upload-img-box');
+                    picArr = [];
+                    for (var i = 0; i < picsbox.children().length ; i++) {
+                        picArr.push(picsbox.children('.upload-pre-item:eq('+i+')').find('img').attr('data-id'));
+                    };
+                    picStr = picArr.join(',');
+                    $('.icon.images').val(picStr);
+
+                }
+            </script>
+        </div>
+
+        <div class="form-item cf">
+            <label class="item-label">内容详细描述</label>
+            <div class="controls">
+                <label class="textarea">
+                    <textarea name="content">内容详细描述</textarea>
+                    {:hook('adminArticleEdit', array('name'=>content,'value'=>内容详细描述))}
+                </label>                    </div>
+        </div>
+
+
+		<div class="form-item cf">
+			<button class="btn submit-btn ajax-post hidden" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+			<a class="btn btn-return" href="{$Think.cookie.__forward__}">返 回</a>
+
+			<input type="hidden" name="id" value="{$data.id|default=''}"/>
+			<input type="hidden" name="pid" value="{$data.pid|default=''}"/>
+			<input type="hidden" name="model_id" value="{$data.model_id|default=''}"/>
+			<input type="hidden" name="cat_id" value="{$data.category_id|default=''}">
+		</div>
+	</form>
+	</div>
+</div>
+</block>
+
+<block name="script">
+<link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+<php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+<link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+
+Think.setValue("type", {$data.type|default='""'});
+Think.setValue("display", {$data.display|default=0});
+
+$('#submit').click(function(){
+	$('#form').submit();
+});
+
+$(function(){
+    $('.date').datetimepicker({
+        format: 'yyyy-mm-dd',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+    $('.time').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language:"zh-CN",
+        minView:2,
+        autoclose:true
+    });
+    showTab();
+
+	<if condition="C('OPEN_DRAFTBOX') and (ACTION_NAME eq 'add' or $data['status'] eq 3)">
+	//保存草稿
+	var interval;
+	$('#autoSave').click(function(){
+        var target_form = $(this).attr('target-form');
+        var target = $(this).attr('url')
+        var form = $('.'+target_form);
+        var query = form.serialize();
+        var that = this;
+
+        $(that).addClass('disabled').attr('autocomplete','off').prop('disabled',true);
+        $.post(target,query).success(function(data){
+            if (data.status==1) {
+                updateAlert(data.info ,'alert-success');
+                $('input[name=id]').val(data.data.id);
+            }else{
+                updateAlert(data.info);
+            }
+            setTimeout(function(){
+                $('#top-alert').find('button').click();
+                $(that).removeClass('disabled').prop('disabled',false);
+            },1500);
+        })
+
+        //重新开始定时器
+        clearInterval(interval);
+        autoSaveDraft();
+        return false;
+    });
+
+	//Ctrl+S保存草稿
+	$('body').keydown(function(e){
+		if(e.ctrlKey && e.which == 83){
+			$('#autoSave').click();
+			return false;
+		}
+	});
+
+	//每隔一段时间保存草稿
+	function autoSaveDraft(){
+		interval = setInterval(function(){
+			//只有基础信息填写了，才会触发
+			var title = $('input[name=title]').val();
+			var name = $('input[name=name]').val();
+			var des = $('textarea[name=description]').val();
+			if(title != '' || name != '' || des != ''){
+				$('#autoSave').click();
+			}
+		}, 1000*parseInt({:C('DRAFT_AOTOSAVE_INTERVAL')}));
+	}
+	autoSaveDraft();
+
+	</if>
+
+});
+</script>
+</block>

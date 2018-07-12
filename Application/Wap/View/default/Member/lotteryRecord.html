@@ -1,0 +1,334 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/layer.css"/>
+</block>
+<block name="body">
+<div class="main main_Pub">
+    <div class="atttend_list">
+
+        <ul class="product_list disWei_list clearfix" id="data">
+		
+        </ul>
+		
+		    <input type="hidden" id="address_list_length"  value="{$address_list_length}"/>
+		<a class="add_more" id="more" style="width:100%;height:50px;line-height: 50px; text-align: center;display: block">点击查看更多</a>
+    </div>
+</div>
+
+<div class="huitop"></div>
+<!-- 模态框（Modal） -->
+<div class="fix_canyuma">
+    <div class="canyuma lotteryAlert">
+        <div class="cymtit title">
+            <h4 class="tit">请选择收货地址</h4>
+        </div>
+        <div class="con">
+            <h4 class="title" id="address_other">实物收货地址</h4>
+            <ul id="user_address">
+               <foreach name='address_list' item='address_list' > 
+                <li class="clearfix">
+                    <div class="left">
+                        <label class="label">
+                            <input class="danxuan checkbox" type="radio" name="optionsRadios" 
+							<if condition="$address_list.status eq 2 ">checked="checked"</if>value='{$address_list.id}' />
+							
+                            <i class="inc_danxuan"></i>
+                        </label>
+                    </div>
+                    <div class="right">
+                        <p>{$address_list.status}{$address_list.realname}<span class="padding-l5">{$address_list.cellphone}</span></p>
+                        <p class="lineheigh-142 text-gray2 margin-t5">
+                            <span class="padding-r5">{$address_list.province}</span>
+							<span class="padding-r5">{$address_list.city}</span>
+							<span class="padding-r5">{$address_list.area}</span>{$address_list.address}
+                        </p>
+                    </div>
+                </li>
+				</foreach>
+				
+            </ul>
+            <!--<h4 class="title other" id="title_other">第三方担保收货</h4>-->
+            <ul id="third">
+			 <foreach name='address_list' item='list' > 
+			    <if condition="$list.status eq 2 ">
+                <li class="clearfix">
+                    <div class="left">
+                        <label class="label">
+                            <input class="danxuan checkbox" type="radio" name="optionsRadios" value='' checked/>							
+                            <i class="inc_danxuan"></i>
+                        </label>
+                    </div>
+                    <div class="right">
+                       <p>{$list.realname}<span class="padding-l5">{$list.cellphone}</span></p>
+                            <p class="lineheigh-142 text-gray2 margin-t5">
+                            <span class="padding-r5">{$list.province}</span>
+							<span class="padding-r5">{$list.city}</span>
+							<span class="padding-r5">{$list.area}</span>{$list.address}
+                        </p>
+                    </div>
+                </li>
+				</if>
+				</foreach>
+            </ul>
+        </div>
+        <div class="footer">
+            <p class="lotteryBtnList">
+                <button type="button" id="sure_address" class="btn margin-r15 btn-fixed_3 lineheigh-20" onclick="sureAddress($(this),1);">确定地址</button>
+                <button type="button" class="btn btn-border position-re view_address lineheigh-20" onclick="window.location='/member/address_add'">
+                    添加地址
+                </button>
+
+            </p>
+        </div>
+		
+        <div class="close_cym"></div>
+    </div>
+</div>
+</block>
+<block name="script">
+<script src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script src="__PUBLIC__/Wap/js/function.js"></script>
+<script src="__PUBLIC__/Wap/js/layer.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/util.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/p.js"></script>
+<script>
+   $(function(){
+        var state=$("#address_list_length").attr("value");
+        loadData({"state":1,"is_ajax":1});
+
+    });
+    function loadData(param){
+
+        new Page({
+            url:"{:U('member/lotteryRecord')}",
+            param:param,
+            scroll:true,
+            count:2,
+            next:{
+                id:"more",
+                content:["点击加载更多","没有更多数据了"]
+            },
+            success:setData
+        });
+    }
+
+    function setData(json_data,p){
+
+        //console.log(p);
+
+        if(p.page == 1){
+            $("#data").html("");
+            if(p.total == 0){
+                //无数据时的展示
+            }
+        }
+        var state=parseInt(json_data['state']);
+        var jsondata=json_data['data'];
+        //alert(state);
+        var html="";
+        var word="";
+		var cart_href="";
+		var progress=''; 
+		var address_list_length=$("#address_list_length").attr("value");
+        for(var i=0; i<jsondata.length; i++){
+            if(state<2){
+                if(state<1){
+                    word="立即参与";
+                    progress='<div class="jindu"><div class="xianjindu" style="width:'+jsondata[i].attend_ratio+'%;"></div></div>'; 
+					cart_href='/goods/detail/lottery_id/'+jsondata[i].lottery_id;
+                }else{
+                    word="待揭晓";
+					cart_href='/goods/detail/lottery_id/'+jsondata[i].lottery_id;
+                }
+
+                html='<li class="list clearfix">'+
+                        '<div class="img"><a href="/goods/detail/lottery_id/'+jsondata[i].lottery_id+'"><img src="'+jsondata[i].thumb+'"></a>'+
+                        '</div>'+
+                        '<div class="infos">'+
+                        '<h1 class="ellipsis"><a href="/goods/detail/lottery_id/'+jsondata[i].lottery_id+'">'+jsondata[i].title+'</a></h1>'+
+                        '<div class="renci_jindu noheight" style="padding-right: 0">'+
+                        progress+
+                        '<div class="renci clearfix position-re">'+
+                        '<div class="clearfix text-center">'+
+                        '<span class="fl">'+jsondata[i].attend_count_total+'<br>已参与</span>'+
+
+                        '<span class="fr"><em>'+jsondata[i].remain_count+'</em><br>剩余人次</span>'+
+                        '</div>'+
+                        '<div class="margin-t5">'+
+                        '参与人次：<span class="text-red">'+jsondata[i].attend_count+'</span>人次'+
+                        ' <p class="margin-t5">'+
+
+                        ' <a href="javascript:;" class="text-blue" onclick="get_code($(this),'+jsondata[i].lottery_id+','+jsondata[i].uid+');">查看参与码</a>'+
+                        '</p>'+
+                        '<a href="'+cart_href+'" ><button type="button" class="btn btn-attend">'+word+'</button></a>'+
+                        '</div>'+
+                        '</div>'+
+
+                        '</div>'+
+                        '</div>'+
+                        ' </li>';
+            }else{
+		
+                html='<li class="list_group padding-b5">'+
+                '<div class="list clearfix padding-b0">'+
+                    '<div class="img"><a href=""><img src="'+jsondata[i].thumb+'"></a>'+
+                    '</div>'+
+                    '<div class="infos">'+
+                        '<h1 class="ellipsis margin_t10"><a href="">'+jsondata[i].title+'</a></h1>'+
+                        '<div class="renci_jindu noheight" style="padding-right: 0">'+
+                            '<p class="text-size12 ellipsis">'+
+                                '<span class="text-gray">期号：'+jsondata[i].lottery_id+'</span>'+
+                            '</p>'+
+                            '<p class="text-size12">'+
+                                '<span class="text-gray">发货信息：</span>'+
+                                '<span class="text-red">'+jsondata[i].express_name+'</span>'+
+                            '</p>'+
+                            '<p class="text-size12">'+
+                                '<span class="text-gray">发货信息：</span>'+
+                                '<span class="text-red">'+jsondata[i].express_number+'</span>'+
+                           ' </p>'+
+
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+                '<p class="lotteryBtnList">'+
+                    '<button type="button" class="btn btn-fixed_3 lineheigh-20 lookyunma" onclick="send('+address_list_length+')" >申请发货</button>'+
+                '</p>'+
+
+            '</li>';
+            }
+
+            $("#data").append(html);
+
+			
+			$('.view_address').click(function(){
+            $(this).find('i').toggleClass('fa-angle-up');
+            $(this).parent().parent().find('.lottery_address').toggle(100);
+			
+          
+        });
+        }
+
+
+    }
+	
+	    
+    		 function send(take_address){
+				 //alert(take_address)
+				 
+				 
+				//$(".lookyunma").unbind('click').click(function(){
+				$(".fix_canyuma").fadeIn();
+				if(take_address==0){
+				  $("#user_address").html('<li class="text-center">您需要先添加收货地址才能申请发货哦！</li>');
+				  $("#sure_address").hide();
+				  $("#third").hide();
+				  $("#address_other").hide();
+				  $("#title_other").hide();
+		
+				}else{
+				  $("#sure_address").show();
+				  $("#third").show();
+				  $("#address_other").show();
+				  $("#title_other").show();
+				}
+				 //$("#user_address").append("您需要先添加收货地址才能申请发货哦！");
+		
+			//});
+			
+			
+				 }    
+				 $(".lookyunma2").unbind('click').click(function(){
+			    	$(".fix_canyuma2").fadeIn();
+			     });
+
+    
+
+    function sureAddress(_this,id)
+    {
+
+		var address_id = $('input[name="optionsRadios"]:checked').val();
+       // alert(aa);
+        layer.open({
+            content: '是否确定使用该地址？',
+            btn: ['确认', '取消'],
+            shadeClose: false, //默认：true，是否点击遮罩时关闭层,false 需要点击取消按钮才能关闭
+            success: function(elem){
+                //层成功弹出层的回调函数，返回一个参数为当前层元素对象
+            },
+            yes: function(){
+                //回调事件，选择了确定按钮后执行的操作
+                _this.text('未发货').addClass('btn-disable').removeAttr('onclick');
+                layer.closeAll() //关闭全部弹出层  
+				$.post(
+                        "{:U('Member/sureAddress')}",
+                        {
+                            id : address_id,
+                           // image_verify : codever
+                        },
+                        function (data){
+                            if(data.code == 200){
+                            	
+                            }else{
+                                tanchuan_0('200','1000','200',data.message);
+                            }
+                        }
+                )
+
+            },
+            no: function(){
+                //回调事件，选择了取消按钮后执行的操作
+
+            }
+        });
+    }
+    function sureReeceive(_this)
+    {
+        layer.open({
+            content: '您确定收货吗？一旦确定不可更改',
+            btn: ['确认', '取消'],
+            shadeClose: false, //默认：true，是否点击遮罩时关闭层,false 需要点击取消按钮才能关闭
+            success: function(elem){
+                //层成功弹出层的回调函数，返回一个参数为当前层元素对象
+            },
+            yes: function(){
+                //回调事件，选择了确定按钮后执行的操作
+                _this.text('已签收').addClass('btn-green').removeAttr('onclick');
+                layer.closeAll() //关闭全部弹出层
+                sureDis();//弹出是否立即去晒单
+
+            },
+            no: function(){
+                //回调事件，选择了取消按钮后执行的操作
+
+            }
+        });
+    }
+    function sureDis()
+    {
+        layer.open({
+            content: '晒单还可以获得红包奖励哦！',
+            btn: ['去晒单', '取消'],
+            shadeClose: false, //默认：true，是否点击遮罩时关闭层,false 需要点击取消按钮才能关闭
+            success: function(elem){
+                //层成功弹出层的回调函数，返回一个参数为当前层元素对象
+            },
+            yes: function(){
+                //回调事件，选择了确定按钮后执行的操作
+                layer.closeAll() //关闭全部弹出层
+                window.location.href='我要晒单.html';
+
+            },
+            no: function(){
+                //回调事件，选择了取消按钮后执行的操作
+
+            }
+        });
+    }
+</script>
+</block>

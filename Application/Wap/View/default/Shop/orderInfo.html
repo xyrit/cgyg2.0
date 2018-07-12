@@ -1,0 +1,244 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+    <title>购物车-橙果云购</title>
+    <meta name="keywords" content="1元，一元，一元云购，一元夺宝，1元云购，1元夺宝，一元购，1元购，橙果云购，橙果一元购，橙果1元购"/>
+    <meta name="description" content="橙果云购是一个新型的、专业的众筹式购物商城。只需1元，您就有机会获得一件商品。橙果云购将倾力打造一个公正公平公开的环境，让您的生活充满惊喜！"/>
+    <link href="__PUBLIC__/Common/Bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/Home/css/yiyuan.css" rel="stylesheet">
+    <link href="__PUBLIC__/Home/css/goodscar/goodscar.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/alert/sweetalert.css">
+    <link rel="stylesheet" href="__PUBLIC__/Common/Bootstrap/css/font-awesome.min.css"/>
+    <style>
+        .all-sort-list{width:200px; display:none}
+        .item-list .cat-right { position: absolute; right: 0;}
+        .all-sort-list .item.bo{width:200px;}
+        .menu .all-sort{top:0}
+        .all-sort-list .item-list{left:200px;}
+
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<!--头部 start-->
+<include file="Public/top" />
+<!--头部 end-->
+
+<div class="container logo-search">
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-xs-4">
+            <a href="index.html"><img src="__PUBLIC__/Home/images/logo.png"></a>
+        </div>
+        <div class="col-lg-8 col-md-7 col-xs-8 col-md-offset-2">
+            <div class="sui-steps steps-auto">
+                <div class="wrap">
+                    <div class="todo">
+                        <label><span class="round">1</span><span>提交订单</span></label><i class="triangle-right-bg"></i><i class="triangle-right"></i>
+                    </div>
+                </div>
+                <div class="wrap">
+                    <div class=" current">
+                        <label><span class="round">2</span><span>支付订单</span></label>
+                        <i class="triangle-right-bg"></i><i class="triangle-right"></i>
+                    </div>
+                </div>
+                <div class="wrap">
+                    <div class="todo">
+                        <label><span class="round">3</span><span>获得幸运码，等待揭晓</span></label>
+                        <i class="triangle-right-bg"></i><i class="triangle-right"></i>
+                    </div>
+                </div>
+                <div class="wrap">
+                    <div class="todo">
+                        <label><span class="round">4</span><span>揭晓获奖幸运码</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--购物车信息-->
+<div class="container">
+    <!--所有商品-->
+    <!--购物车-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="loading"></div><table id="cartTable" class="table table-bordered table-condensed">
+            <thead>
+            <tr class="gray-bg">
+
+                <th class="text-center">商品</th>
+                <th class="text-center">剩余人次</th>
+                <th class="text-center">参与人次</th>
+                <th class="text-center">小计</th>
+                <!--<th class="text-center">操作</th>-->
+            </tr>
+            </thead>
+            <tbody id="gooodsCarListPayfor">
+
+            <volist name="list" id="vo">
+            <tr>
+                <td class="goods">
+                    <input type="hidden" id="id5488"><a href="{:U('Goods/detail/id/'.$vo['pid'].'/lottery_id/'.$vo['lottery_id'])}" class="pull-left"><img src="{$vo.thumb}" alt=""></a>
+                    <a href="{:U('Goods/detail/id/'.$vo['pid'].'/lottery_id/'.$vo['lottery_id'])}"><h3>{$vo.title}</h3></a>
+                    <p class="text-gray">价值：￥<em>{$vo.marketprice}</em></p>
+                    <p style="display: none;" class="lettery_id">{$vo['lottery_id']}</p>
+                </td>
+
+                <td class="price text-center">{$vo.over_count}</td>
+                <td class="count text-center">{$vo.count}</td>
+                <td class="subtotal text-center">{$vo.single_price}</td>
+            </tr>
+            </volist>
+
+          </tbody>
+        </table>
+
+            <div class="price-box clearfix">
+                <div class="price-content">支付总额：
+                    <span>￥</span><span class="price-total nomargin" id="priceCount">3</span></div>
+                <a href="payfor1.html">返回清单修改</a>
+            </div>
+            <div class="payfor-style">
+                <ul class="list-group">
+
+                    <li class="list-group-item">
+                        <label id="banceBox"><input type="checkbox" id="checkBance" checked="checked"><!--<input type="checkbox" id="checkBance">-->
+                            使用橙果币支付，您的余额<em id="account" class="text-danger" style="padding-right: 5px">2</em>橙果币
+                        </label>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="well clearfix price-box">
+                <p class="tip pull-left" id="tips"></p>
+                <div class="price-content"><em id="payTip" style="font-style:normal">使用其他方式支付：</em>
+                    <span>￥</span><span class="price-total nomargin" id="otherPay">1</span></div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row pay-style">
+
+        <div class="col-md-2 col-md-offset-10">
+            <button type="button" class="btn cg-btn-danger cg-btn-fixed-round" id="surePayforBtn">确认支付</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 question">
+            <dl>
+                <dt>支付遇到问题</dt>
+                <dd>请联系<a href="tencent://Message/?Uin=3048007917&amp;websiteName=www.cgyyg.com=&amp;Menu=yes" class="text-blue">客服QQ：</a> <span class="padding-l-r-5" style="padding-left: 0">3048007917</span>或拨打服务热线<span class="padding-l-r-5">400-006-7060</span>进行咨询。</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!--商品结束-->
+    <!--帮助信息-->
+
+</div>
+<!--购物车信息-->
+
+<!--底部版权友情链接 start-->
+<include file="Public/footer" />
+<!--底部版权友情链接 end-->
+
+<!--右边 右边栏 返回顶部 功能菜单end-->
+<script src="__PUBLIC__/Home/js/jquery-1.11.3.min.js"></script>
+<script src="__PUBLIC__/Common/Bootstrap/js/bootstrap.min.js"></script>
+<!-- <script src="__PUBLIC__/Home/js/public/stickUp.min.js"></script> -->
+<!-- <script src="__PUBLIC__/Home/js/public/menu_foot_right.js"></script> -->
+<script type="text/javascript" src="__PUBLIC__/Home/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/goodscar/addShopGoods.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Home/js/goodscar/shop_Cart.js"></script>
+<script type="text/javascript" src="http://pv.sohu.com/cityjson?ie=utf-8" charset="gb2312"></script>
+<script>
+    $('#surePayforBtn').click(function(){
+
+      var check= $('#checkBance').attr('checked')
+        if(check=='checked')
+        {
+            var type =1;
+        }
+        else
+        {
+            var type =2;
+        }
+       var info = new Object();
+         info['type'] =type;
+        var data= new Object();
+        var i=0;
+        var attend_ip=0;
+        var ip_address=0;
+        var attend_device=0;
+
+        $.getJSON("http://chaxun.1616.net/s.php?type=ip&output=json",
+                function (data) {
+                    attend_ip=data.Ip;
+                    ip_address=data.Isp;
+                    attend_device=data.OS;
+                }).error(function () { alert("获取IP失败请联网查询");  return false; }) ;
+
+
+        $('#gooodsCarListPayfor tr').each(function(){
+            data[i]=new Object();
+            var attend_count = $(this).find('.count').text();
+            var lettery_id = $(this).find('.lettery_id').text();
+            data[i]['lottery_id']=lettery_id;
+            data[i]['attend_count']=attend_count;
+            data[i]['attend_ip']=attend_ip;
+            data[i]['ip_address']=ip_address;
+            data[i]['attend_device']=attend_device;
+            i++;
+        })
+
+        info['orders']=data;
+       var str= JSON.stringify(info);
+    //    console.log(str);
+     //   console.log(info);
+        $.ajax({
+            type:'post',
+            url:"{:U('Shop/pay_add')}",
+            data:{
+                info:str,
+            },
+            dataType:'json',
+            success:function(data){
+                if(data['code']==200){
+
+
+                }else{
+
+               swal({
+                title: "",
+                text: data.info,
+                html: true,
+                type: "error",//  warning  true
+                confirmButtonText:"确定",
+                confirmButtonColor: "#ff4800",
+            });
+
+                }
+            }
+        });
+
+
+
+    })
+</script>
+
+
+</body>
+</html>

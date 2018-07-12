@@ -1,0 +1,247 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?v=telo"/>
+</block>
+
+<block name="body">
+
+	<!-- 注册 -->
+	<div class="login_main">
+		<div class="login_mobile" style="">
+				<input class="mobile_fff mobile" maxlength='11' type="tel" name='user' placeholder='请输入手机号码' value=''/>
+				<!--<input class="mobile_fff codever" maxlength='4' type="text" name='user' placeholder='请输入验证码' value=''/>-->
+				<!--<div class="yanzma_box" id="verify">-->
+					<!--<img onclick="getVerify()" src="">-->
+				<!--</div>-->
+			<a href="javascript:;" class="cgyg_button zhuce_bt">下一步</a>
+            <p><img width="17px;" style="margin-bottom: -3px" src="../../Public/Wap/images/xieyi.png"/> 我已阅读并同意 <a href="{:U('User/Protocol')}"><font style="color:#0066ff ">橙果云购服务协议</font></a></p>
+		</div>
+
+		<!--验证手机短信-->
+		<div class="yanzhen_mobile" style="display:none">
+			<p class="cccfont">验证码已发送:<span id="send_mobile">18928904877</span> 请注册查收！</p>
+				<input class="mobile_fff mobile_codever" maxlength='4' type="text" name='user' placeholder='请输入验证码' value=''/>
+			<button type="button" style="margin-top:5px;"  class="cgyg_button yanzhenMobile_bt">下一步</button>
+
+			<p class="cccfont">如未收到短信请在<span class="cgyg_color numFont">120</span></p>
+			<button disabled="disabled" id="send_again" class="cgyg_button_f0f0f0 click_yanzhenma">重新发送</button>
+		</div>
+
+
+        <!--设置密码-->
+        <div class="register_main user_passwor" style="display:none;">
+            <div class="register_box_input">
+                <div class="input_box">
+                    <span>密码：</span>
+                    <input class="mobile_fff password" maxlength='20' type="password" name='password' placeholder='请输入6-20位,字母或者数字' value=''/>
+                </div>
+                <div class="input_box input_boxrg">
+                    <span>确认：</span>
+                    <input class="password_re" maxlength='20' type="password" name='passwordre' placeholder='请输入密码' value=''/>
+                </div>
+                <button type="button" style="margin-top:20px;" class="cgyg_button password_bt">注册完成</button>
+            </div>
+        </div>
+
+	</div>
+	<!-- 注册结束 -->
+
+<div class="tanchuan_box"></div>
+</block>
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/Common/jquery.md5.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+    <script type="text/javascript">
+        var InterValObj;//timer变量，控制时间
+        var count = 120; //间隔函数，1秒执行
+        var curCount;//当前剩余秒数
+        $(function(){
+
+            getVerify();
+
+            //注册验证 01
+            $('.zhuce_bt').click(function(){
+                var mobile = $('.mobile').val();//手机号码
+                var isMobile=/^1[3456789]\d{9}$/; ;//手机号码正则表达式
+
+                if(mobile==''){
+                    tanchuan_0('200','1000','200','请输入手机号码！');
+                    return false;
+                }
+                if(!isMobile.test(mobile)){
+                    tanchuan_0('200','1000','200','手机号码不正确！');
+                    return false;
+                }
+
+                $.post(
+                        "{:U('User/sendVerify')}",
+                        {
+                            mobile : mobile,
+                           // image_verify : codever
+                        },
+                        function (data){
+                            if(data.code == 200){
+                                //倒计时
+                                curCount = count;
+                                $(".numFont").text(curCount);
+                                InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+                                $('#send_mobile').html(mobile);
+                                $('.login_mobile').fadeOut();
+                                $('.yanzhen_mobile').fadeIn();
+                            }else{
+                                //发送失败
+                                tanchuan_0('200','1000','200',data.message);
+                                getVerify();
+                            }
+                        }
+                )
+
+            });
+
+            //验证手机号码 02
+            $('.yanzhenMobile_bt').click(function(){
+                var mobile = $('.mobile').val();//手机号码
+                var mobile_codever = $('.mobile_codever').val();//短信验证码
+                if(mobile_codever == ''){
+                    tanchuan_0('200','1000','200','验证码不能为空！');
+                    return false;
+                }
+                if(mobile_codever.length < 4 ){
+                    tanchuan_0('200','1000','200','验证码不能不能少于4位！');
+                    return false;
+                }
+                //发送ajax 提交
+                $.post(
+                        "{:U('User/checkRegisterVerify')}",
+                        {
+                            is_ajax : 1,
+                            mobile : mobile,
+                            mobile_verify : mobile_codever
+                        },
+                        function (data){
+                            if(data.code == 200){
+                                //验证成功
+                                $('.yanzhen_mobile').fadeOut();
+                                $('.user_passwor').fadeIn();
+								
+                            }else{
+                                //验证失败
+                                tanchuan_0('200','1000','200',data.message);
+                            }
+                        }
+                )
+
+            });
+
+
+            //提交密码 处理 03
+            $('.password_bt').click(function(){
+                var mobile = $('.mobile').val();//手机号码
+                var mobile_codever = $('.mobile_codever').val();//短信验证码
+                var password    = $('.password').val();//密码
+                var password_re =$('.password_re').val();//确认密码
+                if(password == ''){
+                    tanchuan_0('200','1000','200','请输入密码');
+                    return false;
+                }
+                if(password_re == ''){
+                    tanchuan_0('200','1000','200','请确认密码');
+                    return false;
+                }
+                if(password.length < 6 || password.length > 20){
+                    tanchuan_0('200','1000','200','密码为6-20个字符');
+                    return false;
+                }
+                if(password != password_re){
+                    tanchuan_0('200','1000','200','两次密码不一致');
+                    return false;
+                }
+                //发送ajax 提交
+                $.post(
+                        "{:U('User/register')}",
+                        {
+                            is_ajax : 1,
+                            mobile : mobile,
+                            mobile_verify : mobile_codever,
+                            password : $.md5(password),
+                            repassword : $.md5(password_re),
+                        },
+                        function (data){
+							tanchuan_0('200','1000','200',data.message);
+                            if(data.code == 0){
+                                for(var i=0; i<data.success_js.length;i++){
+                                    var script=document.createElement("script");
+                                    script.src=data.success_js[i];
+                                    document.getElementsByTagName("head")[0].appendChild(script);
+                                }
+                                setTimeout(function(){
+                                    window.location.href = "{:U('Index/index')}";
+                                },1000);
+
+                            }
+                        }
+                )
+
+            });
+
+            //重新发送验证码
+            $('.click_yanzhenma').click(function(){
+                //倒计时
+                curCount = count;
+                $(".numFont").text(curCount);
+                InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+
+                var mobile = $('.mobile').val();//手机号码
+                var codever = $('.codever').val();//验证码
+                $.post(
+                        "{:U('User/sendVerify')}",
+                        {
+                            mobile : mobile,
+                            image_verify : codever
+                        },
+                        function (data){
+                            if(data.code == 0){
+                                //倒计时
+                                curCount = count;
+                                $(".numFont").text(curCount);
+                                InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+
+                                $('.login_mobile').fadeOut();
+                                $('.yanzhen_mobile').fadeIn();
+                            }else{
+                                //发送失败
+                                tanchuan_0('200','1000','200',data.message);
+                                getVerify();
+                            }
+                        }
+                )
+
+            });
+        });
+
+        function getVerify(){
+            var verify_url = "{:U('Public/verify')}"+'?rand='+Math.random();
+            //'/wap.php/Public/verify?rand='+Math.random();
+            $("#verify img").attr('src',verify_url);
+        }
+
+        function SetRemainTime() {
+            if (curCount == 0) {
+                window.clearInterval(InterValObj);
+                $(".click_yanzhenma").removeAttr("disabled");
+                $(".click_yanzhenma").addClass("cgyg_button_f0f0f0_ok");
+                $(".numFont").text("重新发送");
+            }
+            else {
+                curCount--;
+                $(".click_yanzhenma").attr("disabled",'disabled');
+                $(".numFont").text(curCount + "秒内可重发！");
+                $(".click_yanzhenma").removeClass("cgyg_button_f0f0f0_ok");
+            }
+        }
+
+    </script>
+</block>

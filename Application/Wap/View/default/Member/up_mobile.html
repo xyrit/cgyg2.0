@@ -1,0 +1,136 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?v=telo"/>
+</block>
+
+<block name="body">
+	<!-- 修改手机号码 开始 readOnly="true" -->
+    <br/>
+    <div class="register_main user_passwor"  >
+        <div class="register_box_input">
+            <div class="input_box">
+                <span style="width:68px">&nbsp;手机号：</span>
+                <input style="padding-left: 66px;" class="mobile_fff user_mobile" maxlength='11' type="tel" name='mobile'  readonly="true" placeholder='请输入手机号码！' value="{$oldmobile}"/>
+            </div>
+            <div class="input_box input_boxrg">
+                <span style="width:68px">&nbsp;验证码：</span>
+                <input style="padding-left: 66px;" class="yanzhenma" maxlength='4' type="text" name='verify' placeholder='请输入验证码' value=''/>
+                <button type="button" class="cgyg_button_x">获取验证码</button>
+            </div>
+            <button type="submit" style="margin-top:25px;" class="cgyg_button userMobile_bt">确定</button>
+        </div>
+    </div>
+
+	<!-- 修改名称 结束 -->
+</block>
+<block name="script">
+    <script type="text/javascript">
+        //return false
+        $(function(){
+            var InterValObj;//timer变量，控制时间
+            var count = 120; //间隔函数，1秒执行
+            var curCount;//当前剩余秒数
+            //倒计时
+            function SetRemainTime() {
+                if (curCount == 0) {
+                    window.clearInterval(InterValObj);
+                    $(".cgyg_button_x").removeAttr("disabled");
+                    $(".cgyg_button_x").text("重新发送");
+                    $(".cgyg_button_x").css({'background':'#ff4800'});
+                }
+                else {
+                    curCount--;
+                    $(".cgyg_button_x").css({'background':'#A0A0A0'});
+                    $(".cgyg_button_x").text(curCount + "秒内重发");
+
+                }
+            }
+            //发送验证码
+            $(".cgyg_button_x").click(function(){
+                var mobile=$(".user_mobile").val();
+
+                //倒计时
+                curCount = count;
+                $(".cgyg_button_x").attr("disabled", "true");
+                $(".cgyg_button_x").text(curCount + "秒内重发");
+                InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+
+                //发送ajax 提交
+                $.ajax({
+                    type:'POST',
+                    url:common_url+'/User/sendVerify',
+                    dataType:'json',
+                    data:{
+                        mobile:mobile,
+                        state:2,
+						type:3
+                    },
+                    success:function(data){
+                        if(data['code']==200){
+                            //加载成功 操作处理
+						  tanchuan_0('200','1000','200',data['message']);
+
+                        }else{
+                            tanchuan_0('200','1000','200',data['message']);
+                        }
+                    }
+                });
+            });
+
+            //提交修改
+            $('.userMobile_bt').click(function(){
+                var user_mobile = $('.user_mobile').val();//手机号码
+                var isMobile=/^1[3456789]\d{9}$/;//手机号码正则表达式
+                var yanzhenma	= $('.yanzhenma').val();//短信验证码
+
+                if(user_mobile == ''){
+                    tanchuan_0('200','1000','200','手机号码不能为空');
+                    return false;
+                }
+
+                if(yanzhenma == ''){
+                    tanchuan_0('200','1000','200','验证码不能为空');
+                    return false;
+                }
+
+                if(yanzhenma.length < 4 ){
+                    tanchuan_0('200','1000','200','验证码至少是4位');
+                    return false;
+                }
+
+                if(!yanzhenMobile(user_mobile)){ 
+                    tanchuan_0('200','1000','200','手机号码不正确！');
+                    return false;
+                }
+                 
+                //发送ajax 提交
+                $.ajax({
+                    type:'POST',
+                    url:common_url+'/User/checkRegisterVerify',
+                    dataType:'json',
+                    data:{
+					   	  is_ajax : 1,
+                          mobile : user_mobile,
+                          mobile_verify : yanzhenma,
+						  type:3
+					
+					},//表单实例化
+                    success:function(data){
+                        if(data['code']==200){
+                            //alert(data);//成功 操作处理
+                            tanchuan_0('200','1000','200',data['message']);
+							
+                            window.location.href=common_url+'/Member/up_mobile';
+                        }else{
+                            tanchuan_0('200','1000','200',data['message']);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+</block>

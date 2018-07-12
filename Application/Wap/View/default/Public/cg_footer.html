@@ -1,0 +1,28 @@
+
+<!-- 底部
+================================================== -->
+<div class="botzhanwei"></div>
+<div class="botnav">
+	<ul>
+		<li><a href="/" class="botnav1">首页</a></li>
+		<li><a href="{:U('goods/lists')}" class="botnav2">所有商品</a></li>
+		<li><a href="{:U('user/discover')}" class="botnav3">发现</a></li>
+		<li><a href="{:U('shop/shop_cart_list')}" class="botnav4" id="cart">购物车<span style="display:none" class="cart_num">0</span></a></li>
+		<li><a href="{:U('member/index')}" class="botnav5">我的</a></li>
+	</ul>
+</div>
+
+
+<include file="Public/var"/>
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+
+
+
+<block name="script"></block> <!-- 用于加载js代码 -->
+<!-- 页面footer钩子，一般用于加载插件JS文件和JS代码 -->
+
+<div class="hidden"><!-- 用于加载统计代码等隐藏元素 -->
+	<block name="hidden"></block>
+</div>

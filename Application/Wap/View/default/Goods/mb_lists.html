@@ -1,0 +1,19 @@
+<foreach name="goods_data.list" item="goods">
+	
+   	<div class="list">
+        <div class="img"><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}"><img src="{$goods.thumb}" /></a></div>
+        <div class="infos">
+	        <h3><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}">{$goods.title}</a></h3>
+	        <div class="renci_jindu">
+	            <div class="jindu"><div class="xianjindu" style="width:{$goods['attend_count']/$goods['need_count']*100}%;"></div></div>
+
+				<div class="renci"><span class="fl">{$goods.need_count}<br>总需人次</span><span class="fr"><em>{$goods['need_count'] - $goods['attend_count']}</em><br>剩余人次</span></div>
+				<div class="addtocar" onclick="addShop({$goods['lottery_id']})"></div>
+	        </div>
+        </div>
+        <div class="clear"></div>
+        <div class="xianzhuan"></div><!--  无图标  -->
+        <!--<div class="xianzhuan"><img src="../../Public/Wap/images/xgrcbg.png" /></div>--><!-- 限购图标  -->
+    </div>
+</foreach>
+        

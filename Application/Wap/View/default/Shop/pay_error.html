@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>购物车支付失败</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="">
+    <meta http-equiv="description" content="">
+    <meta name="wap-font-scale"  content="no"/>
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style.css"/>
+</head>
+<body>
+<div class="topdiv2">
+    <div class="topnav">
+        <h1 class="pagetit">购物车支付失败</h1>
+
+        <a class="home" href="/"></a>
+    </div>
+</div>
+<div class="topzhanwei"></div>
+
+<!--  购物车无商品开始  -->
+<div class="main">
+    <div class="payfail">
+        <p>sorry，支付失败，请重试！</p>
+        <p><a class="gohome" href="/">返回首页</a><a href="/">立即云购</a></p>
+    </div>
+
+    <div class="line10"></div>
+    <div class="intitle">
+        <span class="tit renqi active">人气推荐</span>
+        <a class="more2" href=""></a>
+    </div>
+    <div class="clear"></div>
+    <ul class="inprolist">
+
+
+        <foreach name="goods_data.list" item="goods">
+            <li class="list">
+                <div class="listinfo">
+                    <p><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}"><img src="{$goods.thumb}" /></a></p>
+                    <p><h3><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}">{$goods.title}</a></h3></p>
+                    <div class="renci_jindu">
+                        <div class="renci">剩<span>{$goods['need_count'] - $goods['attend_count']}</span>人次</div>
+                        <div class="jindu"><div class="xianjindu" style="width:{$goods['attend_count']/$goods['need_count']*100}%;"></div></div>
+                        <div class="addtocar" onclick="addShop({$goods['lottery_id']})"></div>
+                    </div>
+                </div>
+            </li>
+        </foreach>
+
+
+
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<div class="botfixcar"><a href=""><span>99+</span></a><i></i></div>
+<div class="botzhanwei"></div>
+
+<div class="huitop"></div>
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/cart/addShopGoods.js"></script>
+<script>
+    $(document).ready(function(){
+
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+</block>
+
+<block name="body">
+
+<div class="main main_Pub">
+    <div class="atttend_list">
+	<!-- 个人中心参与记录 顶部导航开始-->   
+    <include file="Public/attend_nav" />
+	<!-- 个人中心参与记录 顶部导航结束-->   
+        <ul class="product_list clearfix">
+           <foreach name='list' item='list' >
+            <li class="list clearfix">
+                <div class="img"><a href=""><img src="{$list.thumb}"></a>
+                </div>
+                <div class="infos">
+                    <h1 class="ellipsis"><a href="">{$list.title}</a></h1>
+                    <div class="renci_jindu noheight" style="padding-right: 0">
+                        <p class="text-size12 ellipsis">
+                            <span class="text-gray">获得者：</span>
+                            <a href="#">
+                                <span class="text-blue">{$list.nickname}<span class="text-gray">（共参与{$list.lp_attend_count}人次）</span></span>
+                            </a>
+                        </p>
+                        <p class="text-size12">
+                            <span class="text-gray">幸运号码：</span>
+                            <span class="text-red">{$list.lottery_code}</span>
+                        </p>
+                        <p class="text-size12 text-gray">揭晓时间：{$list.lottery_time}</p>
+                        <p class="">
+                            我的参与：<span class="text-red">{$list.attend_count}</span>人次
+                            <a href="javascript:;" class="text-blue" onclick="get_code($(this),{$list.lottery_id},{$list.uid});">查看参与码</a>
+                        </p>
+                    </div>
+                </div>
+
+            </li>
+           </foreach>
+			
+        </ul>
+		<input id ="page_total" type="hidden" value="{$page_total}"/>
+		<input id ="" type="hidden" value=""/>
+		<input id ="" type="hidden" value=""/>
+		
+    </div>
+</div>
+
+<div class="huitop"></div>
+
+<!-- 模态框（Modal） -->
+<div class="fix_canyuma">
+	<div class="canyuma attendAlert" id="attend_list">
+		<div class="cymtit title">
+			<h4 class="tit">本期共参与了<span class="padding-l-r5" id="attend">533</span>人次</h4>
+		</div>
+		<div class="con" id="con">		   
+			   <p class="text-size12 text-gray">
+				  2016-04-15 15:47:28
+			   </p>
+			   <span>10000026</span>				
+		</div>
+		
+		<div class="close_cym">
+			×
+		</div>
+	</div>
+</div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/get_code.js"></script>
+<script>
+//创建页码，每次获取ajax 页码+1，达到指定页码后停止加载
+              if (2<2) {
+              var currentpage=0;
+              var totalpage=50;
+              var maxpage=2;
+              } else{
+              var currentpage=4-4;
+              var totalpage=50;
+              var maxpage=2;
+              };
+
+$(document).ready(function(){
+
+    $(window).scroll(function(){
+	//alert(5555);
+    　　var scrollTop = $(this).scrollTop();               //滚动条距离顶部的高度
+    　　var scrollHeight = $(document).height();           //当前页面的总高度
+    　　var windowHeight = $(this).height();               //当前可视的页面高度
+
+    　if(scrollTop + windowHeight >= scrollHeight){        //距离顶部+当前高度 >=文档总高度 即代表滑动到底部
+              ajaxRed();                                   //开始加载ajax
+              if(currentpage ==2){                         //如果加载ajax达到2次 停止加载
+                $(".down_move").hide();                    //提示滚动 图片隐藏
+                $(".submit_btn").css("display","block");   //提示可以提交该表单按钮出现。
+                return false;                              //如果条件满足 停止运行该判断
+              }
+           }
+     });
+
+
+  function ajaxRed(){
+
+              $("#loading_text").ajaxStart(function(){    //ajax开始执行（此方法必须jquery1.6版本及以下可以使用，高版本不支持）
+                  $(this).show(); 
+                  }).ajaxStop(function(){                 //ajax结束执行（此方法必须jquery1.6版本及以下可以使用，高版本不支持）
+                  $(this).hide();
+              });
+              currentpage++;                              //执行成功页码+1
+              if (currentpage>=totalpage || currentpage>maxpage){
+                return currentpage;                       //判断页码是否达到限定的加载次数;
+                return false;
+              }
+              var html="";
+
+
+              $.getJSON(common_url+"/Account/attend_ajax?page=10",function(json){        //获取json
+                      if(json){                           //每次加载五道题目
+                          $.each(json,function(index,array){ 
+						 // alert();
+						  console.log(json);
+						  return;
+                                 var str = "<tr><td><h2>"+array["tiMu"]+"</h2></td></tr>"; 
+                                 str += "<tr><td><p><input type='radio' class='radio_input' name='"+array['radio_name']+"' />"+array["a"]+"</p></td></tr>"; 
+                                 str += "<tr><td><p><input type='radio' class='radio_input' name='"+array['radio_name']+"' />"+array["b"]+"</td></tr>"; 
+                                 str += "<tr><td><p><input type='radio' class='radio_input' name='"+array['radio_name']+"' />"+array["c"]+"</td></tr>"; 
+                                 str += "<tr><td><p><input type='radio' class='radio_input' name='"+array['radio_name']+"' />"+array["d"]+"</td></tr>"; 
+                                 $(str).appendTo("#table_more");   //将生成的文本追加到ID table_more子级最后面
+                                              });
+                                              }
+                                        });
+
+                                return currentpage;                //返回执行后的页码数
+
+  }
+});
+</script>
+</block>

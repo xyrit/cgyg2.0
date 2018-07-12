@@ -1,0 +1,70 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?v=telo"/>
+</block>
+
+<!-- 头部结尾-->
+<block name="body">
+    <!-- 我的资料 开始 -->
+    <div class="auto_padding" style="width:100%">
+        <div class="userInfo">
+            <ul>
+                <li class="touxian_li">
+                    <a href="{:U('Member/up_photo')}">
+                        &nbsp;&nbsp;&nbsp;头像
+                        <div id="preview">
+                            <img id="imghead" class="imga_radius right user_img_x" src="{$info.face}">
+                        </div>
+                        <i class="boult"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Member/up_name')}">
+                        &nbsp;&nbsp;&nbsp;昵称<i class="boult"></i>
+                        <font class="cccfont right">{$info.nickname}</font>
+                    </a>
+                </li>
+                <li><a href="{:U('Member/check_oldmobile')}">&nbsp;&nbsp;&nbsp;手机号码
+                    <i class="boult"></i>
+                    <font class="cccfont right">{$info.mobile}</font>
+                </a></li>
+                <li><a href="{:U('Member/address_list')}">&nbsp;&nbsp;&nbsp;收货地址<i class="boult"></i></a></li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- 我的资料 结束 -->
+</block>
+<block name="script">
+    <script type="text/javascript">
+
+
+        $('.usertouxian_bt').click(function(){
+
+            var imghead = $('#imghead').attr('src');
+            alert(imghead);
+            $.ajax({
+                type:'POST',
+                url:common_url+'/Member/up_photo',
+                dataType:'json',
+                data:{
+                    path:imghead
+                },
+                success:function(data){
+                    if(data['code']==200){
+                        //加载成功 操作处理
+                        tanchuan_0('200','1000','200',data['msg']);
+                        window.location.href=common_url+'/Member/personal';
+
+                    }else{
+                        tanchuan_0('200','1000','200',data['msg']);
+                    }
+                }
+            });
+
+        });
+    </script>
+</block>

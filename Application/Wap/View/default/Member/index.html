@@ -1,0 +1,94 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg1"/>
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?sas=sdfsdf"/>
+</block>
+
+<block name="body">
+
+<!-- 个人中开始 -->
+<div class="user_top">
+    <div class="user_center">
+        <div class="center_radius">
+            <a href="{:U('Member/profile')}">
+                <img src="{$info.face}"/>
+            </a>
+        </div>
+        <p class="username_font">
+            <span>昵称：{$info.nickname}</span>
+            <span>ID：{$info.uid}</span>
+        </p>
+        <a href="{:U('Member/setup')}">
+            <span class="right jiantou"></span>
+        </a>
+    </div>
+
+    <div class="chongzhi_box">
+        <p>橙果币：<span>{$info.account}</span>个<a class="chongzhi_but" href="{:U('Recharge/InfoRecharge')}">充值</a></p>
+    </div>
+
+</div>
+<div class="clear"></div>
+		<div class="hongbao_box" style="display:none">
+			<div class="hongbao_l">
+				<img src="__PUBLIC__/Wap/images/redbox_1.png"/>
+				<p>可用红包</p>
+				<p>4</p>
+			</div>
+			<div class="hongbao_c">
+				<img src="__PUBLIC__/Wap/images/redbox_2.png"/>
+				<p>可用积分</p>
+				<p>4</p>
+			</div>
+			<div class="hongbao_r">
+				<img src="__PUBLIC__/Wap/images/redbox_3.png"/>
+				<p>可用佣金</p>
+				<p>4</p>
+			</div>
+		</div>
+		
+		<div class="user_list">
+			<ul style="background:#f1f1f1">
+				<li>
+					<img src="__PUBLIC__/Wap/images/per_icon_01.png" alt="">
+					<a href="{:U('Member/charge_list')}" style="border:none">
+						充值记录
+						<span class="right jiantou_2"></span>
+					</a>
+				</li>
+				<li>
+					<img src="__PUBLIC__/Wap/images/per_icon_02.png" alt="">
+					<a href="{:U('Member/attend')}">
+						参与记录
+						<span class="right jiantou_2"></span>
+					</a>
+				</li>
+				<li style="margin-top:6px;">
+					<img src="__PUBLIC__/Wap/images/per_icon_03.png" alt="">
+					<a style="border-top:none" href="{:U('Member/lotteryRecord')}">
+						中奖记录
+						<span class="right jiantou_2"></span>
+					</a>
+				</li>
+				<li >
+					<img src="__PUBLIC__/Wap/images/per_icon_04.png" alt="">
+					<a href="{:U('Member/share_list')}">
+						我的晒单
+						<span class="right jiantou_2"></span>
+					</a>
+				</li>
+                <li style="margin-top:6px;">
+					<img src="__PUBLIC__/Wap/images/geren_text.png" alt="">
+					<a style="border-top:none" href="{:U('Member/profile')}">
+						我的资料
+						<span class="right jiantou_2"></span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	<!-- 个人中结束 -->
+</block>
+<block name="script">
+<script  type="text/javascript" src="__PUBLIC__/Wap/js/all.js"></script>
+</block>

@@ -1,0 +1,67 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg1"/>
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?v=telo"/>
+</block>
+
+<!-- 发现 开始 -->
+<block name="body">
+<div class="find_list">
+    <ul>
+        <!--
+        <li>
+            <div class="find_box">
+                <a href="{:U('goods/Discover/type/view/sort/new')}">
+                    <img src="/Public/Wap/images/find01.png" alt="">
+                    <p style="line-height: 20px">晒单分享</p>
+                    <p style="color:#999;font-size: 12px;">没错，就是我中的奖，怎么啦！<span class="right jiantou_2 find_v"></span></p>
+
+                </a>
+            </div>
+        </li>
+        <div class="clear"></div>
+        <li>
+            <div class="find_box">
+                <a href="{:U('Goods/newest')}">
+                    <img src="/Public/Wap/images/find02.png" alt="">
+                    <p>最新揭晓</p>
+                    <p style="color:#999;font-size: 12px;">快了，马上就要开奖了，围观！<span class="right jiantou_2 find_v"></span></p>
+
+                </a>
+            </div>
+        </li>
+        <div class="clear"></div>
+        <li>
+            <div class="find_box">
+                <a href="#">
+                    <img src="/Public/Wap/images/find03.png" alt="">
+                    <p>限购专区</p>
+                    <p style="color:#999;font-size: 12px;">限购专区，限每人参与人次！<span class="right jiantou_2 find_v"></span></p>
+
+                </a>
+            </div>
+        </li>
+-->
+        <div class="clear"></div>
+        <li>
+            <div class="find_box">
+                <a href="{:U('user/browsingrecord/type/view')}">
+                    <img src="/Public/Wap/images/find04.png" alt="">
+                    <p>我看过的</p>
+                    <p style="color:#999;font-size: 12px;">我看过的
+                        查看浏览记录！<span class="right jiantou_2 find_v"></span></p>
+
+                </a>
+            </div>
+        </li>
+
+    </ul>
+</div>
+<!-- 发现结束 -->
+</block>
+<block name="script">
+
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/c.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/all.js"></script>
+</block>

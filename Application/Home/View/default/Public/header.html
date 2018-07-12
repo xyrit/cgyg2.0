@@ -1,0 +1,83 @@
+<!--头部 start-->
+
+
+
+<!--顶部菜单栏-->
+<!--底部版权友情链接 start-->
+<include file="Public/top" />
+<!--底部版权友情链接 end-->
+<!--logo 搜索栏-->
+<div class="container logo-search">
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-xs-4">
+            <h2 class="logo_h1">
+                <a href="/">橙果云购</a>
+            </h2>
+        </div>
+        <div class="col-lg-6 col-md-6 col-xs-6 col-md-offset-1 col-lg-offset-4 margin-t-8">
+            <div class="cg-carBox">
+                <a href="{:U('shop/shop_cart_list')}" class="cg-car_a">
+                    <div class="cg-car position-re clearfix">
+                        <img src="__PUBLIC__/Home/images/car2.png" class="display-ib margin-btn margin-b-3">
+                        <span class="display-ib text-white text-16">购物车</span>
+                        <span class="badge pull-right cg-badge display-ib goods_num cart_num" id="goods_num">0</span>
+                    </div>
+                </a>
+            </div>
+            <div class="form-group has-error position-re cg_form-group_s">
+                <input type="text" class="form-control cg-search-input" id="search_input">
+                <a href="#" class="position-ab search_a" id="btn_search" target="_blank"><button type="button" class="search-btn"></button></a>
+            </div>
+
+        </div>
+        <!--<div class="col-lg-2 col-md-2 col-xs-3 margin-t-8">
+
+        </div>-->
+    </div>
+
+</div>
+<!--横竖向导航栏-->
+<div class="menu">
+    <div class="menu_center">
+        <div class="all-sort">
+            <div class="category">
+                <h2>
+                    <img src="__PUBLIC__/Home/images/menuList.png" style="margin-right: 10px"/>
+                    商品分类
+                </h2>
+            </div>
+            <!--经过展开菜单-->
+            <div style="margin:0 auto">
+                <div class="all-sort-list" id="menu-list_0" style="display: none">
+                    <div class="item bo">
+                        <h3>
+                            <a href="{:U('Goods/lists')}" class="menuBg_0 text-danger" style="font-weight: 600; background-position: -210px 8px">
+                                热门推荐
+                            </a>
+                        </h3>
+                    </div>
+                    <foreach name="category_tree" item="v">
+                        <div class="item bo">
+                            <h3>
+                                <a href="{:U('Goods/lists','cat_id='.$v['id'])}" class="menuBg_0" style="font-weight: 100; background-position: 0px 8px">{$v.title}</a>
+                            </h3>
+                        </div>
+                    </foreach>
+                
+                </div>
+            </div>
+            <!--经过展开菜单-->
+        </div>
+        <div class="nav">
+            <ul class="clearfix padding-l-15">
+                <li><a href="/">首页</a></li>
+                <li><a href="soon-category.html">即将揭晓</a></li>
+                <li><a href="guide_video.html" target="_blank">新手指南</a></li>
+                <li><a href="zero.html" target="_blank">iPad免费拿</a></li>
+                <li><a href="http://quanzi.cgyyg.com" target="_blank">橙果社区</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!--头部 end-->

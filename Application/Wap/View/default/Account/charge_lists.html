@@ -1,0 +1,10 @@
+
+<foreach name='charge_list' item='list' >
+	<li>
+		<h3><if condition="$list.pay_type eq 1 ">微信<else/>支付宝 </if></h3>
+		<p class="text-gray">{$list.pay_time}</p>
+		<p class="text-gray"><if condition="$list.status eq 0 ">失败<else />成功 </if></p>
+		<em class="text-red">{$list.count_money}元</em>
+	</li>
+</foreach>
+		

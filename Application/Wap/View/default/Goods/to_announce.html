@@ -1,0 +1,105 @@
+
+<extend name="Base/cg3"/>
+<block name="style">
+
+</block>
+<block name="body">
+
+<div class="wangqilist" id="datas">
+
+
+</div>
+<a class="add_more" id="more" style="display:block;width:100%;height:50px;line-height: 50px; text-align: center;">点击查看更多</a>
+
+<input type="hidden" id="pid" value="{$pid}">
+
+<div class="huitop"></div>
+</block>
+<block name="script">
+<script type="text/javascript" src="/Public/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/function.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/util.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/p.js"></script>
+<script>
+    $(document).ready(function(){
+        var pid=$('#pid').val();
+         loadData({'pid':pid})
+    })
+
+    function loadData(param){
+
+            new Page({
+                url:"{:U('Goods/to_announce')}",
+                param:param,
+                scroll:false,
+                count:10,
+                next:{
+                    id:"more",
+                    content:["点击加载更多","没有更多数据了"]
+                },
+                success:setData
+            });
+
+    }
+
+
+    function setData(json_data,p){
+
+        if(p.page == 1){
+
+            if(p.total == 0){
+                //无数据时的展示
+            }
+        }
+        var jsondata=json_data;
+        var str='';
+        $.each(jsondata, function (a,b) {
+
+            if(b.status==1)
+            {
+                str+='<div class="list">';
+                str+='<h3><a href="/goods/detail/lottery_id/'+ b.lottery_id+'">期号'+ b.lottery_id+'<span>正在揭晓中...</span></a></h3>'
+                str+='</div>';
+                return true;
+            }
+           var lottery_time = format(b.lottery_time);
+
+            str+='<div class="list">';
+            str+='<h3><a href="/goods/detail/lottery_id/'+ b.lottery_id+'">期号：'+ b.lottery_id+'</a></h3>';
+            str+='<div class="wininfo">';
+            str+='<div class="pic"><a href="/lottery/other_info/uid/'+ b.user.uid+'"><img src="'+ b.user.face+'" /></a></div>';
+            str+='<div class="infos">';
+            str+='<p>获奖者：<a href="/lottery/other_info/uid/'+ b.user.uid+'">'+ b.user.nickname+'</a><i>（'+ b.user.ip_address+'）</i></p>';
+            str+='<p>用户ID：'+ b.user.uid+'<i>（唯一不变标识）</i></p>';
+            str+='<p>获奖幸运码：<span>'+ b.lottery_code+'</span></p>';
+            str+='<p>本期参与：<span>'+ b.user.count+'</span>人次</p>';
+            str+='<p>揭晓时间：'+lottery_time+'</p>';
+            str+='</div>';
+            str+='</div>';
+            str+='</div>';
+
+        })
+        $("#datas").append(str);
+
+
+
+    }
+
+    function format(shijianchuo)
+    {
+
+        shijianchuo= shijianchuo*1000;
+//shijianchuo是整数，否则要parseInt转换
+        var time = new Date(shijianchuo);
+        var y = time.getFullYear();
+        var m = time.getMonth()+1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var s = time.getSeconds();
+        return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s);
+    }
+    function add0(m){return m<10?'0'+m:m }
+
+</script>
+</block>

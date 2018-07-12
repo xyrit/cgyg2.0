@@ -1,0 +1,145 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg0"/>
+
+<!-- 单独引入轮播css -->
+<block name="style">
+
+</block>
+
+<block name="body">
+
+<div class="topdiv">
+	<div class="topnav">
+        <div class="topsoso">
+
+            <form action="{:U('Goods/lists')}" method="GET">
+                <input type="submit" class="sosoan" value="" />
+                <input type="search" name="keyword" value="" class="sosok" placeholder="搜索云购最火爆产品">
+            </form>
+
+        </div>
+        <a class="topfenlei" href="{:U('Goods/lists')}">分类</a>
+
+    </div>
+</div>
+
+
+    <!--图片切换 begin-->
+    <div id='slide' class='swipe'>
+        <div class='swipe-wrap' id="banner-content">
+            <foreach name="slide_list" item="slide">
+            <div>
+                <a href="{$slide.url}"><img src="{$slide.icon|get_cover='path'}" /></a>
+            </div>
+            </foreach>
+        </div>
+        <div id="pointer">
+        </div>
+    </div>
+
+    <!--图片切换 end-->
+
+
+
+<!--
+<div class="banner">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <foreach name="slide_list" item="slide">
+        	   <div class="swiper-slide"><a href="{$slide.url}"><img src="{$slide.icon|get_cover='path'}" /></a></div>
+            </foreach>
+        </div>
+        <div class="pagination"></div>
+    </div>
+</div>-->
+
+<div class="indexnav">
+	<ul>
+    	<li><a href=""><img src="../../Public/Wap/images/innavan1.png" /><br>10元专区</a></li>
+        <li><a href=""><img src="../../Public/Wap/images/innavan2.png" /><br>限购专区</a></li>
+        <li><a href=""><img src="../../Public/Wap/images/innavan3.png" /><br>晒单分享</a></li>
+        <li><a href=""><img src="../../Public/Wap/images/innavan4.png" /><br>橙果圈子</a></li>
+        <li><a href=""><img src="../../Public/Wap/images/innavan5.png" /><br>常见问题</a></li>
+    </ul>
+    <ul>
+        <li><a href=""><img src="../../Public/Wap/images/innavan6.png" /><br>玩法规则</a></li>
+        <li><a href=""><img src="../../Public/Wap/images/innavan7.png" /><br>新手视频</a></li>
+        <li><a href=""><img src="../../Public/Wap/images/innavan8.png" /><br>高端旅游</a></li>
+        <li><a href=""><img src="../../Public/Wap/images/innavan9.png" /><br>深圳生活</a></li>
+        <li><a href=""><img src="../../Public/Wap/images/innavan10.png" /><br>敬请期待</a></li>
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<div class="main">
+    <!-- 最新 揭晓 -->
+    <div class="line10"></div>
+    <div class="intitle"><span class="tit newjiexiao active">最新揭晓</span><a class="more" href="{:U('goods/newest')}">更多揭晓</a></div>
+    <div class="make" >
+        <ul id="newest">
+            <li>
+                <a href="#">
+                    <img src="../../Public/Wap/images/noimg.png"/>
+                </a>
+
+            </li>
+
+            <li>
+                <a href="#">
+                    <img src="../../Public/Wap/images/noimg.png"/>
+                </a>
+
+            </li>
+
+            <li style="border-right:none">
+                <a href="#">
+                    <img src="../../Public/Wap/images/noimg.png"/>
+                </a>
+
+            </li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+
+
+<div class="main">
+	<div class="line10"></div>
+    <div class="intitle">
+        <span class="tit renqi active">人气推荐</span>
+    </div>
+    <div class="clear"></div>
+    <ul class="inprolist">
+
+        <foreach name="goods_data" item="goods">
+
+    	<li class="list">
+        	<div class="listinfo">
+                <p><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}"><img src="{$goods.thumb}" data-ghid="{$goods.lottery_id}"/></a></p>
+                <p><h3><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}">{$goods.title}</a></h3></p>
+                <div class="renci_jindu">
+                    <div class="renci"><i class="fl">{$goods['need_count']}<br>总共</i><i class="fr"><span>{$goods['need_count'] - $goods['attend_count']}</span><br>剩余</i></div>
+                    <div class="jindu"><div class="xianjindu" style="width:{$goods['attend_count']/$goods['need_count']*100}%;"></div></div>
+                    <div class="addtocar addcart" data-ghid="{$goods.lottery_id}"></div>
+                </div>
+            </div>
+        </li>
+        </foreach>
+        
+    </ul>
+    <div class="clear"></div>
+</div>
+
+   <a class="add_more" href="{:U('Goods/lists')}">点击查看更多商品</a>
+
+<div class="huitop"></div>
+<div class="frightdiv"></div>
+</block>
+
+<!-- 单独引入轮播js -->
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/swipe.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/index.js"></script>
+
+</block>
+
+

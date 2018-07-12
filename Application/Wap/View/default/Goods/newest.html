@@ -1,0 +1,38 @@
+<extend name="Base/cg3"/>
+
+<block name="style">
+    <link rel="stylesheet" href="/Public/Wap/css/style_part.css?v=telo"/>
+
+</block>
+
+<block name="body">
+
+    <div class="main main_Pub">
+
+        <ul class="inprolist clearfix" id="data">
+
+
+        </ul>
+        <a class="add_more" id="more">点击查看更多商品</a>
+    </div>
+
+
+    <div class="huitop"></div>
+
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="/Public/Wap/js/util.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/p.js"></script>
+
+    <script type="text/javascript" src="/Public/Wap/js/all.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/new.js"></script>
+
+    <script>
+        $(function(){
+            $(".goods_navList li:nth-child(3n)").css({
+                'border-right':'none'
+            })
+        });
+    </script>
+</block>

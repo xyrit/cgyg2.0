@@ -1,0 +1,182 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+
+<block name="body">
+
+<div class="main"> 
+    <div class="add_saidan">
+    	<div class="saidancon">
+        	<textarea class="wenbenk" placeholder='请输入15~150字的晒单内容' ></textarea>
+            <div class="zifu_toall">您还可以输入<span>150</span>个字</div>
+        </div>
+        <div class="add_pic">
+        	<div class="piclist">
+            	<div class="list"><div class="imgs">上传照片</div><input class="picscan" type="file" accept="image/*" multiple /><span>×</span></div>
+                <div class="addpican"><div class="clickan"></div></div>
+            </div>
+            <p>请上传1-5张图片</p>
+        </div>
+        <div class="clear"></div>
+    	<div class="submitan"><a href="javascript:submit_saidan();">提交申请</a></div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="huitop"></div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script>
+$(document).ready(function(){
+	autowh();
+	addimgdiv();
+	upimg();
+	addind();
+	$(document).keyup(function(){
+		var maxtext=150;
+		var text=$(".wenbenk").val();
+		var counter=text.length;
+		$(".zifu_toall span").text(maxtext-counter);
+		if((maxtext-counter)<0){
+			$(".wenbenk").val($(".wenbenk").val().substring(0,150));
+			$(".zifu_toall span").text("0");
+		}
+	});
+})
+function submit_saidan(){
+	var imgsrc="";
+	var iffou;
+	$(".piclist .list").each(function(){
+		if($(this).find("img").attr("src")=="" || $(this).find("img").length=="0"){
+			iffou=1;
+			return;
+		}else{
+			imgsrc +=","+$(this).find("img").attr("src");
+			iffou=0;
+		};
+	});
+	if($(".wenbenk").val().length<15){
+		tanchuan_0('200','1000','200','请输入15~150字的晒单内容');
+		return;
+	}
+	if(iffou==0){
+		imgsrc=imgsrc.substring(1);
+		var description =$(".wenbenk").val();
+			$.ajax({
+			type:'POST',
+			url:common_url+'/Display/add',
+			dataType:'json',
+			data:{
+				path:imgsrc,
+				description:description
+			},
+			success:function(data){
+				if(data['code']==200){
+					//加载成功 操作处理	
+					 tanchuan_0('200','1000','200',data['msg']);
+					 window.location.href=common_url+'/Display/index';
+				}else{
+					  tanchuan_0('200','1000','200',data['msg']);
+				}
+			}
+		});
+	}else{
+		tanchuan_0('200','1000','200','请上传1-5张图片');
+	}
+	
+}
+
+$(window).resize(function() {
+	autowh();
+});
+function autowh(){
+	var  imgw=$(".add_pic .list:eq(0)").width();
+	$(".add_pic .list").css("height",imgw);
+	$(".add_pic .list .imgs").css({"width":imgw,"height":imgw});
+	$(".add_pic .addpican .clickan").css("height",imgw);
+}
+function addimgdiv(){
+	$(".addpican").click(function(){
+		$(this).before("<div class='list'><div class='imgs'>上传照片</div><input class='picscan' type='file' accept='image/*' multiple /><span>×</span></div>");
+		autowh();
+		ifshowhide();
+		upimg();
+		dellimg();
+	})
+}
+function ifshowhide(){
+	if($(".add_pic .list").length>=5){
+		$(".addpican").hide();
+	}else{
+		$(".addpican").show();
+	}
+}
+function addind(){
+	$(".piclist .list").each(function(){
+		$(this).find("img").attr("id","upimg"+$(this).index());
+		$(this).find(".picscan").attr("id","upimgan"+$(this).index());
+	})
+}
+
+function upimg(){
+	$(".picscan").change(function(){
+		var oldsrc=$(this).siblings(".imgs").find("img").attr("src");
+		$(this).siblings(".imgs").html("<img />");
+		addind();
+		var imgid=$(this).siblings(".imgs").find("img").attr("id");
+		var upanid=$(this).attr("id");
+		previewFile(imgid,upanid,oldsrc);
+	})
+}
+
+function dellimg(){
+	$(".piclist .list span").click(function(){
+		$(this).parent(".list").remove();
+		addind();
+		ifshowhide();
+	})
+}
+
+function previewFile(imgid,upanid,oldsrc){	
+	/*
+	var preview = document.getElementById(imgid);
+	var file = document.getElementById(upanid).files[0];
+	var reader = new FileReader();
+	reader.onloadend = function () {
+		preview.src = reader.result;
+	}
+	if(file){
+		reader.readAsDataURL(file);
+	}else{
+		preview.parentNode.parentNode.removeChild(preview.parentNode.nextSibling.nextSibling);
+		preview.parentNode.innerHTML = "上传照片";
+	}
+	*/
+	var preview = document.getElementById(imgid);
+	var file = document.getElementById(upanid);
+	
+	if (file.files && file.files[0]){
+		var reader = new FileReader();
+		reader.onload = function(){
+			preview.src = reader.result;
+		}
+		reader.readAsDataURL(file.files[0]);
+	}else{
+		file.select();
+		var ifzhi=$("#"+upanid).val()+"QQ";
+		if(ifzhi=="QQ"){
+			if(oldsrc=="undefined"){
+				$("#"+upanid).siblings(".imgs").html("上传照片");
+			}else{
+				$("#"+upanid).siblings(".imgs").find("img").attr("src",oldsrc);
+			}
+		}else{
+			var src = document.selection.createRange().text;
+			preview.setAttribute("src",src);
+		}
+	}
+	
+}
+
+</script>
+</block>

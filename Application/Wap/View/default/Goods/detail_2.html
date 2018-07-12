@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>商品详情页-- <eq name="data.status" value="1">揭晓中<else/>已揭晓</eq></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="">
+    <meta http-equiv="description" content="">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style.css"/>
+</head>
+<body>
+<div class="banner">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img src="__PUBLIC__/Wap/images/kitchen_adventurer_cheesecake_brownie.jpg" /></div>
+            <div class="swiper-slide"><img src="__PUBLIC__/Wap/images/kitchen_adventurer_lemon.jpg" /></div>
+            <div class="swiper-slide"><img src="__PUBLIC__/Wap/images/kitchen_adventurer_donut.jpg" /></div>
+            <div class="swiper-slide"><img src="__PUBLIC__/Wap/images/kitchen_adventurer_caramel.jpg" /></div>
+        </div>
+        <div class="pagination"></div>
+    </div>
+</div>
+
+<div class="proshowinfo">
+    <h1 class="protit"><span> <eq name="data.status" value="1">揭晓中<else/>已揭晓</eq> </span>（{$data.lottery_id}）{$data.title}</h1>
+
+
+    <eq name="data.status" value="1">
+    <div class="jiexiaoinfo">
+    	<span>揭晓倒计时 <i id="win_times">00:34:05</i></span>
+        <a href="jisuan.html">查看计算详情</a>
+        <script language=javascript>
+			function win_time(){
+				window.setTimeout("win_time()", 1);
+				BirthDay=new Date("2016/04/20 00:00:00");//设置日期
+				today=new Date();
+				timeold=(BirthDay.getTime()-today.getTime());
+				sectimeold=timeold/1000
+				secondsold=Math.floor(sectimeold);
+				msPerDay=24*60*60*1000
+				e_daysold=timeold/msPerDay
+				daysold=Math.floor(e_daysold);
+				e_hrsold=(e_daysold-daysold)*24;
+				hrsold=Math.floor(e_hrsold);
+				e_minsold=(e_hrsold-hrsold)*60;
+				minsold=Math.floor((e_hrsold-hrsold)*60);
+				e_seconds = (e_minsold-minsold)*60;
+				seconds=Math.floor((e_minsold-minsold)*60);
+				ms = e_seconds-seconds;
+				ms = new String(ms)
+				ms = ms.substr(2,2);
+				$("#win_times").html((minsold<10?'0'+minsold:minsold)+":"+(seconds<10?'0'+seconds:seconds)+":"+ms);
+			}
+			win_time();
+		</script>
+    </div>
+        <else/>
+
+    <div class="pro_winer">
+        <div class="pic"><a href=""><img src="__PUBLIC__/Wap/images/moren.jpg" /></a></div>
+        <div class="infos">
+            <p>获奖者：<a href="{$userInfo.uid}"> {$userInfo.nickname}</a>（{$userInfo.ip_address}）</p>
+            <p>用户ID：{$userInfo.uid}（唯一不变标识）</p>
+            <p>本期参与：{$userInfo.ucount}人次　<a class="lookyunma2" href="javascript:void(0);">查看幸运码</a></p>
+            <p>揭晓时间：{$data.expecttime|date='Y-m-d',###}</p>
+        </div>
+        <div class="winico"></div>
+    </div>
+
+    <div class="jiexiaoinfo">
+        <span>获奖幸运码：<i>{$data.lottery_code}</i></span>
+        <a href="jisuan.html">查看计算详情</a>
+    </div>
+    </eq>
+
+    <div class="clear"></div>
+    <div class="ifjoin">
+        <if condition="$user_id">
+
+            <gt name="user_count" value="0">
+
+                <p>您参与了：<span>{$user_count}</span>人次</p>
+                <p>云购号码：<a class="lookyunma" href="javascript:void(0);">查看云购码</a></p>
+
+
+                <else/>
+
+                <div class="nojoin">您还没有参与本期商品哦！</div>
+            </gt>
+            <else/>
+            <div class="nojoin"><a href="login.html">请登录</a>，查看你的夺宝号码！</div>
+        </if>
+
+
+    </div>
+</div>
+
+<div class="pro_a_list">
+    <p><a href="{:U('Goods/detail_info')}">图文详情<span>（建议wifi下查看）</span></a></p>
+    <p><a href="{:U('Goods/to_announce/pid/'.$data['pid'])}">往期揭晓</a></p>
+    <p><a href="/">晒单分享</a></p>
+</div>
+
+<div class="all_canyu">
+    <div class="canyutit"><span>所有参与记录<em>（自{$falst_pay_time|date='Y-m-d H:i:s',###}开始）</em></span></div>
+
+    <div  id="canyulist-count">
+
+    </div>
+
+
+</div>
+
+<div class="botzhanwei"></div>
+<gt name="user_count" value="0">
+<div class="fix_canyuma">
+    <div class="canyuma">
+        <div class="cymtit">
+            <p class="tit">本期共参与了<span>{$user_count}</span>次</p>
+
+        </div>
+        <div class="con">
+            <volist name="user_in_list" id="vo">
+                <p>{$vo.pay_time|date='Y-m-d',###}</p>
+                <volist name="vo.codelist" id="eo">
+                    <span>{$eo}</span>
+                </volist>
+            </volist>
+
+        </div>
+        <div class="close_cym">×</div>
+    </div>
+</div>
+</gt>
+<eq name="data.status" value="2">
+<div class="fix_canyuma2">
+    <div class="canyuma">
+        <div class="cymtit">
+            <p class="tit">本期共参与了<span>{$userInfo['ucount']}</span>次</p>
+
+        </div>
+        <div class="con">
+            <volist name="lottery_orders" id="vo">
+                <p>{$vo.pay_time|date='Y-m-d',###}</p>
+                <volist name="vo.codelist" id="eo">
+                    <span>{$eo}</span>
+                </volist>
+            </volist>
+
+        </div>
+        <div class="close_cym">×</div>
+    </div>
+</div>
+</eq>
+
+<eq name="data.status" value="1">
+
+<div class="pro_bottom">
+	<div class="pro_bot_nav">
+        <span class="infos">最新一期正在火速进行中...</span>
+        <a class="link4" href="javascript:void(0);">立即前往</a>
+    </div>
+</div>
+
+
+</eq>
+
+<div class="huitop"></div>
+<div class="tanchuan_box"></div>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/idangerous.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+<script>
+
+    var pageIndex=1;
+    $(document).ready(function(){
+        Banner();
+
+        $(".canyutit").click(function(){
+
+            $(this).toggleClass("active");
+            $(this).siblings("#canyulist-count").find(".canyulist").slideToggle();
+
+        });
+        loadcanyu(pageIndex);
+
+
+    })
+
+    function loadcanyu(pageIndex){
+
+        $.ajax({
+                    type:'post',
+                    url:"{:U('Goods/purchase_records')}",
+                    data:{
+                        pageIndex:pageIndex,
+                        lottery_id :{$data.lottery_id},
+                },
+                dataType:'json',
+                success:function(data){
+
+            if(data['code']==200){
+                var str='';
+                if(data['list']==null)
+                {
+
+                    str+='<div class="canyulist">';
+                    str+='<div class="list">';
+                    str+=' <div class="pic"><a href=""><img src="__PUBLIC__/Wap/images/moren.jpg" /></a></div>';
+                    str+='<div class="infos">';
+                    str+='<p><a href="">用户昵称七个字</a>（IP所在地址）</p>';
+                    str+=' <p>参与了<span>3</span>人次  2015-12-09  18:40:08.896</p>';
+                    str+='</div>';
+                    str+='</div>';
+                }
+                else
+                {
+                    //$.each(data['list'],function(){
+
+                    str+='<div class="canyulist">';
+                    str+='<div class="list">';
+                    str+=' <div class="pic"><a href=""><img src="__PUBLIC__/Wap/images/moren.jpg" /></a></div>';
+                    str+='<div class="infos">';
+                    str+='<p><a href="">用户昵称七个字</a>（IP所在地址）</p>';
+                    str+=' <p>参与了<span>3</span>人次  2015-12-09  18:40:08.896</p>';
+                    str+='</div>';
+                    str+='</div>';
+
+                    //  })
+                }
+
+
+                $('#canyulist-count').html(str);
+
+
+            }else{
+
+                tanchuan_0('200','1000','200','加载中 ！');
+
+            }
+
+        }
+    });
+
+    }
+</script>
+
+
+
+</body>
+</html>

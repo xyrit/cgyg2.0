@@ -1,0 +1,289 @@
+
+<extend name="Base/cg3"/>
+<block name="style">
+    <style type="text/css">
+        .swipe-wrap{
+            text-align: center;
+        }
+        .swipe-wrap img{
+            width: auto;
+            margin:  0 auto;
+        }
+        #slidegoods{
+            background: #fff;
+
+        }
+
+        .swipe:after{ content:""; display:block; padding-top:50%;}
+    .swiper-slide img{max-height:200px; text-align:center;}
+</style>
+</block>
+<block name="body">
+
+
+
+<div id='slidegoods' class='swipe'>
+    <div class='swipe-wrap' id="banner-content">
+        <foreach name="data.images" item="vo" key="key">
+            <div>
+                <a href="javascript:;"><img src="{$vo}" /></a>
+            </div>
+        </foreach>
+    </div>
+    <div id="pointer">
+    </div>
+</div>
+
+
+
+<div class="proshowinfo">
+    <h1 class="protit"><span><if condition="$data.status eq 0">进行中<elseif condition="$data.status eq 1" />揭晓中<elseif condition="$data.status eq 2" />已揭晓</if></span>（期号：{$data.lottery_id}）{$data.title}</h1>
+   <div id="status">
+    <if condition="$data.status eq 0">
+    <!--  进行中开始 -->
+    <div class="jindutiao"><div class="xianjindu" style="width:{$data.proportion}%;"></div></div>
+    <div class="prorenci">
+    	<span class="fl">{$data.attend_count}<br />已参与</span>
+        <span>{$data.need_count}<br />总需人次</span>
+        <span class="fr"><i>{$data['need_count']-$data['attend_count']}</i><br />剩余人次</span>
+    </div>
+     <!-- 进行中结束  -->
+        <elseif condition="$data.status eq 1" />
+    <!--  揭晓中开始-->
+    <div class="jiexiaoinfo">
+    	<span>揭晓倒计时<i id="win_times"></i></span>
+        <a href="{:U('Goods/CalculationRules/lottery_id/'.$data['lottery_id'])}">查看计算详情</a>
+    </div>
+    ,<!--揭晓中结束-->
+        <elseif condition="$data.status eq 2" />
+    <div class="pro_winer">
+        <div class="pic"><a href="{:U('lottery/other_info/uid/'.$userInfo['uid'])}"><img src="{$userInfo.face}" /></a></div>
+        <div class="infos">
+            <p>获奖者：<a href="{:U('lottery/other_info/uid/'.$userInfo['uid'])}">{$userInfo.nickname}</a>（{$userInfo.ip_address}）</p>
+            <p>用户ID：{$userInfo.uid}（唯一不变标识）</p>
+            <p>本期参与：{$userInfo.ucount}人次　<a class="lookyunma2" href="javascript:void(0);">查看幸运号码</a></p>
+            <p>揭晓时间：{$userInfo.lottery_time}</p>
+        </div>
+        <div class="winico"></div>
+    </div>
+
+    <div class="jiexiaoinfo">
+        <span>获奖幸运号码：<i>{$data.lottery_code}</i></span>
+        <a href="{:U('Goods/CalculationRules/lottery_id/'.$data['lottery_id'])}">查看计算详情</a>
+    </div>
+
+    </if>
+   </div>
+    <div class="clear"></div>
+
+
+    <div class="ifjoin">
+        <if condition="$user_id gt 0">
+            <if condition="$user_count && $user_in_list">
+        <div class="isjoin">
+            <p>您参与了：<span>{$user_count}</span>人次</p>
+            <p>云购号码：<a class="lookyunma" href="javascript:void(0);">查看云购号码</a></p>
+        </div>
+                <else />
+
+                <!--已登录没有参加-->
+                <div class="nojoin2">您还没有参与本期商品哦！</div>
+
+                </if>
+            <else/>
+            <!--未登录-->
+
+         <div class="nojoin"><a href="{:U('User/login')}">请登录</a>，查看你的夺宝号码！</div>
+        </if>
+
+
+    </div>
+
+
+</div>
+
+
+<!--   已揭晓和揭晓中  -->
+<div class="line10"></div>
+<div class="pro_a_list">
+	<p><a href="{:U('Goods/detail_info','gid='.$data['pid'])}">图文详情<span>（建议wifi下查看）</span></a></p>
+    <p><a href="{:U('Goods/to_announce/type/view/pid/'.$data['pid'])}">往期揭晓</a></p>
+    <p><a href="{:U('Goods/ShowSingleList/type/view/pid/'.$data['pid'])}">晒单分享</a></p>
+    <p><a href="{:U('Goods/CalculationRules/lottery_id/'.$data['lottery_id'])}">计算规则<span>（公平公正公开计算出获奖幸运码）</span></a></p>
+</div>
+
+<div class="line5"></div>
+<div class="all_canyu">
+	<div class="canyutit"><span>所有参与记录<em>（自{$falst_time}开始）</em></span></div>
+    <ul class="canyulist" id="sycyjl" >
+
+    </ul>
+    <a class="add_more" id="more" style="display:none;width:100%;height:50px;line-height: 50px; text-align: center;">点击查看更多</a>
+</div>
+
+
+<div class="botfixcar" id="cart2"><a href="{:U('Shop/shop_cart_list')}"><span class="cart_num"></span></a><i></i></div>
+<div class="botzhanwei"></div>
+
+
+<if condition="$data.status gt 0">
+    <!--揭晓中，已揭晓开始-->
+    <div class="pro_bottom">
+        <div class="pro_bot_nav">
+            <span class="infos">最新一期正在火速进行中...</span>
+            <a class="link4" href="{:U('Goods/detail/lottery_id/'.$new_lottery_id)}">立即前往</a>
+        </div>
+    </div>
+<else/>
+
+
+    <!--  进行中开始  -->
+    <div class="pro_bottom">
+        <div class="pro_bot_nav">
+            <a class="link1 addcart" data-satr="1" data-ghid="{$data.lottery_id}" href="javascript:;">立即参与</a>
+            <a class="link2 addcart" data-ghid="{$data.lottery_id}" href="javascript:;">加入购物车</a>
+        </div>
+    </div>
+    <!--  进行中结束  -->
+</if>
+<div class="fix_canyuma">
+    <div class="canyuma">
+        <div class="cymtit"><p class="tit">本期共参与了<span>{$user_count}</span>次</p></div>
+        <div class="con">
+            <foreach name="user_in_list" item="v">
+                <p>{$v.pay_time|date="y-m-d H:i:s",###}</p>
+                <foreach name="v.codelist" item="vv">
+                    <span>{$vv}</span>
+                </foreach>
+            </foreach>
+        </div>
+        <div class="close_cym">×</div>
+    </div>
+</div>
+
+
+<div class="fix_canyuma2">
+    <div class="canyuma">
+        <div class="cymtit"><p class="tit">本期共参与了<span>{$userInfo.ucount}</span>次</p></div>
+        <div class="con">
+        <foreach name="lottery_orders" item="v">
+            <p>{$v.pay_time|date="y-m-d H:i:s",###}</p>
+            <foreach name="v.codelist" item="vv">
+                <span>{$vv}</span>
+            </foreach>
+        </foreach>
+        </div>
+        <div class="close_cym">×</div>
+    </div>
+</div>
+    <input type="hidden" id="lettery_id" name="lettery_id" value="{$data.lottery_id}">
+    <input type="hidden" id="aptime" name="aptime" value="{$data.seconds}"/>
+    <div class="huitop"></div>
+</block>
+
+
+<!-- 单独引入轮播js -->
+<block name="script">
+
+    <script type="text/javascript" src="/Public/Wap/js/function.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/c.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/ag.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/all.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/util.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/p.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/swipe.js"></script>
+
+    <eq name="data.status"  value="1">
+        <script type="text/javascript" src="/Public/Wap/js/new1.js"></script>
+    </eq>
+
+    <script>
+        $("#banner-content div").each(function(){
+            $("#pointer").append("<a></a>");
+        });
+        $("#pointer").find("a").eq(0).addClass("active");
+
+        window.mySlide = Swipe(document.getElementById("slidegoods"), {
+            auto:3000,
+            continuous: true,
+            disableScroll: true,
+            stopPropagation: true,
+            callback: function (index, element) {
+                $("#pointer").find("a").removeClass("active");
+                $("#pointer").find("a").eq(index).addClass("active");
+            }
+        });
+    </script>
+<script>
+
+    var ShopCat= "{:U('Shop/shop_cart_list')}";
+
+
+
+    $(document).ready(function(){
+
+        var lottery_id= parseInt($("input[name='lettery_id']").val());
+
+        $(".canyutit").click(function(){
+            $(this).toggleClass("active");
+        //    $(this).siblings(".canyulist").slideToggle();
+
+            if($(".canyutit").hasClass("active")) {
+
+                $('#more').show();
+                loadData({'lottery_id':lottery_id})
+            }
+            else
+            {
+                $("#sycyjl").html('');
+                $('#more').hide();
+                $("#sycyjl").hide();
+            }
+        });
+    })
+
+
+
+    function loadData(param){
+        if($(".canyutit").hasClass("active")) {
+            new Page({
+                url:"{:U('Goods/purchase_records')}",
+                param:param,
+                scroll:false,
+                count:4,
+                next:{
+                    id:"more",
+                    content:["点击加载更多","没有更多数据了"]
+                },
+                success:setData
+            });
+        }
+    }
+
+
+    function setData(json_data,p){
+
+        if(p.page == 1){
+
+            if(p.total == 0){
+                //无数据时的展示
+            }
+        }
+        var jsondata=json_data;
+         var str='';
+        $.each(jsondata, function (a,b) {
+            str+='<li class="list">';
+            str+=' <div class="pic"><a href=""><img src="'+ b.face+'" /></a></div>';
+            str+='<div class="infos">';
+            str+='<p><a href="">'+ b.nickname+'</a>（'+ b.ip_address+'）</p>';
+            str+='<p>参与了<span>'+ b.attend_count+'</span>人次  '+ b.create_date_time+'</p>';
+            str+='</div>';
+            str+='</li>';
+
+        })
+         $("#sycyjl").append(str);
+        $("#sycyjl").show();
+
+    }
+</script>
+</block>

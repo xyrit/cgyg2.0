@@ -1,0 +1,90 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?v=sdfsdf"/>
+    <style>
+        #clipArea {height: 300px;  }
+        #file,#clipBtn {margin: 20px;  }
+        #view {margin: 0 auto;  width: 200px;height: 200px; }
+        .tishi_title{width: 100%;height: 45px;line-height: 45px;background: #fff;text-align: center;font-weight: 400; }
+        .portrimg_but{text-align: center;padding: 30px 15px;overflow: hidden;  }
+        #file{margin: 0;opacity: 0;}
+        .portrimg_but a{width: 40%;margin: 0 0px 0px 8%;float: left;}
+        #file, #clipBtn{margin: 0 0px 0px 8%;}
+        #view{display: none;margin: 20px auto;border-radius: 50%;}
+    </style>
+</block>
+
+<block name="body">
+<article class="htmleaf-container">
+    <h4 class="tishi_title">支持双指旋转、和双指缩放大小</h4>
+    <div id="clipArea"></div>
+    <div class="portrimg_but">
+        <a href="javascript:;" id="file_but" class="cgyg_button denglu_bt">选择图片
+        </a>
+        <a href="javascript:;" id="clipBtn" class="cgyg_button denglu_bt">上传图片</a>
+        <input type="file" id="file">
+    </div>
+    <!--<div class="portrimg_but">-->
+    <!--<input type="file" id="file">-->
+    <!--<button id="clipBtn">截取</button>-->
+    <!--</div>-->
+    <div id="view"></div>
+    <footer class="related">
+
+    </footer>
+</article>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Public/Wap/js/common_inc.js"></script>
+<script src="__PUBLIC__/Wap/js/hammer.js"></script>
+<script src="__PUBLIC__/Wap/js/iscroll-zoom.js"></script>
+<script src="__PUBLIC__/Wap/js/jquery.photoClip.js"></script>
+    <script type="text/javascript">
+        $('#file_but').click(function(){
+            $('#file').click();
+        });
+        $("#clipArea").photoClip({
+            width: 200,
+            height: 200,
+            file: "#file",
+            view: "#view",
+            ok: "#clipBtn",
+            loadStart: function() {
+                $('.photo-clip-rotateLayer').html('<p style="width:100%;text-align: center;line-height: 200px">正在上传.....</p>');
+                //console.log("照片读取中");
+            },
+            loadComplete: function() {
+                //console.log("照片读取完成");
+            },
+            clipFinish: function(dataURL) {
+                $('#clipArea').fadeOut();
+                $('.portrimg_but').fadeOut();
+                $('#view').fadeIn();
+                $('.tishi_title').text('保存成功');
+                $('.tishi_title').css({'color':'green'});
+                //console.log(dataURL);
+            $.ajax({
+                type:'POST',
+                url:common_url+'/Member/up_photo',
+                dataType:'json',
+                data:{
+                    path:dataURL
+                },
+                success:function(data){
+                    if(data['code']==200){
+                        //加载成功 操作处理
+                        tanchuan_0('200','1000','200',data['msg']);
+                        window.location.href=common_url+'/Member/personal';
+
+                    }else{
+                        tanchuan_0('200','1000','200',data['msg']);
+                    }
+                }
+            });
+            }
+        });
+    </script>
+</block>

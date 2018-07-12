@@ -1,0 +1,84 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?sas=sdfsdf"/>
+</block>
+
+<block name="body">
+
+    <!-- 设置帮助开始 -->
+    <div class="user_list setup" style="background: #f1f1f1">
+        <ul>
+            <li>
+                <a href="{:U('Member/up_password')}" style="border:none">
+                    修改密码
+                    <span class="right jiantou_2"></span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Member/frequently')}">
+                    常见问题
+                    <span class="right jiantou_2"></span>
+                </a>
+            </li>
+            <li style="margin-top:10px;">
+                <a style="border-top:none" href="tel:4000067060">
+                    联系客服
+                    <span class="right jiantou_2"></span>
+                    <font class="right">400-006-7060</font>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Member/aboutus')}">
+                    关于我们
+                    <span class="right jiantou_2"></span>
+                </a>
+            </li>
+            <!-- 				<li style="margin-top:10px;">
+                                <a style="border-top:none" href="information.html">
+                                    意见反馈
+                                    <span class="right jiantou_2"></span>
+                                </a>
+                            </li> -->
+            <li>
+                <a class="guanzhu_weibut" href="javascript:;">
+                    关注微信
+                    <span class="right jiantou_2"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="auto_padding">
+        <a href="{:U('User/logout')}" class="cgyg_button tuichu_bt">退出当前账号</a>
+    </div>
+    <!-- 设置帮助结束 -->
+
+
+
+	<!--关注微信-->
+	<div class="zhezhao_box">
+		<div class="erweima_img">
+			<img src="../../Public/Wap/images/weixin_img.jpg"/>
+			<p>微信号：cgyg1234</p>
+			<span class="cgyg_color">长按二维码识别关注</span>
+		</div>
+	</div>
+	<!--关注微信-->
+</block>
+<block name="script">
+    <script type="text/javascript">
+        $(function(){
+            $('.guanzhu_weibut').click(function(){
+                $('.zhezhao_box').fadeIn();
+                $('.erweima_img').animate({top:'50%'},500);
+
+            });
+
+            $('.zhezhao_box').click(function(){
+                $('.erweima_img').animate({top:'120%'},500);
+                $(this).fadeOut();
+            });
+        });
+    </script>
+</block>

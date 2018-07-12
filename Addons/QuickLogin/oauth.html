@@ -1,0 +1,12 @@
+<ul class="nav third-login" style="margin-right:0">
+<if condition="in_array('sina',$third_login)">
+    <li>
+        <a href="{:U('home/addons/execute',array('_addons'=>'QuickLogin','_controller'=>'Oauth','_action'=>'sina'))}">新浪微博</a>
+    </li>
+</if>
+<if condition="in_array('qq',$third_login)">
+    <li>
+        <a href="{:U('home/addons/execute',array('_addons'=>'QuickLogin','_controller'=>'Oauth','_action'=>'qq'))}">QQ登录</a>
+    </li>
+</if>
+</ul>

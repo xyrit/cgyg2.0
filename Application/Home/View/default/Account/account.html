@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+    <title>我的橙果 - 橙果云购</title>
+    <meta name="keywords" content="1元，一元，一元云购，一元夺宝，1元云购，1元夺宝，一元购，1元购，橙果云购，橙果一元购，橙果1元购"/>
+    <meta name="description" content="橙果云购是一个新型的、专业的众筹式购物商城。只需1元，您就有机会获得一件商品。橙果云购将倾力打造一个公正公平公开的环境，让您的生活充满惊喜！"/>
+    <link href="__PUBLIC__/Common/Bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/Home/css/yiyuan.css" rel="stylesheet">
+    <link href="__PUBLIC__/Home/css/personal-center/personal-center.css" rel="stylesheet">
+    <link rel="stylesheet" href="__PUBLIC__/Common/Bootstrap/css/font-awesome.min.css"/><!--字体图标-->
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/alert/sweetalert.css">
+    <link href="__PUBLIC__/Home/css/blue.css" rel="stylesheet"><!--check radio-->
+    <link rel="stylesheet" href="__PUBLIC__/Home/css/user/business.css" ><!--0元创业-->
+    <link href="__PUBLIC__/Home/css/blue.css" rel="stylesheet"><!--check radio-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+      .all-sort-list{width:200px; display:none}
+      .item-list .cat-right { position: absolute; right: 0;}
+      .all-sort-list .item.bo{width:200px;}
+      .menu .all-sort{top:0}
+      .all-sort-list .item-list{left:200px;}
+    </style>
+  </head>
+  <body>
+<!--头部 start-->
+<include file="Public/header" />
+<!--头部 end-->
+
+<!--个人信息通栏-->
+<div class="per-head">
+        <div class="container">
+          <div class="row">
+             <div class="col-md-8 col-sm-8" id="welcomeInfo">
+                <div class="pull-left uesrPic per-head-p" id="userPic"><img src="{$info.face}"></div>
+                <div style="margin-left:60px">
+                    <p class="per-head-p">您好！<span id="myName">{$info.nickname}</span></p>
+                    <div class="per-headBasic clearfix">
+                       <ul class="list-group">
+                          <li>
+                             ID：<span class="margin-r-5" id="userId">{$info.uid}</span>|
+                          </li>
+                          <li>
+                          手机号：
+                            <span id="userPhone">{$info.mobile}</span>
+                            <!--<a href="javascript:;" class="margin-r-5" onclick="sys_info();">修改</a>-->|
+                          </li>
+                          <li>
+                            昵称：
+                            <span class="margin-r-5" id="myName2">{$info.nickname}</span><!--<a href="javascript:;" class="margin-r-5" onclick="sys_info();">修改</a>-->
+                          </li>
+
+                       </ul> 
+                    </div>
+                </div>
+                
+             </div>
+             <!--<div class="col-md-4 col-sm-4 clearfix margin-t-30" id="myBtnGroup">
+                 <div class="per-dot dot1">
+                    <a href="javascript:;" class="dot-a1" id="signA">
+                       <span>签到</span>
+                       <p id="signInText">今日签到</p>
+                    </a>
+                 </div>
+                 <div class="per-dot dot2">
+                    <a href="javascript:;" class="dot-a2" onclick="sys_info();">
+                       <span>密码</span>
+                       <p>修改密码</p>
+                    </a>
+                 </div>
+                 <div class="per-dot dot3">
+                    <a href="javascript:;" class="dot-a3" onclick="addList();addressList();">
+                       <span>地址</span>
+                       <p>收货地址</p>
+                    </a>
+                 </div>
+             </div>-->
+           </div>
+        </div>
+
+</div>
+
+<!--个人信息通栏结束-->
+
+
+<!--我的账户开始-->
+
+<div class="container">
+       <div class="row">
+           <div class="col-md-2 col-sm-2 nopadding-left">
+                 <ul class="list-group per-list-group" id="personalMenu">
+                     <li class="list-group-item active" id="myAccount"><a href="{:U('Member/index')}">我的账户</a></li>
+                     <!--<li class="list-group-item" id="moneyDetail"><a href="personal-recharge.html">充值记录</a></li>-->
+                     <li class="list-group-item" id="attendRecord"><a href="{:U('Member/attend')}">参与记录</a></li>
+                     <!--<li class="list-group-item" id="luckyRecord"><a href="personal-lottery.html">中奖记录</a></li>-->
+                     <!--<li class="list-group-item" id="myComment"><a href="personal-disShare.html">我的晒单</a></li>-->
+                     <!--<li class="list-group-item" id="business"><a href="javascript:business();">0元创业</a></li>-->
+                     <!--<li class="list-group-item" id="myIntegral"><a href="javascript:myIntegral();">积分消费</a></li>-->
+                     <!--<li class="list-group-item" id="myMoney"><a href="javascript:;">我的红包</a></li>-->
+                     <!--<li class="list-group-item" id="inviteFriend"><a href="javascript:;">邀请好友</a></li>-->
+                     <!--<li class="list-group-item" id="myAddres"><a href="personal-address.html">收货地址</a></li>-->
+                     <!--<li class="list-group-item" id="mySystem"><a href="personal-systeam.html">个人设置</a></li>-->
+                  </ul>
+           </div>
+           <div class="col-md-10 col-sm-10" id="rightContent">
+               <div class="row per-money">
+                   <div class="col-md-10 col-sm-10">
+                       <div class="row">
+                           <div class="col-md-3 col-sm-3 per-money-con">
+                               <p class="margin-t-20">
+                                   账户橙果币
+                               </p>
+                               <p class="num">
+                                   {$info.account}
+                               </p>
+                           </div>
+                           <!--<div class="col-md-3 col-sm-3 per-money-con">
+                               <p class="margin-t-20">
+                                   可用红包（元）
+                               </p>
+                               <p class="num">
+                                 {$info.red_packet}
+                               </p>
+                           </div>
+                           <div class="col-md-3 col-sm-3 per-money-con">
+                               <p class="margin-t-20">
+                                   可用佣金（元）
+                               </p>
+                               <p class="num">
+                                  {$info.brokerage}
+                               </p>
+                           </div>
+                           <div class="col-md-3 col-sm-3 per-money-con">
+                               <p class="margin-t-20">
+                                   可用积分
+                               </p>
+                               <p class="num">
+                                 {$info.brokerage}
+                               </p>
+                           </div>-->
+                       </div>
+                   </div>
+                   <!--<div class="col-md-2 col-sm-2">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <p>
+                                   <a href="recharge.html" target="_blank"><button type="button" class="btn cg-btn-danger cg-btn-fixed-round margin-t-8">充值</button></a>
+                               </p>
+                           </div>
+                           <div class="col-md-12">
+                               <p>
+                                   <a href="recharge.html" target="_blank"><button type="button" class="btn cg-btn-danger cg-btn-fixed-round margin-t-8">积分兑换</button></a>
+                               </p>
+                           </div>
+                       </div>
+                   </div>-->
+               </div>
+               <!--我看过的，我关注的-->
+               <div class="row">
+                   <!--<div class="per-goods-box">
+                       <!-- Nav tabs -->
+                   <!--<ul class="nav nav-tabs" role="tablist">
+                       <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" class="noborder">我关注的</a></li>
+                       <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" class="noborder">我看过的</a></li>
+
+                   </ul>
+
+                   <!-- Tab panes -->
+                   <!--<div class="tab-content">
+                       <div role="tabpanel" class="tab-pane active" id="home">
+                           <!--商品列表-->
+                   <!-- <div class="container-fluid">
+                        <div class="row" style="padding: 20px 10px;">
+                        <foreach name='select' item='user' >
+                             <div class="col-md-3 col-sm-3 goods-listBorder">
+                                <div class="product-item" style="padding: 3px 0px;">
+                                    <div class="product-img text-center">
+                                        <a href="details.html" target="_blank">
+                                            <img src="http://img.cgyyg.com/Uploads/Picture/2016-01-12/56946403b4edf.jpg" alt="Apple iPhone6s Plus 64G" title="Apple iPhone6s Plus 64G">
+                                        </a>
+                                    </div>
+                                    <h3 class="product-title margin-b-5">
+                                        <a href="details.html" target="_blank" title="Apple iPhone6s Plus 64G">Apple iPhone6s Plus 64G</a>
+                                    </h3>
+                                    <p class="text-gray2">价值：￥7280</p>
+                                    <div>
+                                        <div class="progress cg-progress">
+                                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                                                <span class="sr-only">50% Complete (warning)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul class="list-group cg-progress-text_goods clearfix">
+                                        <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                            <p class="text-gray nomargin ellipsis">1</p>
+                                            <p class="nomargin text-gray2 ellipsis" title="已参与人次">已参与人次</p>
+                                        </li>
+                                        <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                            <p class="text-gray nomargin ellipsis">7280</p>
+                                            <p class="nomargin text-gray2 ellipsis" title="总需人次">总需人次</p>
+                                        </li>
+                                        <li class="list-group-item pull-right clearfix col-md-4 text-center">
+                                            <p class="text-danger nomargin ellipsis">7279</p>
+                                            <p class="text-danger nomargin ellipsis" title="剩余人次">剩余人次</p>
+                                        </li>
+                                    </ul>
+                                    <div class="review"><a href="javascript:;">
+                                        <button type="button" class="btn btn-danger cg-btn-danger cg-btn-radius">立即参与</button>
+                                    </a>
+                                        <button type="button" onclick="daaNum('10000392','10');" class="btn btn-add btnCart cg-btn-radius cg-btn-empty"></button>
+                                    </div>
+                                </div>
+                            </div>
+                            </foreach>
+                        </div>
+                        <nav class="text-center page nomargin">
+
+                            <ul class="pagination clearfix" id="pagination">
+                                <li>
+                                    <a href="javascript:;">
+                                        <span class="icon-angle-left"></span>上一页
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a href="javascript:;" class="pageBtnNum">{$page}</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" onclick="nextGoods_moneyRecord();">
+                                        <span class="icon-angle-right"></span>下一页
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="count-box">
+                                <div class="count-num">
+                                    共<em id="pageCount">1</em>页
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <!--商品列表结束-->
+                   <!-- </div>
+                    <div role="tabpanel" class="tab-pane" id="profile">
+                        <!--商品列表-->
+                   <!--<div class="container-fluid">
+                       <div class="row" style="padding: 20px 10px;">
+                           <div class="col-md-3 col-sm-3 goods-listBorder">
+                               <div class="product-item" style="padding: 3px 0px;">
+                                   <div class="product-img text-center">
+                                       <a href="details.html" target="_blank">
+                                           <img src="http://img.cgyyg.com/Uploads/Picture/2016-01-12/56946403b4edf.jpg" alt="Apple iPhone6s Plus 64G" title="Apple iPhone6s Plus 64G">
+                                       </a>
+                                   </div>
+                                   <h3 class="product-title margin-b-5">
+                                       <a href="details.html" target="_blank" title="Apple iPhone6s Plus 64G">Apple iP搭到颠hone6s Plus 64G</a>
+                                   </h3>
+                                   <p class="text-gray2">价值：￥7280</p>
+                                   <div>
+                                       <div class="progress cg-progress">
+                                           <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                                               <span class="sr-only">50% Complete (warning)</span>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <ul class="list-group cg-progress-text_goods clearfix">
+                                       <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                           <p class="text-gray nomargin ellipsis">1</p>
+                                           <p class="nomargin text-gray2 ellipsis" title="已参与人次">已参与人次</p>
+                                       </li>
+                                       <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                           <p class="text-gray nomargin ellipsis">7280</p>
+                                           <p class="nomargin text-gray2 ellipsis" title="总需人次">总需人次</p>
+                                       </li>
+                                       <li class="list-group-item pull-right clearfix col-md-4 text-center">
+                                           <p class="text-danger nomargin ellipsis">7279</p>
+                                           <p class="text-danger nomargin ellipsis" title="剩余人次">剩余人次</p>
+                                       </li>
+                                   </ul>
+                                   <div class="review"><a href="javascript:;">
+                                       <button type="button" class="btn btn-danger cg-btn-danger cg-btn-radius">立即参与</button>
+                                   </a>
+                                       <button type="button" onclick="daaNum('10000392','10');" class="btn btn-add btnCart cg-btn-radius cg-btn-empty"></button>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-md-3 col-sm-3 goods-listBorder">
+                               <div class="product-item" style="padding: 3px 0px;">
+                                   <div class="product-img text-center">
+                                       <a href="details.html" target="_blank">
+                                           <img src="http://img.cgyyg.com/Uploads/Picture/2016-01-12/56946403b4edf.jpg" alt="Apple iPhone6s Plus 64G" title="Apple iPhone6s Plus 64G">
+                                       </a>
+                                   </div>
+                                   <h3 class="product-title margin-b-5">
+                                       <a href="details.html" target="_blank" title="Apple iPhone6s Plus 64G">Apple iPhone6s Plus 64G</a>
+                                   </h3>
+                                   <p class="text-gray2">价值：￥7280</p>
+                                   <div>
+                                       <div class="progress cg-progress">
+                                           <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                                               <span class="sr-only">50% Complete (warning)</span>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <ul class="list-group cg-progress-text_goods clearfix">
+                                       <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                           <p class="text-gray nomargin ellipsis">1</p>
+                                           <p class="nomargin text-gray2 ellipsis" title="已参与人次">已参与人次</p>
+                                       </li>
+                                       <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                           <p class="text-gray nomargin ellipsis">7280</p>
+                                           <p class="nomargin text-gray2 ellipsis" title="总需人次">总需人次</p>
+                                       </li>
+                                       <li class="list-group-item pull-right clearfix col-md-4 text-center">
+                                           <p class="text-danger nomargin ellipsis">7279</p>
+                                           <p class="text-danger nomargin ellipsis" title="剩余人次">剩余人次</p>
+                                       </li>
+                                   </ul>
+                                   <div class="review"><a href="javascript:;">
+                                       <button type="button" class="btn btn-danger cg-btn-danger cg-btn-radius">立即参与</button>
+                                   </a>
+                                       <button type="button" onclick="daaNum('10000392','10');" class="btn btn-add btnCart cg-btn-radius cg-btn-empty"></button>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-md-3 col-sm-3 goods-listBorder">
+                               <div class="product-item" style="padding: 3px 0px;">
+                                   <div class="product-img text-center">
+                                       <a href="details.html" target="_blank">
+                                           <img src="http://img.cgyyg.com/Uploads/Picture/2016-01-12/56946403b4edf.jpg" alt="Apple iPhone6s Plus 64G" title="Apple iPhone6s Plus 64G">
+                                       </a>
+                                   </div>
+                                   <h3 class="product-title margin-b-5">
+                                       <a href="details.html" target="_blank" title="Apple iPhone6s Plus 64G">Apple iPhone6s Plus 64G</a>
+                                   </h3>
+                                   <p class="text-gray2">价值：￥7280</p>
+                                   <div>
+                                       <div class="progress cg-progress">
+                                           <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                                               <span class="sr-only">50% Complete (warning)</span>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <ul class="list-group cg-progress-text_goods clearfix">
+                                       <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                           <p class="text-gray nomargin ellipsis">1</p>
+                                           <p class="nomargin text-gray2 ellipsis" title="已参与人次">已参与人次</p>
+                                       </li>
+                                       <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                           <p class="text-gray nomargin ellipsis">7280</p>
+                                           <p class="nomargin text-gray2 ellipsis" title="总需人次">总需人次</p>
+                                       </li>
+                                       <li class="list-group-item pull-right clearfix col-md-4 text-center">
+                                           <p class="text-danger nomargin ellipsis">7279</p>
+                                           <p class="text-danger nomargin ellipsis" title="剩余人次">剩余人次</p>
+                                       </li>
+                                   </ul>
+                                   <div class="review"><a href="javascript:;">
+                                       <button type="button" class="btn btn-danger cg-btn-danger cg-btn-radius">立即参与</button>
+                                   </a>
+                                       <button type="button" onclick="daaNum('10000392','10');" class="btn btn-add btnCart cg-btn-radius cg-btn-empty"></button>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="col-md-3 col-sm-3 goods-listBorder">
+                               <div class="product-item" style="padding: 3px 0px;">
+                                   <div class="product-img text-center">
+                                       <a href="details.html" target="_blank">
+                                           <img src="http://img.cgyyg.com/Uploads/Picture/2016-01-12/56946403b4edf.jpg" alt="Apple iPhone6s Plus 64G" title="Apple iPhone6s Plus 64G">
+                                       </a>
+                                   </div>
+                                   <h3 class="product-title margin-b-5">
+                                       <a href="details.html" target="_blank" title="Apple iPhone6s Plus 64G">Apple iPhone6s Plus 64G</a>
+                                   </h3>
+                                   <p class="text-gray2">价值：￥7280</p>
+                                   <div>
+                                       <div class="progress cg-progress">
+                                           <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                                               <span class="sr-only">50% Complete (warning)</span>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <ul class="list-group cg-progress-text_goods clearfix">
+                                       <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                           <p class="text-gray nomargin ellipsis">1</p>
+                                           <p class="nomargin text-gray2 ellipsis" title="已参与人次">已参与人次</p>
+                                       </li>
+                                       <li class="list-group-item pull-left clearfix col-md-4 text-center">
+                                           <p class="text-gray nomargin ellipsis">7280</p>
+                                           <p class="nomargin text-gray2 ellipsis" title="总需人次">总需人次</p>
+                                       </li>
+                                       <li class="list-group-item pull-right clearfix col-md-4 text-center">
+                                           <p class="text-danger nomargin ellipsis">7279</p>
+                                           <p class="text-danger nomargin ellipsis" title="剩余人次">剩余人次</p>
+                                       </li>
+                                   </ul>
+                                   <div class="review"><a href="javascript:;">
+                                       <button type="button" class="btn btn-danger cg-btn-danger cg-btn-radius">立即参与</button>
+                                   </a>
+                                       <button type="button" onclick="daaNum('10000392','10');" class="btn btn-add btnCart cg-btn-radius cg-btn-empty"></button>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <nav class="text-center page nomargin">
+                           <!--请注意 分页器 id号是否重复-->
+                   <!--<ul class="pagination clearfix" id="pagination">
+                       <li>
+                           <a href="javascript:;">
+                               <span class="icon-angle-left"></span>{$page}
+                           </a>
+                       </li>
+                      <!-- <li class="active">
+                           <a href="javascript:;" class="pageBtnNum">1</a>
+                       </li>
+                       <li class="active">
+                           <a href="javascript:;" class="pageBtnNum">1</a>
+                       </li>
+                       <li>
+                           <a href="javascript:;" onclick="nextGoods_moneyRecord();">
+                               <span class="icon-angle-right"></span>下一页
+                           </a>
+                       </li>-->
+                   <!-- </ul>
+                    <div class="count-box">
+                        <div class="count-num">
+                            共<em id="pageCount">1</em>页
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!--商品列表结束-->
+
+                   <!--</div>
+
+               </div>
+
+           </div>-->
+               </div>
+           </div>
+           
+  
+       </div>
+</div>
+
+<!--我的账户结束-->
+
+
+
+
+ <!--底部版权友情链接 start-->
+<include file="Public/footer" />
+<!--底部版权友情链接 end-->
+
+<!--右边 右边栏 返回顶部 功能菜单start-->
+<include file="Public/right" />
+<!--右边 右边栏 返回顶部 功能菜单end-->
+<!-- 参与码弹出框 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-2" role="document">
+        <div class="modal-content modal-content-2">
+            <div class="modal-header modal-header-2">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myAttend_count2">
+                    我总共参与了
+                    <span class="text-danger">13</span>
+                    人次
+                </h4>
+            </div>
+            <div class="modal-body" id="luckyCode">
+                <div class="nomargin">
+                    <p class="text-gray2">2016-04-12 09:56:38</p>
+                    <p class="word-break margin-r_8">
+                        <span class="display-ib padding-r-8">10001064</span>
+                        <span class="display-ib padding-r-8">10001386</span>
+                        <span class="display-ib padding-r-8">10001729</span>
+                        <span class="display-ib padding-r-8">10001914</span>
+                        <span class="display-ib padding-r-8">10002019</span>
+                        <span class="display-ib padding-r-8">10002850</span>
+                        <span class="display-ib padding-r-8">10003217</span>
+                        <span class="display-ib padding-r-8">10004077</span>
+                        <span class="display-ib padding-r-8">10005020</span>
+                        <span class="display-ib padding-r-8">10005915</span>
+                        <span class="display-ib padding-r-8">10005926</span>
+                        <span class="display-ib padding-r-8">10006068</span>
+                        <span class="display-ib padding-r-8">10006146</span>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/Home/js/jquery-1.11.3.min.js"></script>
+<script src="__PUBLIC__/Common/Bootstrap/js/bootstrap.min.js"></script>
+<script src="__PUBLIC__/Home/js/public/stickUp.min.js"></script>
+<script src="__PUBLIC__/Home/js/public/menu_foot_right.js"></script>
+<script src="__PUBLIC__/Home/js/icheck.js"></script><!--check radio-->
+<script>
+    $(function(){
+        $(".radio-check input").iCheck({
+            checkboxClass: 'icheckbox_square-orange',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%'
+        });
+    })
+
+</script>
+</body>
+</html>   

@@ -1,0 +1,52 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg1"/>
+<block name="body">
+
+
+<!--  购物车无商品开始  -->
+<div class="main">
+    <div class="payfail">
+        <p>sorry，充值失败，请重试！</p>
+        <p><a class="gohome" href="/">返回首页</a><a href="/">立即云购</a></p>
+    </div>
+
+    <div class="line10"></div>
+    <div class="intitle">
+        <span class="tit renqi active">人气推荐</span>
+        <a class="more2" href=""></a>
+    </div>
+    <div class="clear"></div>
+    <ul class="inprolist">
+
+
+        <foreach name="goods_data.list" item="goods">
+            <li class="list">
+                <div class="listinfo">
+                    <p><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}"><img src="{$goods.thumb}" /></a></p>
+                    <p><h3><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}">{$goods.title}</a></h3></p>
+                    <div class="renci_jindu">
+                        <div class="renci">剩<span>{$goods['need_count'] - $goods['attend_count']}</span>人次</div>
+                        <div class="jindu"><div class="xianjindu" style="width:{$goods['attend_count']/$goods['need_count']*100}%;"></div></div>
+                        <div class="addtocar" onclick="addShop({$goods['lottery_id']})"></div>
+                    </div>
+                </div>
+            </li>
+        </foreach>
+
+
+
+    </ul>
+    <div class="clear"></div>
+</div>
+
+<div class="botfixcar"><a href=""><span>99+</span></a><i></i></div>
+<div class="botzhanwei"></div>
+
+<div class="huitop"></div>
+</block>
+
+<block name="script">
+    <script src="__PUBLIC__/Wap/js/function.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/cart/addShopGoods.js"></script>
+</block>

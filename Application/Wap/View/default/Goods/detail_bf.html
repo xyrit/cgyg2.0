@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>商品详情页--进行中</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="">
+<meta http-equiv="description" content="">
+<link rel="stylesheet" href="__PUBLIC__/Wap/css/style.css"/>
+<link rel="stylesheet" href="__PUBLIC__/Wap/css/swiper.min.css"/>
+</head>
+<body>
+<div class="topdiv2">
+	<div class="topnav">
+        <h1 class="pagetit">商品详情页</h1>
+        <a class="fanhui" href="javascript:history.go(-1)"></a>
+        <a class="home" href="index.html"></a>
+    </div>
+</div>
+<div class="topzhanwei"></div>
+
+<div class="banner">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+        
+            <foreach name="data.images" item="vo" key="key">
+                <div class="swiper-slide"><img src="{$vo}" /></div>
+            </foreach>
+            
+        </div>
+        <div class="pagination"></div>
+    </div>
+</div>
+<style type="text/css">
+	.swiper-slide{width:100%; max-height:200px; text-align:center;}
+</style>
+<div class="proshowinfo">
+	<h1 class="protit"><span><if condition="$data.status eq 0">进行中<elseif condition="$data.status eq 1" />揭晓中<elseif condition="$data.status eq 2" />已揭晓</if></span>（期号：{$data.lottery_id}）{$data.title}</h1>
+    
+    <if condition="$data.status eq 2">
+        <div class="pro_winer">
+        	<div class="pic"><a href=""><img src="../../Public/Wap/images/moren.jpg" /></a></div>
+            <div class="infos">
+            	<p>获奖者：<a href="">{$userInfo.nickname}</a>（{$userInfo.ip_address}）</p>
+                <p>用户ID：{$userInfo.uid}（唯一不变标识）</p>
+                <p>本期参与：{$userInfo.ucount}人次　<a class="lookyunma2" href="javascript:void(0);">查看幸运码</a></p>
+                <p>揭晓时间：2015-12-11  11:03:00.000</p>
+            </div>
+            <div class="winico"></div>
+        </div>
+        <div class="jiexiaoinfo">
+        	<span>获奖幸运码：<i>{$data.lottery_code}</i></span>
+            <a href="jisuan.html">查看计算详情</a>
+        </div>
+    </if>
+    
+    <div class="clear"></div>
+    <div class="ifjoin">
+        <if condition="$Think.session.uid gt 0">
+            <if condition="$user_count && $user_in_list">
+                <div class="isjoin">
+                	<p>您参与了：<span>{$user_count}</span>人次</p>
+                    <p>云购号码：<a class="lookyunma" href="javascript:void(0);">查看云购码</a></p>
+                </div>
+            <else />
+                <div class="nojoin2">您还没有参与本期商品哦！</div>
+            </if>
+        <else/>
+            <div class="nojoin"><a href="login.html">请登录</a>，查看你的夺宝号码！</div>
+        </if>
+    </div>
+</div>
+
+<!--   已揭晓和揭晓中  -->
+<div class="line10"></div>
+<div class="pro_a_list">
+	<p><a href="{:U('Goods/detail_info','gid='.$data['pid'])}">图文详情<span>（建议wifi下查看）</span></a></p>
+    <p><a href="{:U('Goods/to_announce/pid/'.$data['pid'])}">往期揭晓</a></p>
+    <p><a href="2_saidan1.html">晒单分享</a></p>
+    <p><a href="{:U('Public/rule')}">计算规则<span>（公平公正公开计算出获奖幸运码）</span></a></p>
+</div>
+
+<div class="line5"></div>
+<div class="all_canyu">
+	<div class="canyutit"><span>所有参与记录<em>（自{$falst_pay_time}开始）</em></span></div>
+    <div class="canyulist">
+        <input type="hidden" name="page_count" value="{$goods_data.page_count}" />
+        <input type="hidden" name="current_page" value="{$goods_data.current_page}" />
+        <input type="hidden" name="is_data" value="1" />
+        <input type="hidden" name="is_loading" value="0" />
+        
+        
+        
+    </div>
+</div>
+
+<div class="botfixcar"><a href=""></a></div>
+<div class="botzhanwei"></div>
+<!--  进行中开始  -->
+<div class="pro_bottom">
+	<div class="pro_bot_nav">
+        <a class="link1" href="javascript:void(0);">立即参与</a>
+        <a class="link2" href="javascript:add_conkeiNum('12313213');tanchuan_0('200','1000','200','加入成功');">加入购物车</a>
+    </div>
+</div>
+<!--  进行中结束  -->
+
+<!--
+揭晓中，已揭晓开始  
+<div class="pro_bottom">
+	<div class="pro_bot_nav">
+        <span class="infos">最新一期正在火速进行中...</span>
+        <a class="link4" href="javascript:void(0);">立即前往</a>
+    </div>
+</div>
+-->
+
+<div class="fix_canyuma">
+	<div class="canyuma">
+    	<div class="cymtit"><p class="tit">本期共参与了<span>{$user_count}</span>次</p></div>
+        <div class="con">
+            <foreach name="user_in_list" item="v">
+            	<p>{$v.pay_time|date="y-m-d H:i:s",###}</p>
+                <foreach name="v.codelist" item="vv">
+                    <span>{$vv}</span> 
+                </foreach>
+            </foreach>
+        </div>
+        <div class="close_cym">×</div>
+    </div>
+</div>
+
+<div class="fix_canyuma2">
+	<div class="canyuma">
+    	<div class="cymtit"><p class="tit">本期共参与了<span>10</span>次</p></div>
+        <div class="con">
+        
+            <foreach name="lottery_orders" item="v">
+            	<p>{$v.pay_time|date="y-m-d H:i:s",###}</p>
+                <foreach name="v.codelist" item="vv">
+                    <span>{$vv}</span> 
+                </foreach>
+            </foreach>
+        
+        </div>
+        <div class="close_cym">×</div>
+    </div>
+</div>
+
+<div class="huitop"></div>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/idangerous.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/cart/addShopGoods.js"></script>
+<script>
+$(document).ready(function(){
+	Banner();
+	$(".canyutit").click(function(){
+		$(this).toggleClass("active");
+		$(this).siblings(".canyulist").slideToggle();
+	});
+
+    $(window).bind("scroll",function(){
+    	// 判断窗口的滚动条是否接近页面底部
+        var url = '/Goods/purchase_records?is_ajax=1&index=';
+        var is_data = $("input[name='is_data']").val();
+        var is_loading = $("input[name='is_loading']").val();
+        if(is_data == 1 && is_loading == 0){
+    		if( $(document).scrollTop() + $(window).height() > $(document).height() - 250 ) {
+    		    $("input[name='is_loading']").val(1);  
+                var current_page = parseInt($("input[name='current_page']").val());
+                var page_count = parseInt($("input[name='page_count']").val());
+                
+    			if(current_page < page_count){
+                    ++current_page;
+                    $("input[name='current_page']").val(current_page);
+                    getListByAjax(url+current_page, 'product_list');
+                    
+    			}else{
+    			     $("input[name='is_data']").val(0);
+                     tanchuan_0('200','1000','200','没有数据了！');
+    			}	
+                
+    		} 
+        }
+    });
+})
+
+function getListByAjax(ajaxUrl, box_id)
+{
+	$.get(
+		ajaxUrl,
+		function(data){
+			$('#'+box_id).append(data.data);
+            $("input[name='is_loading']").val(0);
+		},
+		'json'
+	);
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!--头部 start-->
+
+
+
+<!--顶部菜单栏-->
+<div class="navbar-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="navbar-header col-lg-5 col-md-5 col-xs-5" style="margin-left: -15px;">
+                <!--<img src="__PUBLIC__/Home/images/qq_icon.png" class="margin-b-5"/><span class="welcome padding-l-5">橙果交流群：483956744</span>-->
+                <ul class="welcome">
+                    <li
+                            class="display-ib margin-r-15"><span class="welcome">欢迎来到橙果云购！
+                        </span></li>
+                    <if condition="$user_info.uid gt 0">
+                    
+                    <li id="loginBox" class="display-ib"><a href="{:U('User/Login')}">{$user_info.nickname}</a></li>
+                    <li class="display-ib" style="font-size: 12px;padding: 0px 5px;color: #cecece">|</li>
+                    <li id="loginBox" class="display-ib"><a href="{:U('User/logout')}">退出</a></li>
+                    <else />
+                    <li id="loginBox" class="display-ib"><a href="{:U('User/Login')}">请登录</a></li>
+                    <!--
+                    <li id="loginBox" class="display-ib"><a href="{:U('ThirdLogin/auth','type=qq')}">QQ</a></li>
+                    <li id="loginBox" class="display-ib"><a href="{:U('ThirdLogin/auth','type=sina')}">新浪</a></li>
+                    <li id="loginBox" class="display-ib"><a href="{:U('ThirdLogin/auth','type=weixin')}">微信</a></li>
+                    -->
+                    <li class="display-ib" style="font-size: 12px;padding: 0px 5px;color: #cecece">|</li>
+                    <li id="regBox" class="display-ib"><a href="{:U('User/regist')}">注册</a></li>
+                    </if>
+                </ul>
+            </div>
+            <div id="navbar" class="navbar-collapse cg-coll nav-top col-lg-9 col-md-9 col-xs-9" style="margin-right: -30px;margin-top: 7px;">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="personal-index.html" class="dropdown-toggle dropdown-toggle-top margin-b-5" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"  style="border-left: none">
+                            我的橙果
+                            <span class="caret" id="caret-down"></span>
+                            <span class="caret-up display-none" id="caret-up"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-top">
+                            <li><a href="personal-index.html?per_market=1">云购记录</a></li>
+                            <li><a href="personal-index.html?per_market=2">中奖记录</a></li>
+                            <li><a href="personal-index.html?per_market=3">个人设置</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="recharge.html" target="_blank">充值</a></li>
+                    <li><a href="help-article.html?pid=437">帮助</a></li>
+                    <li>
+                        <a href="#" class="phoneapp" style="">
+                            <img src="__PUBLIC__/Home/images/weixin_icon.png" style="margin-right: 3px;height: 15px;" class="pull-left">
+                            关注橙果
+                        </a>
+                        <div class="appbox" style="margin-left: 8px;"><img src="__PUBLIC__/Home/images/code-cg.jpg" class="code-img"></div>
+                    </li>
+                    <li>
+                        <a href="http://weibo.com/p/1006065742783615/home?from=page_100606&mod=TAB&is_hot=1#place" class="phoneapp" style="" target="_blank">
+                            <img src="__PUBLIC__/Home/images/sina_icon.png" style="margin-right: 3px;height: 15px;" class="pull-left"/>
+                            新浪微博
+                        </a>
+                        <div class="appbox" style="margin-left: 8px;">
+                            <img src="__PUBLIC__/Home/images/sina.jpg" class="code-img"/>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--头部 end-->

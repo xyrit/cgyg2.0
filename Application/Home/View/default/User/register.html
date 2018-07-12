@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>登录/注册 - 橙果云购</title>
+<meta name="keywords" content="登录橙果云购，注册橙果云购，橙果云购，橙果云购会员注册"/>
+<meta name="description" content="橙果云购是一个新型的、专业的众筹式购物商城。只需1元，您就有机会获得一件商品。橙果云购将倾力打造一个公正公平公开的环境，让您的生活充满惊喜！"/>
+
+<load href="__PUBLIC__/Common/Bootstrap/css/bootstrap.min.css" />
+<load href="__PUBLIC__/Home/css/login.css" />
+<load href="__PUBLIC__/Home/css/blue.css" />
+<load href="__PUBLIC__/Home/css/sweetalert.css" />
+<load href="__PUBLIC__/Common/Bootstrap/css/font-awesome.min.css" />
+
+</head>
+<body>
+<div class="container">
+      <div class="container-box">
+         
+        <!--注册-->
+        <form class="" action="{:U('User/register')}" method="POST">
+            <div class="login-box form-signin-2" id="form-signin-2">
+                  
+                <div class="logo">
+                    <a href="index.html"><img src="__PUBLIC__/Home/images/logo.png"></a>
+                </div>
+                <div class="login-input">
+                   <p class="tip-2 tip-2-2 clearfix" style="margin-bottom:15px">
+                     <span class="pull-left" style="color:#333; font-size:16px">注册</span>
+                     <span class="pull-right">
+                       已有账户？
+                       <a href="{:U('User/login')}" class="reg dologin">登录</a>
+                     </span>
+                   </p>
+                   <div class="input-item">
+                       <div class="tip">
+                          <div class="well well-sm" id="regTip" style="display: none">
+    
+                          </div>    
+                       </div>
+                      <div class="input-group">
+                         <span class="input-group-addon icon-user"></span>
+                         <input type="text" name="mobile" id="regPhone" class="form-control" value="" placeholder="请输入手机号">
+                      </div>
+                      <div class="row">
+                         <div class="col-md-6">
+                            <div class="input-group">
+                               <input type="text" name="image_verify" class="form-control" value="" placeholder="请输入图形验证码" style="width: 170px;" id="Verify_0" />
+                            </div>
+                         </div>
+                         <div class="col-md-6">
+                            <div id="verify">
+                                <img src="" width="120" height="50"/>
+                            </div>
+                         </div>
+                      </div>
+                      
+                      <div class="row">
+                         <div class="col-md-6">
+                            <div class="input-group">
+                               <input type="text" class="form-control" name="mobile_verify" value="请输入4位验证码" placeholder="" style="width: 170px;" id="valVerify" />
+                            </div>
+                         </div>
+                         <div class="col-md-6">
+                            <input class="btn btn-lg btn-orange btn-block" type="button" id="getVerify" value="获取手机验证码"/>
+                         </div>
+                      </div>
+                      
+                       <div class="input-group">
+                         <span class="input-group-addon icon-link"></span>
+                         <input type="text" id="invite_code" class="form-control" value="" placeholder="邀请码（可选）">
+                      </div>
+                      
+                   </div>
+                </div>
+               
+                <!--<div class="checkbox">
+                  <input tabindex="1" type="checkbox" id="input-1">
+                  <label for="input-1">自动登录</label>
+                  <a href="javascript:;" class="forget">忘记密码？</a>
+                </div>-->
+                <button class="btn btn-lg btn-orange btn-block" type="button" onclick="check_verify()" id="register-btn">同意协议并注册</button>
+                <p class="tip-2 text-center" style="margin-bottom:30px">
+                  <a href="javascript:;" class="reg" style="color:#909090;" data-toggle="modal" data-target="#myModal" onclick="getArticle(438)">《服务协议》</a>
+                </p>
+                
+                <div class="tip-3">
+                   <div class="tip-3-title">
+                     <div class="border"></div>
+                       <span>第三方登录</span>
+                   </div>
+                   <div class="web-login text-center">
+                      <a href="{:U('ThirdLogin/auth','type=qq')}" class="web-login-btn qq"></a>
+                      <a href="{:U('ThirdLogin/auth','type=weixin')}" class="web-login-btn weixin"></a>
+                      <a href="{:U('ThirdLogin/auth','type=sina')}" class="web-login-btn sina"></a>     
+                   </div>
+                </div>
+            </div> 
+            <!--注册手机号验证码都正确了之后  输入密码-->
+            <div class="login-box register-password" style="display: none;"> 
+                <div class="logo">
+                    <a href="index.html"><img src="__PUBLIC__/Home/images/logo.png"></a>
+                </div>
+                <div class="login-input">
+                   <p class="tip-2 tip-2-2 clearfix" style="margin-bottom:15px">
+                     <span class="pull-left" style="color:#333; font-size:16px">注册</span>
+                     <span class="pull-right">
+                       已有账户？
+                       <a href="{:U('User/login')}" class="reg dologin">登录</a>
+                     </span>
+                   </p>
+                   <div class="input-item">
+                      <div class="tip">
+                          <div class="well well-sm" id="regTip2" style="display: none">
+    
+                          </div>
+                       </div>
+                      <div class="input-group">
+                         <span class="input-group-addon icon-lock"></span>
+                         <input name="password" id="pwdtext2" type="text" class="form-control pwdtext" value="" placeholder="请输入密码"/>
+                         <input name="password" id="pwdpwd2" type="password" class="form-control pwdpwd" value=""  style="display:none; margin-bottom:0" placeholder="请输入密码" datatype="*6-16" nullmsg="请输入密码！" errormsg="密码范围在6~16位之间！" onkeyup="checkPass_length($(this))"/>
+    
+                      </div>
+                      <div class="input-group">
+                         <span class="input-group-addon icon-lock"></span>
+                         <input name="repassword" id="pwdtext3" type="text" class="form-control pwdtext" value="" placeholder="请再次输入密码"/>
+                         <input name="repassword" id="pwdpwd3" type="password" class="form-control pwdpwd" value=""  style="display:none; margin-bottom:0" placeholder="请再次输入密码" datatype="*6-16" nullmsg="请输入密码！" errormsg="密码范围在6~16位之间！" onkeyup="checkPass_length($(this))"/>
+    
+                      </div>
+                      <div class="row">
+                         <div class="col-md-6">
+                            <button class="btn btn-lg btn-orange btn-block" id="submit-reg" type="button" onclick="_hmt.push(['_trackEvent', 'convert', 'register', 'reg'])">确定</button>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+            </div>
+        </form>
+        
+     </div>
+
+</div>
+
+<div class="cg-footer">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center cg-footer-nav">
+                  <p class="footer-menu">
+                      <a href="index.html">首页</a>
+                      <a href="help-article.html?pid=448" target="_blank">关于橙果</a>
+                      <a href="help-article.html?pid=450" target="_blank">加入我们</a>
+                      <a href="help-article.html?pid=449" target="_blank">联系我们</a>
+                  </p>
+                  <p class="footer-copyright">Copyright © 2015-2016 , 版权所有 粤ICP备15095358号-1</p>
+              </div>
+          </div>
+      </div>
+</div>
+
+<load href="__PUBLIC__/Home/js/jquery-1.11.3.min.js" />
+<load href="__PUBLIC__/Common/Bootstrap/js/bootstrap.min.js" />
+<load href="__PUBLIC__/Common/jquery.md5.js" />
+<load href="__PUBLIC__/Home/js/icheck.js" />
+<load href="__PUBLIC__/Home/js/sweetalert.min.js" />
+
+
+<script type="text/javascript">
+
+$(function(){
+    getVerify();   
+    $("#verify img").click(function(){
+        getVerify();    
+    })
+    $("#getVerify").click(function(){
+        sendVerify();    
+    })
+    $("#submit-reg").click(function(){
+        register();
+    })
+})
+
+    function getVerify(){
+        var verify_url = '/index.php/Public/verify?rand='+Math.random();
+        $("#verify img").attr('src',verify_url);        
+    }
+    
+    function sendVerify(){
+        getVerify();
+        var mobile = $("input[name='mobile']").val();
+        var image_verify = $("input[name='image_verify']").val();
+        
+        var re = /^1\d{10}$/;
+        if (!re.test(mobile)) {
+            alert('手机号码格式错误！');
+            return;
+        }
+        if(image_verify.length != 4){
+            alert('验证码错误！');
+            return;
+        }
+        $.post(
+            "{:U('User/sendVerify')}",
+            {
+                mobile : mobile,
+                image_verify : image_verify 
+            },
+            function (data){
+                alert(data.message);
+                if(data.code == 0){
+                    //发送成功
+                                        
+                }else{
+                    //发送失败
+                    
+                }    
+            }
+        )    
+    }
+    
+     
+  function check_verify(){
+    var mobile = $("input[name='mobile']").val();
+    var mobile_verify = $("input[name='mobile_verify']").val();
+    $.post(
+        "{:U('User/checkRegisterVerify')}",
+        {
+            is_ajax : 1,
+            mobile : mobile,
+            mobile_verify : mobile_verify
+        },
+        function (data){
+            if(data.code == 0){
+                //验证成功
+                $('.register-password').show();
+                $('.form-signin-2').hide();
+            }else{
+                //验证失败
+                getVerify();
+            }
+        }
+    )
+        
+  }
+  
+  function register(){
+    var mobile = $("input[name='mobile']").val();
+    var mobile_verify = $("input[name='mobile_verify']").val();
+    var password = $.md5($("input[name='password']").val());
+    var repassword = $.md5($("input[name='repassword']").val());
+
+    if(password != repassword){
+        alert('密码不一致！');
+        return;
+    }
+    $.post(
+        "{:U('User/register')}",
+        {
+            is_ajax : 1,
+            mobile : mobile,
+            mobile_verify : mobile_verify,
+            password : password,
+            repassword : repassword,
+        },
+        function (data){
+            alert(data.message);
+            if(data.code == 0){
+                //验证成功
+                
+            }else{
+                //验证失败
+                getVerify();
+            }
+        }
+    )
+    
+  }
+  
+</script>
+
+</body>
+</html>

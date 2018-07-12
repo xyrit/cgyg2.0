@@ -1,0 +1,80 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+</block>
+<block name="body">
+
+<div class="main main_Pub">
+    <div class="recharge">
+        <div class="content">
+            <ul class="recharge_list" id="data">
+            </ul>
+			<a class="add_more" id="more" style="width:100%;height:50px;line-height: 50px; text-align: center;display: block">点击查看更多</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="huitop"></div>
+
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/util.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/p.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/get_code.js"></script>
+<script>
+    $(function(){
+        //var state=$("#state").attr("value");
+        loadData({"state":1,"is_ajax":1});
+
+    });
+    function loadData(param){
+
+        new Page({
+            url:"{:U('account/charge_list')}",
+            param:param,
+            scroll:true,
+            count:2,
+            next:{
+                id:"more",
+                content:["点击加载更多","没有更多数据了"]
+            },
+            success:setData
+        });
+    }
+
+    function setData(json_data,p){
+        //console.log(p);
+
+        if(p.page == 1){
+            $("#data").html("");
+            if(p.total == 0){
+                //无数据时的展示
+            }
+        }
+       
+        var jsondata=json_data['data'];//<img src="'+jsondata[i].thumb+'"></a>'+
+        //alert(state);
+        var html="";
+        var word="";
+        for(var i=0; i<jsondata.length; i++){
+		        if(jsondata[i].status<1){
+                    word="失败";
+                }else{
+                    word="成功";
+                }
+                html='<li><h3>'+jsondata[i].pay_type+'</h3>'+
+				'<p class="text-gray">'+jsondata[i].pay_time+'</p>'+
+				'<p class="text-gray">'+word+'</p>'+
+				'<em class="text-red">'+jsondata[i].count_money+'元</em></li>';
+            $("#data").append(html);
+        }
+
+
+    }
+</script>
+</block>

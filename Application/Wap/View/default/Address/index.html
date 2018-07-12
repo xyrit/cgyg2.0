@@ -1,0 +1,94 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/layer.css?v=asdfs"/>
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?v=telo"/>
+</block>
+
+<block name="body">
+
+	<!-- 地址列表 开始-->
+	<div class="auto_padding" style="width:100%;">
+
+			<div class="dizhi_text">
+				<p>已经保存<span class="cgyg_color">{$address_num}</span>条地址，还能保存<span class="cgyg_color">{$remain}</span>条地址</p>
+			</div>
+       <foreach name='list' item='list' >
+			<div class="dizhi_box">
+				<p class="dizhi_p">
+					<span>{$list.realname}</span>
+					<span>{$list.cellphone}</span>
+					 
+				</p>
+				<p class="dizhi_p">{$list.take_address}</p>
+				<div class="moren_dizhi">
+					<label class="label">
+						<input class="danxuan checkbox" onclick="inc_danxuan({$list.id})" type="radio"
+						<if condition="$list.status eq 2 ">checked="checked"</if> name="moren"/>设置默认地址
+						<i class="inc_danxuan"></i>
+					</label>
+					 <a style="margin-right: 3px" href="{:U('Address/save','id='.$list['id'])}" class="right">
+					 <img width='22px' src="__PUBLIC__/Wap/images/xiugai.png"></a>
+					<a href="javascript:;" onclick="set({$list.id})" class="right remove_but"></a>
+				</div>
+			</div>
+			
+		</foreach>		
+		
+	</div>
+
+
+    <div class="add_img">
+        <a class="icon-plus" id="adddizhi" href="{:U('Address/add')}">
+            <img style="width:20px; margin: 0px 8px -4px 0px;" src="../../Public/Wap/images/add.png"/>添加地址
+        </a>
+    </div>
+
+
+    <!-- 地址列表 结束 -->
+</block>
+
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/layer.js"></script>
+    <script type="text/javascript">
+        function inc_danxuan(id){
+            $.ajax({
+                type:'post',
+                url:common_url+'/Address/shezhi',//post 地址
+                data:{
+                    id:id
+                },
+                dataType:'json',
+                success:function(data){
+                    tanchuan_0('200','1000','200',data['message']);
+                },
+                error:function(){
+                    tanchuan_0('200','1000','200','设置失败');
+                }
+            });
+        }
+        function set(id){
+            $.ajax({
+                type:'post',
+                url:common_url+'/Address/delete',//post 地址
+                data:{
+                    id:id
+                },
+                dataType:'json',
+                success:function(data){
+                    tanchuan_0('200','1000','200',data['msg']);
+                    if(data['code']==200){
+                        window.location.href=common_url+'/Address/index';
+                    }
+
+                },
+                error:function(){
+                    tanchuan_0('200','1000','200','删除失败');
+                }
+            });
+        }
+    </script>
+
+</block>

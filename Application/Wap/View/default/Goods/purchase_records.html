@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>商品详情参与记录</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="">
+    <meta http-equiv="description" content="">
+    <meta name="wap-font-scale"  content="no"/>
+    <link rel="stylesheet" href="/Public/Wap/css/style.css"/>
+</head>
+<body>
+<div class="topdiv2">
+    <div class="topnav">
+        <h1 class="pagetit">商品详情参与记录</h1>
+        <a class="fanhui" href="javascript:history.go(-1)"></a>
+        <a class="home" href="/"></a>
+    </div>
+</div>
+<div class="topzhanwei"></div>
+
+<div class="all_canyu">
+    <ul class="canyulist" id="data" style="display:block;">
+
+
+    </ul>
+    <input type="hidden" id="Lottery_id" name="Lottery_id" value="{$lottery_id}"/>
+    <a class="add_more" id="more" style="width:100%;height:50px;line-height: 50px; text-align: center;display: block">点击查看更多</a>
+</div>
+
+<div class="botzhanwei"></div>
+
+
+<div class="huitop"></div>
+<script type="text/javascript" src="/Public/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/idangerous.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/function.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/common_inc.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/cart/addShopGoods.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/util.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/p.js"></script>
+<script>
+    $(function(){
+      var lottery_id =  $("#Lottery_id").val()
+
+        loadData({'lottery_id':lottery_id});
+
+    });
+
+    function loadData(param){
+
+        new Page({
+            url:"{:U('Goods/purchase_records')}",
+            param:param,
+            scroll:false,
+            count:4,
+            next:{
+                id:"more",
+                content:["点击加载更多","没有更多数据了"]
+            },
+            success:setData
+        });
+    }
+
+    function setData(json_data,p){
+
+        if(p.page == 1){
+
+            if(p.total == 0){
+                //无数据时的展示
+            }
+        }
+
+        var jsondata=json_data;
+
+        var html="";
+        for(var i=0; i<jsondata.length; i++){
+
+                html=' <li class="list">'+
+                        '<div class="pic"><a href=""><img src="'+jsondata[i].face+'" /></a></div>'+
+                        ' <div class="infos">'+
+                        '<div class="infos">'+
+                        '<p><a href="/Lottery/other_info/uid/"'+jsondata[i].uid+'>'+jsondata[i].nickname+'</a>'+jsondata[i].ip_address+'</p>'+
+                        ' <p>参与了<span>'+jsondata[i].attend_count+'</span>人次  '+jsondata[i].create_date_time+'</p>'+
+                        ' </div>'+
+                        ' </li>';
+            $("#data").append(html);
+        }
+
+
+    }
+</script>
+</body>
+</html>

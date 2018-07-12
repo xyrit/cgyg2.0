@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>揭晓中/已揭晓--计算结果</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta name="format-detection" content="telephone=no" />
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="">
+    <meta http-equiv="description" content="">
+    <meta name="wap-font-scale"  content="no"/>
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style.css"/>
+</head>
+<body>
+<div class="topdiv2">
+    <div class="topnav">
+        <h1 class="pagetit">计算规则</h1>
+        <a class="fanhui" href="javascript:history.go(-1)"></a>
+        <a class="home" href="/"></a>
+    </div>
+</div>
+<div class="topzhanwei"></div>
+
+<div class="jisuangs">
+    <div class="con">
+        <p>计算公式</p>
+        <p>[( 数值A+数值B) ÷ 商品所需人次 ] 取余数 + 10000001</p>
+    </div>
+</div>
+<div class="shuzhiinfo">
+    <div class="infos">
+        <h4>数值A</h4>
+        <p>= 截止该商品开奖时间点前最后50条全站参与记录</p>
+        <if condition="$data.status gt 0">
+        <!-- 已揭晓,揭晓中 -->
+        <p><span class="fl">= <em>{$purchase_time_sum}</em></span><a class="zansou" href="javascript:void(0);">展开</a></p>
+        </if>
+    </div>
+    <if condition="$data.status gt 0">
+    <div class="buytimelist">
+        <p class="toplist"><span class="buytime">参与时间</span><span class="name">参与用户</span></p>
+
+        <volist name="purchase_list" id="vo">
+        <p><span class="buytime">{$vo.create_date_time}  <em>→ {$vo.sfm_time} </em></span><span class="name"><a href="{:U('lottery/other_info/'.$vo['uid'])}">{$vo.nickname}</a></span></p>
+            </volist>
+
+    </div>
+    </if>
+    <div class="clear"></div>
+</div>
+<div class="line5"></div>
+<div class="shuzhiinfo">
+    <div class="infos">
+        <h4>数值B</h4>
+        <p>= 最近一期中国福利彩票“老时时彩”的开奖结果</p>
+        <p><span class="fl">
+            <eq name="data.status" value="1"><em>正在等待开奖...</em></eq>
+            <eq name="data.status" value="2"><em> {$data.hour_lottery}（第{$data.hour_lottery_id}期） </em> </eq>
+
+
+            </span><a target="_blank" href="http://www.shishicai.cn/cqssc/">开奖查询</a>
+        </p>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="line5"></div>
+<gt name="status" value="0">
+<div class="shuzhiinfo">
+    <div class="infos">
+        <h4>计算结果</h4>
+        <p class="dengdaijx"><span>获奖幸运码：
+                <eq name="status" value="1"><em>等待揭晓...</em></eq>
+                <eq name="status" value="2">  <em>{$data.lottery_code}</em></eq>
+
+        </span></p>
+    </div>
+    <div class="clear"></div>
+</div>
+</gt>
+<div class="line5"></div>
+<div class="shuzhiinfo">
+    <div class="infos">
+        <h4>公式说明</h4>
+        <p>
+            1. 商品的最后一个幸运码分配完毕后，将公示该分配时间点前本站全部商品的最后50个参与时间；<br />
+            2. 将这50个时间的数值进行求和（得出数值A）（每个时间按时、分、秒、毫秒的顺序组合，如20:15:25.362则为201525362） ；<br />
+            3. 为保证公平公正公开，系统还会等待一小段时间，取最近下一期中国福利彩票“老时时彩”的开奖结果（一个五位数值B）；<br />
+            4. （数值A+数值B）除以该商品总需人次得到的余数 + 原始数 10000001，得到最终中奖幸运码，拥有该中奖幸运码者，直接获得该商品。
+        </p>
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+
+<div class="huitop"></div>
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script>
+    $(document).ready(function(){
+        $(".zansou").click(function(){
+            $(this).toggleClass("active");
+            $(this).parents(".shuzhiinfo").find(".buytimelist").slideToggle();
+            if($(this).hasClass("active")){
+                $(this).text('收缩');
+            }else{
+                $(this).text('展开');
+            }
+        });
+    })
+</script>
+</body>
+</html>

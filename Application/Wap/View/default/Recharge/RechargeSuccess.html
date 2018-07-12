@@ -1,0 +1,55 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+</block>
+<block name="body">
+<div class="main main_Pub">
+    <div class="recharge_result">
+        <div class="title">
+            <p style="margin-bottom: 10px;">
+                <img src="__PUBLIC__/Wap/images/result.png" style="width: 120px;"/>
+            </p>
+            <p>充值成功，获得{$money}个橙果币！</p>
+            <p class="margin-t20">
+                <button type="button"  onclick="window.location='/'"  class="btn btn-fixed_2 margin-r15">再去逛逛</button>
+                <button type="button"  onclick="window.location='{:U('')}'"  class="btn btn-fixed_2 btn-border">充值记录</button>
+            </p>
+        </div>
+    </div>
+    <div class="main">
+        <div class="line10">
+        </div>
+        <div class="intitle">
+            <span class="tit renqi active">人气推荐</span>
+        </div>
+
+        <ul class="inprolist clearfix">
+            <foreach name="goods_data" item="goods">
+                <li class="list">
+                    <div class="listinfo">
+                        <p><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}"><img src="{$goods.thumb}" /></a></p>
+                        <p><h3><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}">{$goods.title}</a></h3></p>
+                        <div class="renci_jindu">
+                            <div class="renci">剩<span>{$goods['need_count'] - $goods['attend_count']}</span>人次</div>
+                            <div class="jindu"><div class="xianjindu" style="width:{$goods['attend_count']/$goods['need_count']*100}%;"></div></div>
+                            <div class="addtocar" onclick="addShop({$goods['lottery_id']})"></div>
+                        </div>
+                    </div>
+                </li>
+            </foreach>
+        </ul>
+
+    </div>
+</div>
+
+<div class="botfixcar"><a href=""><span>99+</span></a><i></i></div>
+<div class="botzhanwei"></div>
+<div class="huitop"></div>
+</block>
+<block name="script">
+    <script src="__PUBLIC__/Wap/js/function.js"></script>
+</block>
+
+
+

@@ -1,0 +1,27 @@
+
+<extend name="Base/cg3"/>
+<block name="style">
+
+</block>
+<block name="body">
+<div class="main">
+    <div class="pro_show">
+        {$infos.content}
+    </div>
+    <div class="clear"></div>
+</div>
+
+<div class="huitop"></div>
+</block>
+<block name="script">
+    <script>
+        $(document).ready(function(){
+            $('.pro_fenlei').click(function(){
+                $(".profenlei").slideDown();
+            });
+            $('.profenlei .suoprofenlei').click(function(){
+                $(this).parents(".profenlei").slideUp();
+            });
+        })
+    </script>
+ </block>

@@ -1,0 +1,56 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+</block>
+
+<block name="body">
+
+<div class="main main_Pub">
+    <div class="atttend_list">
+        <div class="menulist">
+            <ul class="mui-flex">
+                <li class="cell text-center">
+                    <a href="{:U('Display/index','state=1')}" class="menu_a">已晒单</a>
+                </li>
+                <li class="cell text-center">
+                    <a href="{:U('Display/index','state=0')}" class="menu_a active">未晒单</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="product_list disWei_list clearfix">
+		 <foreach name='list' item='list' >
+            <li class="list clearfix">
+                <div class="img"><a href=""><img src="{$list.path}"></a>
+                </div>
+                <div class="infos">
+                    <h1 class="ellipsis margin_t10"><a href="">{$list.title}</a></h1>
+                    <div class="renci_jindu noheight" style="padding-right: 0">
+                        <p class="text-size12 ellipsis">
+                            <span class="text-gray">期号：{$list.lottery_id}</span>
+                        </p>
+                        <p class="text-size12 text-gray">揭晓时间：{$list.lottery_time}</p>
+                         <if condition="$list.type eq 2 "><p class="text-red">图片审核不通过，请重新晒单！</p></if>
+                        <p class="padding-t5">
+                           
+                            <if condition="$list.type eq 0 "> <a href="{:U('Display/add')}" class="btn btn-a btn-fixed">去晒单</a>
+                            <elseif condition="$list.type eq 1 "/><a href="javascript:;" class="btn btn-a btn-fixed btn-disable">审核中</a>
+                            <else/><a href="{:U('Display/add')}" class="btn btn-fixed">重新晒单</a> </if>
+                        </p>
+
+                    </div>
+                </div>
+            </li>
+        </foreach>
+        </ul>
+    </div>
+</div>
+
+
+<div class="huitop"></div>
+
+<!-- 模态框（Modal） -->
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+</block>

@@ -1,0 +1,238 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/city_inc/css/sm.min.css">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?sas=sdfsdf"/>
+    <style>
+        input{
+            font-size: 14px;
+        }
+    </style>
+</block>
+
+<block name="body">
+
+	<!-- 修改地址 开始 -->
+    <div class="auto_padding" style="width:100%">
+	<div class="xiugai_mobile">
+		
+		<form id='userMobile_from'  method="post">
+
+			<div class="dizhi_input">
+				<input name="realname"  class="dizhi_name" id="realname" placeholder="收货人姓名" value=""/>
+			</div>
+			
+			<div class="dizhi_input">
+				<input name="cellphone" maxlength='11' class="dizhi_mobile" id="cellphone" placeholder="收货人手机号码" value=""/>
+			</div>
+
+			
+			<div class="dizhi_input">
+				<input name="province"  id='city-picker' class="dizhi_mobile" placeholder="省 市 区"  value=""/>
+			</div>
+			
+			<div class="dizhi_input">
+				<input style="height:80px;width:100%" name="address" id="address" class="dizhi_mobile" placeholder="详细地址" value=""/>
+			</div>
+
+			<div class="input_width" style="border: none">
+				<input style="padding-left:15px;border-radius: 0px" maxlength='4' name="verify" id="verify" placeholder="获取验证码" class="yanzhenma" value=""/>
+				<input name="mobile"  id="mobile" style="display:none;" value="{$user_mobile}"/>
+				<button style="top:10px" type="button" class="cgyg_button_x dizhi_but">获取验证码</button>
+			</div>
+
+            <button type="button" style="margin:20px auto 0px;;width:95%;"  class="cgyg_button userMobile_bt">确定</button>
+		</form>
+		</div>
+	
+	    <p style="color: red;line-height: 53px;text-align: center;font-size: 14px;" id="error_text"></p>
+    </div>
+    <!-- 修改地址 结束 -->
+    <div class="zhezhao_box"></div>
+
+    <script type='text/javascript' src='__PUBLIC__/Wap/city_inc/js/zepto.min.js' charset='utf-8'></script>
+    <script type='text/javascript' src='__PUBLIC__/Wap/city_inc/js/sm.min.js' charset='utf-8'></script>
+    <script type="text/javascript" src="__PUBLIC__/Wap/city_inc/js/sm-city-picker.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        var InterValObj;//timer变量，控制时间
+        var count = 10; //间隔函数，1秒执行
+        var curCount;//当前剩余秒数
+        //倒计时
+        function SetRemainTime() {
+            if (curCount == 0) {
+                window.clearInterval(InterValObj);
+                $(".dizhi_but").removeAttr("disabled");
+                $(".dizhi_but").text("重新发送");
+                $(".dizhi_but").css({'background':'#ff4800'});
+            }
+            else {
+                curCount--;
+                $(".dizhi_but").css({'background':'#A0A0A0'});
+                $(".dizhi_but").text(curCount + "秒内重发");
+
+            }
+        }
+
+        $(function() {
+
+            //提交表单
+            $('.userMobile_bt').click(function () {
+                var realname = $('#realname').val();//姓名
+
+                var cellphone = $('#cellphone').val();//手机号码
+
+                var address = $('#address').val();//详细地址
+
+                var province = $('#city-picker').val();//省市区   
+				
+                var verify = $('#verify').val();
+                //alert(citypicker);
+
+                var yanzhenMobile = /^1[3456789]\d{9}$/;//手机号正则
+				var reg_name=/^(\w|[\u4E00-\u9FA5])*$/;//姓名正则
+                ;//手机号码正则表达式
+                var yanzhenma = $('.yanzhenma').val();//短信验证码
+
+                if (realname == '') {
+                    $('#error_text').text('姓名不能为空');
+                    return false;
+                }
+				
+              if((!reg_name.test(realname))||(realname.length>6)){
+					$('#error_text').text('姓名格式只能是1-6位中文,英文,数字组成');
+					return false;
+				}else{
+					$('#error_text').text('');
+				}
+                if (cellphone == '') {
+                    $('#error_text').text('手机不能为空');
+                    return false;
+                }
+
+                if (!yanzhenMobile.test(cellphone)) {
+                    $('#error_text').text('手机号格式不正确');
+                    return false;
+                } else {
+                    $('#error_text').text('');
+                }
+
+
+                if (province == '') {
+                    $('#error_text').text('请选择地址!');
+                    return false;
+                } else {
+                    $('#error_text').text('');
+                }
+
+                if (address == '') {
+                    $('#error_text').text('详细地址不能为空！');
+                    return false;
+                } else {
+                    $('#error_text').text('');
+                }
+                if(address.length>40){
+				$('#error_text').text('详细地址不能超过40个汉字！');
+					return false;
+				}else{
+					$('#error_text').text('');
+				}
+				 
+                if (verify == '') {
+                    $('#error_text').text('验证码不能为空！');
+                    return false;
+                } else {
+                    $('#error_text').text('');
+                }
+                if((!(/^[0-9]*$/).test(verify))||(verify.length!=4)){
+					$('#error_text').text('验证码只能是4位数的正整数');
+					return false;
+				}else{
+					$('#error_text').text('');
+				}
+                //发送ajax 提交
+                $.ajax({
+                    type: 'POST',
+                    url: common_url + '/Address/add',
+                    dataType: 'json',
+                    data: $('#userMobile_from').serialize(),//表单实例化
+                    success: function (data) {
+                        if (data['code'] == 200) {
+                            //alert(data['message']);//成功 操作处理
+							 $('#error_text').text(data['message']);
+                            window.location.href = "index.html";
+                        } else {
+                           $('#error_text').text(data['message']);
+                        }
+                    }
+                });
+                return false;
+            });
+
+            //发送验证码
+            $('.dizhi_but').click(function () {
+                var yanzhenMobile = /^1[3456789]\d{9}$/;
+                ;//手机号码正则表达式
+                var cellphone = $('#cellphone').val();//手机号码
+                var mobile = $('#mobile').val();//用户注册手机号码
+                if (!yanzhenMobile.test(cellphone)) {
+                    $('#error_text').text('手机号码不正确');
+                    return false;
+                } else {
+                    $('#error_text').text('');
+                }
+                if (!yanzhenMobile.test(mobile)) {
+                    $('#error_text').text('手机账号不正确');
+                    return false;
+                } else {
+                    $('#error_text').text('');
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: common_url + '/User/sendVerify',
+                    dataType: 'json',
+                    data: {
+                        mobile: mobile,
+                        state: 2,
+						type: 4
+                    },
+                    success: function (data) {
+                        if (data['code'] == 200) {
+                            //启动倒计时
+                            curCount = count;
+                            $(".cgyg_button_x").attr("disabled", "true");
+                            $(".cgyg_button_x").text(curCount + "秒内重发");
+                            InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次
+                        } else {
+                            $('#error_text').text(data['info']);
+                        }
+                    }
+                });
+
+            });
+
+        });
+
+        //地址选择
+        $("#city-picker").cityPicker({
+            toolbarTemplate: '<header class="bar bar-nav">\
+		    <button onclick="remozhezhao();" class="button button-link pull-right close-picker">确定</button>\
+		    <h1 class="title">选择收货地址</h1>\
+		    </header>'
+        });
+
+        $("#city-picker").click(function () {
+            $('.zhezhao_box').show();
+        });
+
+        $('.zhezhao_box').click(function(){
+            remozhezhao();
+        });
+
+            function remozhezhao(){
+                $('.zhezhao_box').hide();
+            }
+
+    </script>
+</block>

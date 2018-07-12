@@ -1,0 +1,164 @@
+<extend name="Base/cg1"/>
+
+<block name="style">
+    <link rel="stylesheet" href="/Public/Wap/css/layer.css?v=asdfs"/>
+</block>
+
+<block name="body">
+
+    <!--  购物车无商品开始  -->
+    <div id="nodata" style="display:none">
+        <div class="carhasno">
+            <p>您的购物车空荡荡，参与云购，惊喜等着您！</p>
+            <p><a href="/">立即云购</a></p>
+        </div>
+
+        <div class="line10"></div>
+        <div class="intitle">
+            <span class="tit renqi active">人气推荐</span>
+            <a class="more2" href=""></a>
+        </div>
+        <div class="clear"></div>
+        <ul class="inprolist">
+
+            <foreach name="goods_data.data" item="goods">
+                <li class="list">
+                    <div class="listinfo">
+                        <p><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}"><img src="{$goods.thumb}" data-ghid="{$goods['lottery_id']}" /></a></p>
+                        <p><h3><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}">{$goods.title}</a></h3></p>
+                        <div class="renci_jindu">
+
+                            <div class="renci"><i class="fl">{$goods['need_count']}<br>总共</i><i class="fr"><span>{$goods['need_count'] - $goods['attend_count']}</span><br>剩余</i></div>
+                            <div class="jindu"><div class="xianjindu" style="width:{$goods['attend_count']/$goods['need_count']*100}%;"></div></div>
+                            <div class="addtocar addcart2" data-ghid="{$goods['lottery_id']}"  ></div>
+
+                        </div>
+                    </div>
+                </li>
+            </foreach>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <!--   购物车没有商品结束  -->
+    <div class="clear pt10"></div>
+    <ul class="car_list">
+
+        <volist name="list" id="vo">
+       	    <li class="list">
+                <div class="img"><a href="{:U('Goods/detail/lottery_id/'.$vo['lottery_id'])}">
+                    <img src="{$vo.thumb}" /></a>
+                </div>
+                <div class="infos">
+	                <h3><a href="{:U('Goods/detail/lottery_id/'.$vo['lottery_id'])}">{$vo.title}</a></h3>
+
+	                <div class="renci">总需{$vo.need_count}人次，剩余<em class="shengyu">{$vo.over_count}</em></div>
+	                <div class="addcar_shanchu btn-man-time">
+	                    <span>参与</span>
+                        <span class="minus ci_minus" data-group="{$vo.lottery_id}">-</span>
+	                    <input class="inputsl ci_num" <eq name="vo.max" value="0"> disabled="disabled"</eq> price="{$vo.single_price}" data-group="{$vo.lottery_id}" ygm="{$vo.ygm}" xiangou="{$vo.purchase_frequency}"  min="1" max="{$vo.max}"  type="text" value="{$vo.attend_count}" onkeyup="value=value.replace(/[^\d]/g,'')">
+	                    <span class="plus ci_plus" data-group="{$vo.lottery_id}">+</span>
+	                    <span>人次</span>
+                        <a class="baowei" href="javascript:;">包尾</a>
+
+	                    <input type="hidden" class="lottery_id" name="lottery_id" value="{$vo.lottery_id}" />
+	                </div>
+                    <eq name="vo.max" value="0">
+                    <p style="width:100%;height:30px;color:#999;line-height: 30px;font-size: 12px">您已经超过参与次数</p>
+                    </eq>
+                </div>
+                <div class="clear"></div>
+                <div class="xianzhuan" >
+
+                    <if condition="$vo['purchase_frequency'] gt 0">
+
+                        <img src="/Public/Wap/images/xgrcbg.png">
+
+                        <elseif condition="$vo.single_price eq 10"/>
+
+                         <img src="/Public/Wap/images/shiyuanzq.png">
+                        <else/>
+
+                    </if>
+                </div>
+                <div class="tipsdiv">
+                    <div class="tips"><span>参与人次为 <em>1</em> - <em>{$vo['need_count'] - $vo['attend_count']}</em></span></div>
+                    <div class="tipszw"></div>
+                </div>
+                <div class="shanchu delete_order" data-group="{$vo.lottery_id}"></div>
+            </li>
+        </volist>
+    </ul>
+
+    <div class="clear"></div>
+
+    <div class="car_pay">
+    	<div class="cgbzf">使用橙果币支付，您的余额 <em class="yue">{$useraccount}</em> 个<span class="ifpayyue active"></span></div>
+        <div class="qtzffs">其他支付方式<em>￥</em><em class="qitajine">0</em></div>
+    </div>
+    <div class="clear"></div>
+
+
+
+<div class="car_bottom">
+	<div class="car_bot_nav">
+        <div class="infos">
+        	<p class="tit">共参与 <em class="all_piece">0</em> 件商品，总计：<span>
+                <em class="all_jine money_sum"></em> 橙果币</span>
+            </p>
+            <p>云购有风险，参与需谨慎</p>
+        </div>
+        <a class="pay" href="#">支付</a>
+    </div>
+</div>
+
+<div class="huitop"></div>
+<div class="botzhanwei"></div>
+</block>
+
+<block name='script'>
+
+    <script type="text/javascript" src="/Public/Wap/js/util.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/p.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/c.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/cart.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/layer.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/all.js"></script>
+
+
+    <script>
+$(function(){
+    //开始支付
+    $('.pay').click(function(){
+        var type;
+        var addpay={$addpay};
+        if($(".ifpayyue").hasClass("active"))
+        {
+            type=1;
+        }
+        else
+        {
+            type=2;
+        }
+
+    window.location.href="{:U('Shop/orderInfo')}?type="+type+'&addpay='+addpay;
+        if(document.readyState == "complete") //当页面加载状态
+        {
+            tanchuan_1()
+        }
+
+    })
+    $(".addcart2").click(function(){
+        var ghid = $(this).attr("data-ghid");
+        flyToCart($("img[data-ghid="+ghid+"]"),$("#cart"),function(){
+            updateCart(ghid,"+1");
+
+            if(getCartTotal() >0)
+            {
+            window.location.reload();
+            }
+        });
+    });
+
+});
+</script>
+</block>

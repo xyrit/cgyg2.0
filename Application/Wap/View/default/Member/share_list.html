@@ -1,0 +1,151 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+</block>
+
+<block name="body">
+<div class="main main_Pub">
+    <div class="atttend_list">
+        <div class="menulist">
+            <ul class="mui-flex">
+                <li class="cell text-center">
+                    <a href="{:U('Member/share_list','state=1')}" class="menu_a {$display1}">已晒单</a>
+                </li>
+                <li class="cell text-center">
+                    <a href="{:U('Member/share_list','state=0')}" class="menu_a {$display0}">未晒单</a>
+                </li>
+            </ul>
+        </div>
+		<div id="data">
+		
+		
+		</div>
+
+		 	<input type="hidden" id="state"  value="{$states}"/>
+		    <a class="add_more" id="more" style="width:100%;height:50px;line-height: 50px; text-align: center;display: block">点击查看更多</a>
+           
+
+    </div>
+</div>
+
+<div class="huitop"></div>
+<!-- 模态框（Modal） -->
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/util.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/p.js"></script>
+<script>
+$(function(){
+   var state=$("#state").attr("value");
+   loadData({"state":state,"is_ajax":1});
+
+});
+function loadData(param){
+
+    new Page({
+        url:"{:U('member/share_list')}",
+        param:param,
+        scroll:true,
+		count:2,
+        next:{
+            id:"more",
+            content:["点击加载更多","没有更多数据了"]
+        },
+        success:setData
+    });
+}
+
+function setData(json_data,p){
+    //console.log(p);
+	
+    if(p.page == 1){
+        $("#data").html("");
+        if(p.total == 0){
+            //无数据时的展示
+        }
+    }
+	var state=parseInt(json_data['state']);
+	var jsondata=json_data['data'];
+	//var picture=jsondata.path;alert(picture);666
+	//alert(state);
+    var html="";
+	var style="";
+	var word="";
+	var red="";
+    for(var i=0; i<jsondata.length; i++){
+       if(state<1){ 
+		 switch (parseInt(jsondata[i].type))
+			{
+			case 0:
+			  style ='<a href="/member/share_add/id/'+jsondata[i].id+'" class="btn btn-fixed">去晒单</a>';
+			  break;
+			case 1:
+			  style ='<a href="javascript:;" class="btn btn-fixed">审核中</a>';
+			  break;
+			case 2:
+			  red='<p class="text-red">图片审核不通过，请重新晒单！</p>';
+			  style ='<a href="/member/share_add/id/'+jsondata[i].id+'" class="btn btn-a btn-fixed btn-disable">重新晒单</a>';
+			  break;
+			}
+		 		html='<ul class="product_list disWei_list clearfix"><li class="list clearfix">'+
+                '<div class="img"><a href=""><img src="'+jsondata[i].path+'"></a>'+
+                '</div>'+
+                '<div class="infos">'+
+                    '<h1 class="ellipsis margin_t10"><a href="">'+jsondata[i].title+'</a></h1>'+
+                    '<div class="renci_jindu noheight" style="padding-right: 0">'+
+                        '<p class="text-size12 ellipsis">'+
+                            '<span class="text-gray">'+jsondata[i].lottery_id+'</span>'+
+                        '</p>'+
+                        '<p class="text-size12 text-gray">揭晓时间：'+jsondata[i].lottery_time+'</p>'+red+
+                       ' <p class="padding-t5">'+style+'</p>'+
+
+                    '</div>'+
+                '</div>'+
+           ' </li></ul>';
+		 }else{
+				var pic_path='';
+				for(var j=0; j<jsondata[i].path.length; j++){
+                      pic_path += '<a href="/member/share_info/id/'+jsondata[i].id+'"><img src="'+jsondata[i].path[j]+'"></a>';
+				}
+				
+		 		html=' <div class="product_list dis_share_list clearfix"><div class="share_det_content" style="display: block;">'+
+				       '<ul class="share_det_list"><li>'+
+                        '<div class="clearfix share-content">'+
+                            '<div class="avatar">'+
+                                '<a href="/member/other_info/uid/'+jsondata[i].uid+'"><img width="35" height="35" src="'+jsondata[i].face+'" alt="" class="userImg"></a>'+
+                            '</div>'+
+                            '<div class="text position-re">'+
+                                '<div class="arrow"></div>'+
+                                '<div class="det_sun_content">'+
+
+                                    '<p class="text-blue">'+
+                                        '<a href="/member/other_info/uid/'+jsondata[i].uid+'" class="padding-t-b5 text-blue">'+
+                                          jsondata[i].nickname+
+                                       ' </a>'+
+                                    '</p>'+
+                                    '<p class="padding-t-b5 text-size12 text-gray">'+
+                                        jsondata[i].apply_time+
+                                    '</p>'+
+                                    '<p class="lineheigh-142">'+
+                                        '<a href="/member/share_info/id/'+jsondata[i].id+'" class="padding-t-b5">'+
+                                        jsondata[i].description+
+                                        '</a>'+
+                                    '</p>'+
+                                '</div>'+
+                                '<div class="sun_share_det">'+pic_path+'</div>'+
+                            '</div>'+
+                       ' </div>'+
+                    '</li></ul></div></div>';
+		 }
+		//alert(html);
+        $("#data").append(html);
+    }
+
+
+}
+</script>
+</block>

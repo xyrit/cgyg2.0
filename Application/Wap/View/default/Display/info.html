@@ -1,0 +1,47 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+</block>
+<block name="body">
+
+<div class="main main_Pub">
+    <div class="dis_share">
+        <div class="dis_share_top">
+            <div class="dis_shareLeft">
+                <a href="#">
+                    <img src="{$info.thumb}" alt="" class="userImg img_publish">
+                </a>
+            </div>
+            <div class="dis_shareRight">
+                <p class="text-gray">获奖者：
+                  <a href="#" class="text-red">{$info.user_name}</a>
+                   {$info.attend_ip}
+                </p>
+                <p class="text-gray">用户ID：{$info.lottery_id}
+                    （唯一不变标识）
+                </p>
+                <p class="text-gray">期号：10000092</p>
+                <p class="text-gray">获奖幸运码：<span class="text-red">{$info.lottery_code}</span></p>
+                <p class="text-gray">本期参与：<span class="text-red">{$info.attend_count}</span>人次</p>
+                <p class="text-gray">揭晓时间：{$info.lottery_time}</p>
+            </div>
+        </div>
+        <div class="dis_share_bottom">
+            <p class="text-gray text-size12 padding-t-b5">{$info.create_time}</p>
+            <p class="lineheigh-142 padding-t-b5">{$info.description}</p>
+            <p class="padding-t-b5">
+			 <foreach name='info.path' item='list' key="i">
+                <img src="{$list}">
+			</foreach>	
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div class="huitop"></div>
+</block>
+<block name="script">
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+</block>

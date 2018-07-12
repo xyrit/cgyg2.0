@@ -1,0 +1,70 @@
+<extend name="Base/cg2"/>
+
+<block name="body">
+	
+    <div class="contenr">
+        <!--商品分类切换 -->
+        <div class="goods_nav">
+            <ul class="navbut">
+                <li style="width:30%"><a href="javascript:;" class="goods_boxList"  onclick="toggle()" ><label id="type">全部商品</label><i class="goods_v"></i></a>
+                    <!--商品分类列表 -->
+                    <ul class="goods_navList">
+                        <li class="tb"><a href="{:U('goods/lists')}?catid=0"><img src="../../Public/Wap/images/index10.png" /><br/><p>全部商品</p></a></li>
+                        <foreach name="category_tree" item="vo" >
+                            <li>
+                                <a href="{:U('goods/lists')}?catid={$vo['id']}">
+                                    <img src="../../Public/Wap/images/index10.png"/>
+                                    <p>{$vo.title}</p>
+                                </a>
+                            </li>
+                        </foreach>
+                        <li><a href="javascript:;"><img src="../../Public/Wap/images/expect.png" /><br/><p style
+                        ="color: #adabaa">敬请期待</p></a></li>
+                    </ul>
+                </li>
+
+                <li><a href="javascript:;" class="refresh" data-field="hot">最热</a></li>
+                <li><a href="javascript:;" class="refresh" data-field="new" >最新</a><i></i></li>
+                <li><a href="javascript:;" class="sort" data-field="total">总需人次</a></li>
+                </li>
+            </ul>
+        </div>
+        <!--商品分类切换 -->
+
+        <!-- 商品列表 -->
+        <div class="main" id="hdprolist">
+            <div class="shadow_box"></div>
+            <ul class="product_list" id="data">
+
+            </ul>
+            <a class="add_more" id="more">点击查看更多商品</a>
+        </div>
+
+        <!-- 商品列表 -->
+    </div>
+
+
+
+
+<div class="huitop"></div>
+
+<include file="Public/navigation" />
+
+<div class="frightdiv"></div>
+
+
+</block>
+<block name="script">
+    <script type="text/javascript" src="/Public/Wap/js/util.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/p.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/c.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/ag.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/all.js"></script>
+    <script>
+        $(function(){
+            $(".goods_navList li:nth-child(3n)").css({
+                'border-right':'none'
+            })
+        });
+    </script>
+</block>

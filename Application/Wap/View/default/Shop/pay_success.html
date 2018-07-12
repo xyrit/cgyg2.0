@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>橙果一元购-首页</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="">
+    <meta http-equiv="description" content="">
+    <meta name="wap-font-scale"  content="no"/>
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style.css"/>
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style_part.css"/>
+</head>
+<body>
+<div class="topdiv2">
+    <div class="topnav">
+        <h1 class="pagetit">支付结果</h1>
+        <a class="fanhui" href="javascript:history.go(-1)"></a>
+        <a class="home" href="index.html"></a>
+    </div>
+</div>
+<div class="topzhanwei"></div>
+<div class="main main_Pub">
+    <div class="recharge_result">
+        <div class="title">
+            <p style="margin-bottom: 10px;">
+                <img src="__PUBLIC__/Wap/images/result.png" style="width: 120px;"/>
+            </p>
+            <p class="lineheigh-142">
+                <span class="display-b">参与成功，请等待系统为您揭晓！</span>
+                <gt name="list_count" value="0">
+                <span class="display-b margin-t5 text-gray text-size14">{$list_count}个商品只参与了部分云购</span>
+                </gt>
+            </p>
+            <p class="margin-t20">
+                <button type="button" onclick="window.location='/'" class="btn btn-fixed_2 margin-r15">继续参与</button>
+                <button type="button"  onclick="window.location='{:U('Account/attend')}'" class="btn btn-fixed_2 btn-border">参与记录</button>
+            </p>
+        </div>
+        <gt name="list_count" value="0">
+        <div class="attend_result">
+            <div class="title">
+                <span class="text-red">以下商品只参与部分云购，剩余橙果币将返回您的帐号余额</span>
+            </div>
+            <div class="content result_back">
+                <ul class="result_back_list">
+
+                <volist name="order_list"  id="vo">
+                    <li class="text-size12">
+                        <p>{$vo.title}</p>
+                        <p class="text-gray">退回橙果币：<span class="text-red">{$vo.more_money}</span>个</p>
+                    </li>
+                </volist>
+                </ul>
+            </div>
+        </div>
+        </gt>
+
+    </div>
+</div>
+
+
+<div class="huitop"></div>
+
+
+<script src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script src="__PUBLIC__/Wap/js/swiper.jquery.min.js"></script>
+<script src="__PUBLIC__/Wap/js/function.js"></script>
+
+</body>
+</html>

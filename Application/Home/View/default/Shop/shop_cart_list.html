@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>购物车</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="">
+    <meta http-equiv="description" content="">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/style.css"/>
+</head>
+<body>
+<div class="topdiv2">
+    <div class="topnav">
+        <h1 class="pagetit">购物车</h1>
+        <a class="fanhui" href="javascript:history.go(-1)"></a>
+        <a class="home" href="/"></a>
+    </div>
+</div>
+<div class="topzhanwei"></div>
+
+
+<if condition="$list">
+
+    <div class="main">
+        <div class="clear pt10"></div>
+        <div class="car_list">
+
+            <volist name="list" id="vo">
+                <div class="list">
+                    <div class="img"><a href="{:U('Goods/detail/lottery_id/'.$vo['lottery_id'])}"><img src="{$vo.thumb}" /></a></div>
+                    <h3><a href="{:U('Goods/detail/lottery_id/'.$vo['lottery_id'])}">{$vo.title}</a></h3>
+                    <div class="renci">总需{$vo.need_count}人次，剩余<em class="shengyu">{$vo['need_count'] - $vo['attend_count']}</em></div>
+                    <div class="addcar_shanchu">
+                        <span>参与</span>
+                        <span class="minus">-</span>
+                        <input class="inputsl" price="1" min="1" max="1205" type="text" value="{$vo.attend_count}" onkeyup="value=value.replace(/[^\d]/g,'')">
+                        <span class="plus">+</span>
+                        <span>人次</span>
+                        <div class="shanchu"></div>
+                        <input type="hidden" class=".lottery_id" name="lottery_id" value="10025452" />
+                    </div>
+                    <div class="xianzhuan"></div>
+                    <div class="tipsdiv">
+                        <div class="tips"><span>参与人次为 <em>1</em> - <em>{$vo['need_count'] - $vo['attend_count']}</em></span></div>
+                        <div class="tipszw"></div>
+                    </div>
+                </div>
+            </volist>
+
+        </div>
+        <div class="clear"></div>
+        <div class="car_pay">
+            <div class="cgbzf">使用橙果币支付，您的余额 <em class="yue">{$useraccount}</em> 个<span class="ifpayyue active"></span></div>
+            <div class="qtzffs">其他支付方式<em>￥</em><em class="qitajine">0</em></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div class="car_bottom">
+        <div class="car_bot_nav">
+            <div class="infos">
+                <p class="tit">共参与 <em class="all_piece">{count($list)}</em> 件商品，总计：<span><em class="all_jine">333</em> 橙果币</span></p>
+                <p>云购有风险，参与需谨慎</p>
+            </div>
+            <a href="javascript:void(0);">支付</a>
+        </div>
+    </div>
+
+    <else />
+
+    <!--  购物车无商品开始  -->
+    <div class="main">
+        <div class="carhasno">
+            <p>您的购物车空荡荡，参与云购，惊喜等着您！</p>
+            <p><a href="/">立即云购</a></p>
+        </div>
+
+        <div class="line10"></div>
+        <div class="intitle">
+            <span class="tit renqi active">人气推荐</span>
+            <a class="more2" href=""></a>
+        </div>
+        <div class="clear"></div>
+        <ul class="inprolist">
+
+            <foreach name="goods_data.list" item="goods">
+                <li class="list">
+                    <div class="listinfo">
+                        <p><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}"><img src="{$goods.thumb}" /></a></p>
+                        <p><h3><a href="{:U('Goods/detail','lottery_id='.$goods['lottery_id'])}">{$goods.title}</a></h3></p>
+                        <div class="renci_jindu">
+                            <div class="renci">剩<span>{$goods['need_count'] - $goods['attend_count']}</span>人次</div>
+                            <div class="jindu"><div class="xianjindu" style="width:{$goods['attend_count']/$goods['need_count']*100}%;"></div></div>
+                            <div class="addtocar" onclick="addShop({$goods['lottery_id']})"></div>
+                        </div>
+                    </div>
+                </li>
+            </foreach>
+
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <!--   购物车没有商品结束  -->
+</if>
+
+
+<include file="Public/navigation" />
+
+<div class="huitop"></div>
+<div class="botzhanwei"></div>
+
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/function.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Wap/js/cart/addShopGoods.js"></script>
+<script>
+    $(document).ready(function(){
+        toall();
+
+        $(".list .shanchu").click(function(){
+            $(this).parents(".list").remove();
+            var lottery_id=$(this).parents(".list").find(".lottery_id").val();
+            remogoods(lottery_id);
+            toall();
+        });
+        $('.addcar_shanchu .plus').click(function(){
+            var oldzhi=Number($(this).siblings(".inputsl").val());
+            var newzhi=oldzhi+1;
+            if(newzhi>Number($(this).siblings(".inputsl").attr("max"))){
+                newzhi=Number($(this).siblings(".inputsl").attr("max"));
+                $(this).parents(".list").find(".tipsdiv").fadeIn();
+                setTimeout("$('.list .tipsdiv').fadeOut()",3000);
+            }
+            $(this).siblings(".inputsl").val(newzhi);
+            var lottery_id=$(this).parents(".list").find(".lottery_id").val();
+            add_conkeiNum(lottery_id);
+            toall();
+        });
+        $('.addcar_shanchu .minus').click(function(){
+            var oldzhi=Number($(this).siblings(".inputsl").val());
+            var newzhi=oldzhi-1;
+            if(newzhi<Number($(this).siblings(".inputsl").attr("min"))){
+                newzhi=Number($(this).siblings(".inputsl").attr("min"));
+                $(this).parents(".list").find(".tipsdiv").fadeIn();
+                setTimeout("$('.list .tipsdiv').fadeOut()",3000);
+            }
+            $(this).siblings(".inputsl").val(newzhi);
+            var lottery_id=$(this).parents(".list").find(".lottery_id").val();
+            red_conkeiNum(lottery_id);
+            toall();
+        });
+
+        if(Number($(".car_pay .yue").text())==0){
+            $(".car_pay .cgbzf").hide();
+            $(".car_pay .qtzffs").show();
+            $(".car_pay .ifpayyue").removeClass("active")
+        }else{
+            $(".car_pay .cgbzf").show();
+            $(".car_pay .ifpayyue").click(function(){
+                $(this).toggleClass("active");
+                toall();
+            });
+        }
+
+        $(".inputsl").blur(function(){
+            var newzhi=Number($(this).val());
+            if(newzhi<Number($(this).attr("min"))){
+                newzhi=Number($(this).attr("min"));
+                $(this).val(newzhi);
+                $(this).parents(".list").find(".tipsdiv").fadeIn();
+                setTimeout("$('.list .tipsdiv').fadeOut()",3000);
+            }else if(newzhi>Number($(this).attr("max"))){
+                newzhi=Number($(this).attr("max"));
+                $(this).val(newzhi);
+                $(this).parents(".list").find(".tipsdiv").fadeIn();
+                setTimeout("$('.list .tipsdiv').fadeOut()",3000);
+            }else{
+                $(this).parents(".list").find(".tipsdiv").fadeOut();
+            }
+            var lottery_id=$(this).parents(".list").find(".lottery_id").val();
+            daaNum(lottery_id,newzhi);
+            toall();
+        });
+    })
+
+
+    function toall(){
+        var xiaoji=0;
+        $(".car_list .list").each(function(){
+            var inputk=$(this).find(".inputsl");
+            xiaoji +=Number(inputk.val()) * Number(inputk.attr("price"));
+            var newzhi=Number(inputk.val());
+            if(newzhi<Number(inputk.attr("min"))){
+                newzhi=Number(inputk.attr("min"));
+            }else if(newzhi>Number(inputk.attr("max"))){
+                newzhi=Number(inputk.attr("max"));
+            }
+            inputk.val(newzhi);
+            var lottery_id=$(this).find(".lottery_id").val();
+            daaNum(lottery_id,newzhi);
+        });
+
+        $(".car_bottom .all_piece").text($(".car_list .list").length);
+        $(".car_bottom .all_jine").text(xiaoji);
+        $(".car_pay .qitajine").text(xiaoji);
+        if($(".car_pay .ifpayyue").hasClass("active")){
+            if(xiaoji<=Number($(".car_pay .yue").text())){
+                $(".car_pay .qtzffs").hide();
+            }else{
+                $(".car_pay .qtzffs").show();
+                $(".car_pay .qitajine").text(xiaoji-Number($(".car_pay .yue").text()));
+            }
+        }else{
+            $(".car_pay .qtzffs").show();
+        }
+    }
+</script>
+</body>
+</html>

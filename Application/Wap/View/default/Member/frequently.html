@@ -1,0 +1,222 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<!-- 单独引入css -->
+<block name="style">
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-family: "Microsoft Yahei", "微软雅黑", Arial, Tahoma;
+        }
+        .freque_main{
+            padding: 25px 10px;
+        }
+        .test_list ul li{
+            width: 100%;
+            background: #fff;
+            line-height: 50px;
+            box-sizing: border-box;
+            border: 1px solid #eee;
+            border-radius:3px;
+            margin-bottom: 15px;
+
+        }
+        .test_list ul li a{
+            color: #333;
+            text-decoration: none;
+            display: block;
+            font-size: 16px;
+            background: #fff;
+            padding: 0 8px;
+        }
+        .test_list ul li p{
+            line-height: 25px;
+            color: #666;
+            padding: 10px 10px;
+            display: none;
+            font-size: 14px;
+
+        }
+    </style>
+</block>
+
+<block name="body">
+
+    <div class="freque_main">
+        <div class="test_list">
+            <ul>
+                <li>
+                    <a href="javascript:void(0);">
+                        1、怎样参加橙果云购？
+                    </a>
+                    <p>答：  使用手机号码注册登录，就可以参加橙果云购了。参加方式：
+                        1、充值获得橙果币，然后选择喜欢的商品开始云购；
+                        2、点击一个感兴趣的商品，选择要参与的人次并支付，直接充值并参与云购。橙果云购，就是这么简单！
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+                        2、橙果云购是怎么计算幸运号码的？
+                    </a>
+                    <p>（1）商品的最后一个号码分配完毕后，将公示该分配时间点前本站全部商品的最后50个参与时间；
+
+                        （2）将这50个时间的数值进行求和（得出数值A）（每个时间按时、分、秒、毫秒的顺序组合，如20:15:25.362则为201525362）；
+
+                        （3）为保证公平公正公开，系统还会等待一小段时间，取最近下一期中国福利彩票“老时时彩”的开奖结果（一个五位数值B）作为公正数据源。
+
+                        （4）（数值A+数值B）除以该商品总需人次后取余数，余数再加上原始数10000001即得出“中奖幸运码”，拥有该“中奖幸运码“者，直接获得该服务或商品。
+
+                        了解更多“老时时彩”信息
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+                        3、为什么要加入“老时时彩”开奖结果？
+                    </a>
+                    <p>引入“老时时彩”开奖结果是为了保证获奖幸运码计算结果的绝对公平公正。
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+                        4、获奖幸运码的计算结果可信吗？
+                    </a>
+                    <p>由于使用了“老时时彩”开奖结果作为参数，因此获奖幸运码肯定是未知的；
+                        您可以绝对相信计算结果真实、可信。
+                    </p>
+                </li>
+
+
+                <li>
+                    <a href="javascript:void(0);">
+                        5、怎样查看是否中奖？
+                    </a>
+                    <p>个人中心有您的参与记录，点击对应的记录，即可知道该期商品的获得者；
+
+                        如果您获奖，将会有短信通知。
+                    </p>
+                </li>
+
+
+                <li>
+                    <a href="javascript:void(0);">
+                        6、如何领奖？
+                    </a>
+                    <p>在您获奖后，会有短信通知。
+
+                        收到通知后，请到个人中心填写真实的收货地址，完善或确认您的个人信息，以便我们为您派发获得的商品。
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+                        7、商品是正品吗？怎么保证？
+                    </a>
+                    <p> 橙果云购所有商品均由橙果公司或经橙果公司确认的第三方商家提供及发货，100%正品，可享受厂家所提供的全国联保服务。
+                    </p>
+                </li>
+
+
+                <li>
+                    <a href="javascript:void(0);">
+                        8、我收到的商品可以换货或者退货吗？
+                    </a>
+                    <p>非质量问题，不在三包范围内，不给予退换货
+
+                        请尽量亲自签收并当面拆箱验货，如果发现运输途中造成了商品的损坏，请不要签收，可以拒签退回。
+                    </p>
+                </li>
+
+
+                <li>
+                    <a href="javascript:void(0);">
+                        9、如果一件商品很久都没达到总需人次怎么办？
+                    </a>
+                    <p>若某件商品的幸运码从开始分配之日起90天未分配完毕，则橙果公司有权取消该件商品的参与活动，
+                        并向用户退还橙果币，所退还橙果币将在3个工作日内退还至用户账户中。
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+                        10、参与橙果云购需要注意什么？
+                    </a>
+                    <p>为了确保在您获奖后第一时间收到通知，请务必在【我的橙果】绑定真实有效的手机号码和收货地址。
+                    </p>
+                </li>
+
+
+                <li>
+                    <a href="javascript:void(0);">
+                        11、网上支付未及时到帐怎么办？
+                    </a>
+                    <p>
+                        网上支付未及时到帐可能有以下几个原因造成：
+                        第一，由于网速或者支付接口等问题，支付数据没有及时传送到支付系统造成的；
+                        第二，网速过慢，数据传输超时使银行后台支付信息不能成功对接，导致银行交易成功而支付后台显示失败；
+                        第三，如果使用某些防火墙软件，有时会屏蔽银行接口的弹出窗口。
+                        如果支付过程问题遇到问题，请与我们联系。
+
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+                        12、什么是橙果币？
+                    </a>
+                    <p>
+                        橙果币是橙果云购的代币，用户每充值1元，即可获得1个橙果币；1个橙果币可以直接购买1个幸运码。
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+
+                        13、如何进行橙果币充值？
+
+                    </a>
+                    <p>
+                        个人中心可以找到入口进行充值；需要注意的是，充值之后获得的是橙果币，可以直接用于参与云购。
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+
+                        14、橙果币是否可以提现？
+
+                    </a>
+                    <p>
+                        很抱歉，橙果币无法提现。
+                    </p>
+                </li>
+
+                <li>
+                    <a href="javascript:void(0);">
+                        15、建议反馈
+                    </a>
+                    <p>
+                        如果您有任何意见或建议，请点
+                        <a style="color:#0099FF;" href="tel:4000067060">&nbsp;联系客服&nbsp;</a>
+                    </p>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+</block>
+
+<block name="script">
+    <script>
+        $(function(){
+            $('.test_list ul li').click(function(){
+                $(this).find('p').slideToggle();
+                $(this).siblings('li').find('p').slideUp();
+            });
+        });
+    </script>
+</block>

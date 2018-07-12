@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+    <title>橙果云购 - 为生活创造惊喜</title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+
+    <load href="__PUBLIC__/static/Bootstrap/css/bootstrap.min.css" />
+    <load href="__PUBLIC__/Home/css/yiyuan.css" />
+
+    <load href="__PUBLIC__/Home/css/sweetalert.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+
+</head>
+<body>
+
+<!--头部 start-->
+<include file="Public/header" />
+<!--头部 end-->
+
+
+<!--中间内容-->
+<div class="container">
+    <!--当前位置-->
+    <div class="row">
+        <ol class="breadcrumb cg-breadcrumb">
+            <li><a href="#" id="nowPosition">{$data.cat_name}</a></li>
+            <li class="active">商品详情【期号：<span id="lottery_id">{$data.lottery_id}</span>】</li>
+
+        </ol>
+    </div>
+    <!--商品内容-->
+    <div class="row" style="margin-left: -30px;margin-right: -30px">
+        <div class="col-md-4 col-sm-4">
+            <div class="goods-box">
+                <div class="tb-booth tb-pic tb-s310" id="first-img">
+           
+
+                    <a href="{$data['images'][0]}">
+                        <img src="{$data['images'][0]}" alt="{$data['images'][0]}" rel="{$data['images'][0]}" class="jqzoom" style="cursor: crosshair;">
+                    </a>
+
+                </div>
+
+
+                <ul class="tb-thumb" id="thumblist">
+                    <foreach name="data.images" item="vo" key="key">
+                    <li <eq name="key" value="0">class="tb-selected"</eq>>
+                        <div class="tb-pic tb-s40">
+                            <a href="javascript:;">
+                                <img src="{$vo}" mid="{$vo}" big="{$vo}">
+                            </a>
+
+                        </div>
+                    </li>
+                    </foreach>
+
+
+
+                </ul>
+            </div>
+            <!--分享代码-->
+            <div class="margin-t-20">
+                <!--<div class="focus pull-left">
+                  <a href="javascript:;">
+                    <span class="glyphicon-star"></span>
+                    关注
+                  </a>
+                </div>-->
+                <div class="bshare-custom">
+                    <span class="icon-share"></span>
+                    分享到：
+                    <a title="分享到QQ空间" class="bshare-qzone"></a>
+                    <a title="分享到微信" class="bshare-weixin"></a>
+                    <a title="分享到新浪微博" class="bshare-sinaminiblog"></a>
+                    <a title="分享到腾讯微博" class="bshare-qqmb"></a>
+                    <a title="分享到QQ好友" class="bshare-qqim"></a>
+                    <a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a>
+                    <span class="BSHARE_COUNT bshare-share-count">0</span>
+                </div>
+                <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=1&amp;lang=zh"></script>
+                <script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+            </div>
+        </div>
+        <!--基本内容-->
+        <div class="col-md-5 col-sm-5">
+            <div class="basic-info pull-right">
+                <h1 id="goodsTitle">{$data.title}
+                    <span class="text-danger">{$data.f_title}</span>
+                </h1>
+                <div class="cg-progress-pre margin-t-8 padding-b-t">
+                    <p>总需：<span class="text-red-big" id="need_count">{$data.need_count}</span>人次</p>
+                    <div class="progress cg-progress cg-progress2" id="progress">
+                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {$data.attend_ratio}%">
+                            <span class="sr-only">{$data.attend_ratio}% Complete (warning)</span>
+                        </div>
+                    </div>
+                    <ul class="list-group row cg-progress-text">
+                        <li class="list-group-item pull-left clearfix col-md-4">
+                            <p class="text-gray nomargin" id="attend_count">{$data.attend_count}</p>
+                            <p class="nomargin">已参与人次</p>
+                        </li>
+
+                        <li class="list-group-item pull-right clearfix col-md-4">
+                            <p class="text-danger nomargin" id="remain">{$data['need_count']-$data['attend_count']}</p>
+                            <p class="text-danger nomargin">剩余人次</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="count count2 clearfix padding-b-t">
+                    <span class="pull-left line-height-30">参与:</span>
+                    <div class="clearfix add-red add-red2 pull-left">
+
+                        <span class="reduce" onClick="red();">-</span>
+                        <input class="count-input" type="text" value="1" id="count-input">
+                        <span class="add" onClick="add();">+</span>
+                    </div>
+                    <span class="pull-left line-height-30">人次</span>
+                    <p class="add-red-p text-danger pull-left margin-l-10">购买人次越多获得几率越大哦！</p>
+                </div>
+                <div class="row padding-b-t">
+                    <div class="col-md-6 col-sm-6">
+                        <button type="button" class="btn cg-btn-danger cg-btn-fixed-round cg-gouwu  goumai" id="nowAdd">立即参与</button>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <button type="button" class="btn cg-btn-danger cg-btn-fixed-round cg-gouwu btn-bg-blue goumai" id="addTocarBtn">加入购物车</button>
+                    </div>
+                </div>
+                <div class="how clearfix padding-b-t">
+                    <ul class="list-group">
+                        <li class="list-group-item pull-left"><span>三大保证：</span></li>
+                        <li class="list-group-item pull-left">
+                            <img src="__PUBLIC__/Home/images/footer4.jpg" width="20" height="20">
+                            100%公平公正
+                        </li>
+                        <li class="list-group-item pull-left">
+                            <img src="__PUBLIC__/Home/images/footer5.jpg" width="20" height="20">
+                            100%正品保证
+                        </li>
+                        <li class="list-group-item pull-left">
+                            <img src="__PUBLIC__/Home/images/footer6.jpg" width="20" height="20">
+                            全国免运费
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <img src="__PUBLIC__/Home/images/201503.jpg">
+                </div>
+                <div class="takein" id="takein">
+
+                    <if condition="$user_id">
+
+                        <gt name="user_count" value="0">
+
+                            <span class="top-triangle"></span>
+                            <p class="nomargin">您参与了：<span class="text-danger" id="myAttend_count"><!--1000--></span>人次</p>
+                            <div class="clearfix">
+                                <p class="pull-left luck-title nomargin">幸运码：</p>
+                                <p class="nomargin luck-num pull-left" id="luckyCode0">
+
+                                    <a href="javascript:;" id="alertList" class="text-blue" data-toggle="modal" data-target="#myModal">查看所有号码>></a>
+                                </p>
+                            </div>
+
+                            <else/>
+
+                            <p>您还没有参与本期云购哦</p>
+                        </gt>
+
+                        <else/>
+                        <p>您还未登录</p>
+                    </if>
+
+                </div>
+
+
+            </div>
+        </div>
+        <!--开奖信息-->
+        <div class="col-md-3 col-sm-3">
+            <div class="lottery pull-right">
+                <h1 class="lottery-title">
+                    开奖信息
+                </h1>
+                <div class="lottery-content" id="lottery-content">
+                    <div class="clearfix lottery-carousel">
+                        <a href="javascript:;" class="pop_pri position-re">
+                            <span class="icon-angle-left"></span>
+                        </a>
+                        <span> <eq name="up_lettery" value="">期号：{$up_lettery.lottery_id}</eq></span>
+                        <a href="javascript:;" class="pop_pri position-re">
+                            <span class="icon-angle-right"></span>
+                        </a>
+                    </div>
+
+                    <eq name="up_lettery" value="">
+
+                    <div class="user-img">
+                        <a href="personal-index.html" target="_blank">
+                            <img src="{$up_lettery.face}" width="100" alt="{$up_lettery.nickname}">
+                        </a>
+                    </div>
+                    <div class="user-info">
+                        <ol>
+                            <li class="info-head">
+                                恭喜
+                                <a href="personal-index.html" class="link-blue" target="_blank">
+                                    {$up_lettery.nickname}
+                                </a>
+                                （{$up_lettery.ip_address}）获奖
+                            </li>
+                            <li class="info-head">
+                                用户ID：
+                                <span class="">{$up_lettery.uid}</span>
+                                （用户唯一不变标识）
+                            </li>
+                            <li class="info-head">
+                                获奖幸运码：
+                                <span class="text-danger">{$up_lettery.lottery_code}</span>
+                            </li>
+                            <li class="info-head">
+                                本期参与：
+                                <span class="text-danger">6479</span>
+                                人次
+                            </li>
+                            <li class="info-head">揭晓时间：{$up_lettery.lottery_time|date='Y-m-d',###}</li>
+                            <li class="info-head">夺宝时间：{$up_lettery.last_attend_date_time}</li>
+                        </ol>
+                    </div>
+                    <div class="text-center">
+                        <a href="ready-publish.html?pid=474&amp;lottery_id=10000211" class="btn cg-btn-default" target="_blank">查看详情</a>
+                    </div>
+                        <else/>
+                        目前还没有开奖
+                    </eq>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--商品基本信息结束-->
+    <div class="row">
+        <div class="goods-box-tab margin-b-20">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">商品详情</a></li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">所有参与记录</a></li>
+                <li role="presentation"><a href="#profile2" aria-controls="profile2" role="tab" data-toggle="tab" id="comment-btn">晒单</a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <!--商品内容-->
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div id="content">
+                        <div class="loading"></div><!--加载动画-->
+                        {$data.info}
+                        <!--<img src="__PUBLIC__/Home/images/201500_03.jpg">-->
+                    </div>
+                </div>
+                <!--参与记录数据-->
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    <table class="table table-hover detail-table">
+                        <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>会员</th>
+                            <th>参与人次</th>
+                            <th>操作</th>
+                            <th>IP</th>
+                            <th>来源</th>
+                        </tr>
+                        </thead>
+                        <tbody id="attendList">
+
+                        </tbody>
+
+                    </table>
+                    <!--弹出框-->
+
+                    <!--分页-->
+                    <nav class="text-center page">
+                        <ul class="pagination clearfix nomargin" id="pagination">
+                            <li><a href="#"><span class="icon-angle-left"></span>上一页</a></li>
+                            <li><a href="#">1</a></li>
+                            <li class="active"><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li class="disabled"><a href="#">...</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">下一页<span class="icon-angle-right"></span></a></li>
+                        </ul>
+                        <div class="count-box nomargin">
+                            <div class="count-num">
+                                共<em id="a_pageCount"></em>页<!--，-->
+                            </div>
+
+                        </div>
+                    </nav>
+                    <!--分页-->
+                </div>
+                <!--参与记录数据结束-->
+                <!--评论晒单-->
+                <div role="tabpanel" class="tab-pane" id="profile2">
+
+                    <div class="comment" id="commentContent">
+                        <h3 class="title">
+                            本商品已有
+                            <span id="disList_user_count" class="text-danger padding-l-r-5">0</span>
+                            位幸运用户晒单
+                        </h3>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--中间内容 end-->
+
+
+<!--底部版权友情链接 start-->
+<include file="Public/footer" />
+<!--底部版权友情链接 end-->
+
+<!--右边 右边栏 返回顶部 功能菜单start-->
+<include file="Public/right" />
+<!--右边 右边栏 返回顶部 功能菜单end-->
+<load href="__PUBLIC__/Home/js/jquery-1.11.3.min.js" />
+<load href="__PUBLIC__/Common/Bootstrap/js/bootstrap.min.js" />
+<load href="__PUBLIC__/Home/js/sweetalert.min.js" />
+<script src="__PUBLIC__/Home/js/jquery.imagezoom.min.js"></script><!--商品放大镜-->
+<script src="__PUBLIC__/Home/js/magnify-smalltobig.js"></script><!--鼠标经过放大-->
+<script>
+    $(function(){
+        $(".jqzoom").imagezoom();//调用图片放大镜效果
+
+        $("#thumblist li a").click(function(){
+            $(this).parents("li").addClass("tb-selected").siblings().removeClass("tb-selected");
+            $(".jqzoom").attr('src',$(this).find("img").attr("mid"));
+            $(".jqzoom").attr('rel',$(this).find("img").attr("big"));
+        });
+    })
+
+    function add(){
+      var count=  $('#count-input').val()
+        count=parseInt(count)+1;
+
+        var sy = {$data['need_count']-$data['attend_count']};
+        if(count > sy)
+        {
+            $('#count-input').val(sy)
+        }
+        else
+        {
+            $('#count-input').val(count)
+        }
+
+    }
+
+    function red(){
+        var count=  $('#count-input').val()
+
+        count=parseInt(count)-1;
+        if(count <1)
+        {
+//     弹窗
+//            swal({
+//                title: "",
+//                text: '啊三大三大撒',
+//                html: true,
+//                type: "error",//  warning  true
+//                confirmButtonText:"确定",
+//                confirmButtonColor: "#ff4800",
+//            });
+
+            $('#count-input').val(1)
+        }
+        else
+        {
+            $('#count-input').val(count)
+        }
+
+    }
+
+
+    $('#count-input').blur(function(){
+
+        var test=$(this).val()
+        //test=parseInt(test);
+        var regVerifyNum_find=/^[1-9]\d*$/;//非0开头的数字
+        var sy = {$data['need_count']-$data['attend_count']};
+
+
+
+        if(!(regVerifyNum_find.test(test))){
+
+            $(this).val(1)
+            return false
+        }
+
+        test=parseInt(test);
+        sy = parseInt(sy);
+        if(test >sy)
+        {
+
+            $(this).val(sy)
+            return false
+        }
+
+    })
+
+
+    //购买 和加入购物车
+    $('.goumai').click(function(){
+
+        var action = $(this).attr('id');
+
+         //将数据写入cookie
+
+        if(action=='nowAdd')      //立即参与  跳转到购物车
+        {
+            alert('立即参与');
+        }
+        else if(action=='addTocarBtn')    //添加购物车
+        {
+
+            alert('添加购物车');
+        }
+
+    })
+
+
+
+</script>
+
+<!--所有参与记录  晒单  -->
+<script src="__PUBLIC__/Home/js/detail_purchase_recoreds.js"></script>
+<script src="__PUBLIC__/Home/js/detail_show_single_list.js"></script>
+<script>
+    $(function(){
+
+        $("#attend_record").click(function(){
+
+            detail_purchase_recoreds({$data.lottery_id},"{:U('/Goods/purchase_records')}");
+        });
+        $("#share_dis").click(function(){
+            detail_show_single_list({$data.pid},"{:U('/Goods/show_single_list')}");
+        });
+
+
+    });
+
+</script>
+</body>
+</html>
+

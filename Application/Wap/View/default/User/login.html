@@ -1,0 +1,114 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="__PUBLIC__/Wap/css/register.css?v=telo"/>
+</block>
+
+<block name="body">
+	
+	<!-- 登录 -->
+	<div class="register_main">
+        <div class="cgyg_logon">
+            <a href="index.html">
+                <!--橙果logo-->
+                <img src="__PUBLIC__/Wap/images/logoNew.png" alt="橙果云购"/>
+                <!--圈子logo-->
+                <!--<img src="__PUBLIC__/Wap/images/quanzi.png" alt="橙果云购"/>-->
+
+            </a>
+            <p style="color:#666;line-height: 30px;">橙果账号登陆</p>
+        </div>
+		<div class="register_box_input">
+			<div class="input_box">
+				<span>账号：</span>
+				<input class="mobile_fff mobile" maxlength='11' type="tel" name='mobile' placeholder='请输入手机号码' value=''/>
+			</div>
+			<div class="input_box input_boxrg">
+				<span>密码：</span>
+				<input class="password" maxlength='20' type="password" name='password' placeholder='请输入密码' value=''/>
+			</div>
+			<a href="javascript:;" class="cgyg_button denglu_bt">登录</a>
+			<div class="tishi_text">
+				<p>
+					<span class="cccfont">您还没有橙果云购账号？<span>
+					<a class="cgyg_color" href="{:U('User/register')}">立即注册</a>
+					<a class="cccfont right" href="{:U('User/forgot_password')}">忘记密码？</a>
+				</p>
+			</div>
+
+			<!--第三方登录-->
+			<div class="tposbox">
+				<div class="tppsb_l">
+					<span class="posi_font cccfont">第三方登录</span>
+				</div>
+			</div>
+			<div class="tposbox_img">
+					<a href="{:U('ThirdLogin/auth','type=weixin')}"></a>
+					<a href="{:U('ThirdLogin/auth','type=qq')}"></a>
+			</div>
+			<!--第三方登录结束-->
+		</div>
+	</div>
+	<!-- 登录结束 -->
+</block>
+
+<!-- 单独引入轮播js -->
+<block name="script">
+    <script type="text/javascript" src="__PUBLIC__/Common/jquery.md5.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/Wap/js/common_inc.js"></script>
+    <script>
+        $(function(){
+            $('.denglu_bt').click(function(){
+                var mobile = $('.mobile').val();//手机号码
+                var password = $('.password').val();//密码
+                if(mobile==''){
+                    tanchuan_0('200','1000','200','请输入手机号码！');
+                    return false;
+                }
+
+                if(!yanzhenMobile(mobile)){
+                    tanchuan_0('200','1000','200','手机号码不正确！');
+                    return false;
+                }
+                if(password == ''){
+                    tanchuan_0('200','1000','200','请输入密码！');
+                    return false;
+                }
+                if(password.length < 6 || password.length > 20){
+                    tanchuan_0('200','1000','200','密码为6-20位！');
+                    return false;
+                }
+
+                $.post(
+                        "{:U('User/login')}",
+                        {
+                            username : mobile,
+                            password : $.md5(password)
+                        },
+                        function (data){
+                            tanchuan_0('200','1000','200',data.message);
+                            if(data.code == 200){
+                                for(var i=0; i<data.success_js.length;i++){
+                                    var script=document.createElement("script");
+                                    script.src=data.success_js[i];
+                                    document.getElementsByTagName("head")[0].appendChild(script);
+                                }
+                                setTimeout(function(){
+                                    //alert(data.url);
+								   if((data.url==common_url+"/User/login.html")||(data.url==common_url+"/Member/setup.html")||(data.url==common_url+"/Member/up_mobile.html")){
+									   window.location.href = "{:U('Index/index')}"
+									}else{
+									   window.location.href = data.url;
+									}
+                                   
+                                },1000);
+
+                            }
+                        }
+                )
+            });
+        });
+    </script>
+</block>

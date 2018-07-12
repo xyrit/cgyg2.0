@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>橙果一元购-晒单分享</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <meta http-equiv="keywords" content="">
+    <meta http-equiv="description" content="">
+    <meta name="wap-font-scale"  content="no"/>
+    <link rel="stylesheet" href="/Public/Wap/css/style.css"/>
+    <link rel="stylesheet" href="/Public/Wap/css/register.css"/>
+    <link rel="stylesheet" href="/Public/Wap/css/style_part.css"/>
+</head>
+<body>
+<div class="topdiv2">
+    <div class="topnav">
+        <h1 class="pagetit">晒单分享</h1>
+        <a class="fanhui" href="javascript:history.go(-1)"></a>
+        <a class="home" href="/"></a>
+    </div>
+</div>
+<div class="topzhanwei"></div>
+<div class="main main_Pub">
+    <div class="atttend_list">
+
+        <div class="product_list dis_share_list clearfix">
+            <div class="share_det_content" style="display: block;">
+                <ul class="share_det_list" id="datas">
+
+                </ul>
+                <a class="add_more" id="more" style="display:block;width:100%;height:50px;line-height: 50px; text-align: center;">点击查看更多</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="huitop"></div>
+
+<!-- 模态框（Modal） -->
+<div class="fix_canyuma">
+    <div class="canyuma attendAlert">
+        <div class="cymtit title">
+            <h4 class="tit">本期共参与了<span class="padding-l-r5">5</span>人次</h4>
+        </div>
+        <div class="con">
+            <p class="text-size12 text-gray">2016-04-15 15:47:28</p>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+            <span>10000026</span>
+        </div>
+        <div class="close_cym">×</div>
+    </div>
+</div>
+<script type="text/javascript" src="/Public/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/function.js"></script>
+
+
+<script type="text/javascript" src="/Public/Wap/js/util.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/p.js"></script>
+<script>
+    $(function(){
+
+
+        loadData();
+
+    });
+
+    function loadData(param){
+        new Page({
+            url:"{:U('Goods/Discover')}",
+            param:param,
+            scroll:true,
+            count:10,
+            next:{
+                id:"more",
+                content:["点击加载更多","没有更多数据了"]
+            },
+            success:setData
+        });
+    }
+
+    function setData(json_data,p){
+
+        if(p.page == 1){
+
+            if(p.total == 0){
+                //无数据时的展示
+
+            }
+        }
+        var jsondata=json_data;
+
+
+        str='';
+        $.each(jsondata, function (a,b) {
+
+            if(b.face=='')
+            {
+                b.face='/Public/Wap/images/default1.png';
+            }
+
+            str+=' <li>';
+            str+='<div class="clearfix share-content">';
+            str+='<div class="avatar">';
+            str+='<a href="/Lottery/other_info/uid/'+b.uid+'"><img width="35" height="35" src="'+ b.face+'" alt="" class="userImg"></a>';
+            str+='</div>';
+            str+='<div class="text position-re">';
+            str+='<div class="arrow"></div>';
+            str+='<div class="det_sun_content">';
+            str+='<p class="text-blue">';
+            str+='<a href="'+ b.uid+'" class="padding-t-b5 text-blue">';
+            str+=b.nickname;
+            str+='</a>';
+            str+='</p>';
+            str+='<p class="padding-t-b5 text-size12 text-gray">';
+            str+='</p>';
+            str+='<p class="lineheigh-142">';
+            str+='<a href="/display/display_info/id/'+b.id+'" class="padding-t-b5">';
+            str+=b.description;
+            str+='</a>';
+            str+='</p>';
+            str+='</div>';
+            str+=' <div class="sun_share_det">';
+            $.each(b.arr_pic, function (a1,b1) {
+                str+='<a href="#"><img src="'+b1+'"></a>';
+            })
+            str+='</div>';
+            str+='</div>';
+            str+='</div>';
+            str+='</li>';
+
+        })
+        $("#datas").append(str);
+
+    }
+</script>
+
+</body>
+</html>

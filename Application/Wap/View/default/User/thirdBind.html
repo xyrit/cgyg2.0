@@ -1,0 +1,333 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>绑定手机号码</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+<link rel="stylesheet" href="../../Public/Wap/Bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="../../Public/Wap/Bootstrap/css/font-awesome.min.css"/>
+<link rel="stylesheet" type="text/css" href="../../Public/Wap/css/user_mobile.css">
+</head>
+<body>
+<div class="container-fluid"> 
+    <input type="hidden" name="open_id" value="{$Think.get.open_id}" />
+    <input type="hidden" name="sign" value="{$Think.get.sign}" />
+    <input type="hidden" name="type" value="{$Think.get.type}" />
+    <input type="hidden" name="nickname" value="{$Think.get.nickname}" />
+    <input type="hidden" name="headimgurl" value="{$Think.get.headimgurl}" />
+    
+	<div class="bang_mobileBox">
+		<!--头像-->
+		<div class="user_imgtou">
+			<div class="user_imgtouleft">
+				<img id="userImgtoux" src="{$Think.get.headimgurl}" />
+			</div>
+
+			<div class="user_imgtouright">
+				<p class="cg_color">欢迎您,<font id="usernamedisan">{$Think.get.nickname}</font></p>
+				<span class="tiehsi_font">绑定手机方便中奖时短信告知</span>
+			</div>
+		</div>
+		<!--头像-->
+        
+		<div class="inputMobile bangdingBox">
+			<p class="mobileinput_p">
+				<i class="mobile_p"></i>
+				<a href="javascript:removemobile();" class="mobile_error"></a>
+				<input class="mobi_input" type="mobile" name='mobile' placeholder="请输入手机号码" maxlength="11" value=''/>
+                <span class="error_font"></span>
+            </p>
+
+            <p class="mobileinput_p">
+                <input class="mobile_fff codever" maxlength='4' type="text" name='image_verify' placeholder='请输入验证码' value=''/>
+                <a class="yanzma_box">
+                    <img src="" onclick="getVerify()">
+                </a>
+            </p>
+
+			<p class="mobileinput_p">
+				<button class="mobile_pright">获取验证码</button>
+				<input class="yanzhanmainput" type="mobile" name='mobile_verify' placeholder="请输入验证码" maxlength="11" value=''/>
+				<span class="error_font2"></span>
+			</p>
+			<button id="bdmo_mobile" type="button" class="top_nav btn btn-lg btn-block land_la">绑定</button> 
+		</div>		
+	</div>	
+
+	<!--输入密码-->
+	<div class="bang_passwodBox">
+		<div class="inputMobile">
+			<p class="mobileinput_p">
+				<i class="mobile_passwod"></i>
+				<input class="mobi_inputpass inputPassword" type="password" name='password' placeholder="请输入6-20位密码" maxlength="20" value=''/>
+			</p>
+
+			<p class="mobileinput_p">
+				<i class="mobile_passwod"></i>
+				<input class="mobi_inputpass inputPasswordRe" type="password" name='repassword' placeholder="确认密码" maxlength="20" value=''/>
+				<span class="error_fontPass"></span>
+			</p>
+		<button id="click_passwod" type="button" class="top_nav btn btn-lg btn-block land_la">登录</button> 
+		</div>	
+		
+	</div>	
+
+	<!--输入密码-->             	 
+</div>
+     <!--底部菜单-->
+      	<!-- <div id="footer"></div> -->
+    <!--底部菜单-->
+<script type="text/javascript" src="../../Public/Wap/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/Common/jquery.md5.js"></script>
+<script type="text/javascript" src="../../Public/Wap/js/common_inc.js"></script>
+<script>
+var InterValObj;//timer变量，控制时间
+var count = 120; //间隔函数，1秒执行
+var curCount;//当前剩余秒数
+//var token = GetQueryString('token');//获取第三方登录凭证
+//var othertoken =  GetQueryString('othertoken');//获取第三方 标记
+var glo_mobile_token;//手机号码token
+var glo_login_type;//第三方标记
+
+
+$(function($){
+    getVerify();    
+    
+})  
+    
+
+//获取第三方信息
+/*
+function huoqudisan(){
+  $.ajax({
+      type:"post",
+      url:urlPost+"/User/get_Bind_Info",
+      data:{
+        othertoken:token
+      },
+      dataType:'json',
+      success:function(data){
+        if(data['code']==200){
+          var nickname = data['user']['nickname'];//名称
+          var path     = data['user']['path'];//头像
+          var login_type=data['user']['login_type'];//凭证
+          glo_login_type=login_type;//赋值
+          $('#userImgtoux').attr('src',path);//改变头像
+          $('#usernamedisan').text(nickname);//改变名称
+
+        }
+      }
+  })
+}
+*/
+
+function getVerify(){
+    var verify_url = "{:U('Public/verify')}"+'?rand='+Math.random();
+    $(".yanzma_box img").attr('src',verify_url);        
+}
+
+
+
+//获取焦点
+$('.mobi_input').focus(function(){
+	$('.mobile_error').show();
+	$('.mobi_input').css({'border':'1px solid #FF4800'});
+	$('.mobile_p').css({
+		"background-color":'#FF4800'})
+	$(".mobile_pright").removeAttr("disabled");
+	$(".mobile_pright").css({'background':'#ff4800'});
+});
+//获取焦点
+$('.yanzhanmainput').focus(function(){
+	$('.yanzhanmainput').css({'border':'1px solid #FF4800'});
+	$('.mobile_pright').css({
+		"background-color":'#FF4800'});
+});
+//失去焦点判断
+$('.mobi_input').blur(function(){
+	var Mobil = $(this).val();
+	var isMobile =/^1[34578]\d{9}$/;
+	if(Mobil==''){
+		$('.error_font').text('手机号码不能为空！');
+		return false;
+	}else if(!isMobile.test(Mobil)){
+		$('.error_font').text('手机号码不正确！');
+		return false;
+	}else{
+		
+		$('.error_font').text('');
+	}
+	$('.mobile_error').hide();
+});
+
+//清空手机号码
+function removemobile(){
+	$('.inputMobile input').val('');
+}
+
+function SetRemainTime() {
+            if (curCount == 0) {                
+                window.clearInterval(InterValObj);
+                $(".mobile_pright").removeAttr("disabled");
+                $(".mobile_pright").text("重新发送");
+                $(".mobile_pright").css({'background':'#ff4800'});
+            }
+            else {
+                curCount--;
+                $(".mobile_pright").css({'background':'#A0A0A0'});
+                $(".mobile_pright").text(curCount+'重新发送');
+                
+            }
+        }
+//发送手机验证码
+$('.mobile_pright').click(function(){
+		var Mobil = $('.mobi_input').val();
+        var codever = $('.codever').val();//验证码
+
+		if(Mobil=='' || Mobil.length<11){
+			$('.error_font').text('手机号码不正确！');
+			return false;
+		}
+        
+        $.post(
+            "{:U('User/sendVerify')}",
+            {
+                mobile : Mobil,
+                image_verify : codever 
+            },
+            function (data){
+                if(data.code == 0){
+         			//倒计时
+					 curCount = count;
+				     $(".mobile_pright").attr("disabled", "true");
+				     $(".mobile_pright").text(curCount+'重新发送');
+				     InterValObj = window.setInterval(SetRemainTime, 1000); //启动计时器，1秒执行一次       
+                }else{
+                    //发送失败
+                    tanchuan_0('200','1000','200',data.message);
+                }    
+            }
+        )
+               
+	});
+//绑定手机提交
+$('#bdmo_mobile').click(function(){
+		var mobile       = $('.mobi_input').val();
+		var bdyanzhen_xg = $('.yanzhanmainput').val();
+        var codever      = $('.codever').val();
+		if(mobile=='' || mobile.length<11){
+			$('.error_font').text('手机号码不正确！');
+            $('.error_font').fadeIn(500);
+			return false;
+		}if(codever==''){
+            $('.error_font').text('请输入图形验证码！');
+            $('.error_font').fadeIn(500);
+            return false;
+         }else if(bdyanzhen_xg==''){
+			$('.error_font').text('请输入验证码！');
+             $('.error_font').fadeIn(500);
+			return false;
+		}else{
+            $.post(
+                "{:U('User/checkRegister')}",
+                {
+                    mobile : mobile,
+                },
+                function (data){
+                    if(data.code == 0){
+                        //注册过，直接提交
+                        dobind();    
+                        return;     
+                    }else{
+                        
+                        $.post(
+                            "{:U('User/checkRegisterVerify')}",
+                            {
+                                mobile : mobile,
+                                mobile_verify : bdyanzhen_xg,
+                                is_ajax : 1
+                            },
+                            function (data){
+                                if(data.code == 0){
+                					$('.bangdingBox').hide();//隐藏绑定信息
+                					$(document).attr("title","请设置密码");//修改title值
+                					$('.bang_passwodBox').show();//显示输入密码
+                					$('.tiehsi_font').text('请设置密码,方便使用手机号和密码登录');
+                                }else{
+                                    $('.error_font').text(data.message);
+                                }    
+                            }
+                        )
+
+                    }    
+                }
+            )
+
+		}
+	});
+
+
+//提交密码
+$('#click_passwod').click(function(){
+	$(this).css({
+		'opacity': '0.8'
+	});
+	var inputPassword = $('.inputPassword').val();
+	var inputPasswordRe = $('.inputPasswordRe').val();
+
+	if(inputPassword == '' || inputPasswordRe == ''){
+		$('.error_fontPass').text('请输入完整密码！');
+		return false;
+	}
+	if(inputPassword.length <6 || inputPasswordRe.length>20){
+		tanchuan_0('请输入6-20位密码','success','确定');
+		return false;
+	}
+	if(inputPassword != inputPasswordRe ){
+		$('.error_fontPass').text('两次密码不一致');
+		return false;
+	}
+    dobind()
+
+});
+
+function dobind(){
+
+    var type = $("input[name='type']").val();
+    var sign = $("input[name='sign']").val();
+    var open_id = $("input[name='open_id']").val();
+    var nickname = $("input[name='nickname']").val();
+    var headimgurl = $("input[name='headimgurl']").val();
+    var password = $("input[name='password']").val();
+    var repassword = $("input[name='repassword']").val();
+    var mobile = $("input[name='mobile']").val();
+    var mobile_verify = $("input[name='mobile_verify']").val();
+    
+    $.post(
+        "{:U('User/thirdBind')}",
+        {
+            type : type,
+            sign : sign,
+            open_id : open_id,
+            nickname : nickname,
+            headimgurl : headimgurl,
+            password : $.md5(password),
+            repassword : $.md5(repassword),
+            mobile : mobile,
+            mobile_verify : mobile_verify,
+        },
+        function (data){
+            tanchuan_0('200','1000','200',data.message);
+            if(data.code == 0){
+                //注册过，直接提交
+                window.location.href = '/wap.php';           
+            }   
+        }
+    )
+    
+    
+}
+</script>
+</body>
+</html>

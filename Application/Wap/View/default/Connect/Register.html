@@ -1,0 +1,81 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+
+<!-- 单独引入css -->
+<block name="style">
+    <link rel="stylesheet" href="/Public/Wap/css/register.css?v=telo"/>
+    <link rel="stylesheet" type="text/css" href="/Public/Wap/css/user_mobile.css">
+</block>
+
+<block name="body">
+    <div class="register_main user_passwor">
+        <div class="register_box_input">
+            <div class="input_box">
+                <span>密码：</span>
+                <input class="mobile_fff password" maxlength='20' type="password" name='password' placeholder='请输入6-20位,字母或者数字' value=''/>
+            </div>
+            <div class="input_box input_boxrg">
+                <span>确认：</span>
+                <input class="password_re" maxlength='20' type="password" name='passwordre' placeholder='请输入密码' value=''/>
+            </div>
+
+            <input type="hidden" name="mobile" class="mobile" value="{$mobile}">
+            <button type="button" style="margin-top:20px;" class="cgyg_button password_bt">注册完成</button>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script type="text/javascript" src="/Public/Common/jquery.md5.js"></script>
+    <script type="text/javascript" src="/Public/Wap/js/layer.js"></script>
+    <script>
+        //提交密码 处理 03
+        $('.password_bt').click(function(){
+            var mobile = $('.mobile').val();//手机号码
+            var password    = $('.password').val();//密码
+            var password_re =$('.password_re').val();//确认密码
+            if(password == ''){
+                tanchuan_0('200','1000','200','请输入密码');
+                return false;
+            }
+            if(password_re == ''){
+                tanchuan_0('200','1000','200','请确认密码');
+                return false;
+            }
+            if(password.length < 6 || password.length > 20){
+                tanchuan_0('200','1000','200','密码为6-20个字符');
+                return false;
+            }
+            if(password != password_re){
+                tanchuan_0('200','1000','200','两次密码不一致');
+                return false;
+            }
+
+            //发送ajax 提交
+            $.post(
+                    "{:U('/user/register')}",
+                    {
+                        is_ajax : 1,
+                        mobile : mobile,
+                        password : $.md5(password),
+                        repassword : $.md5(password_re),
+                    },
+                    function (data){
+                        tanchuan_0('200','1000','200',data.message);
+                        if(data.code == 0){
+                            for(var i=0; i<data.success_js.length;i++){
+                                var script=document.createElement("script");
+                                script.src=data.success_js[i];
+                                document.getElementsByTagName("head")[0].appendChild(script);
+                            }
+                            setTimeout(function(){
+                                window.location.href = "/Index/index.html";
+                            },1000);
+
+                        }
+                    }
+            )
+
+        });
+    </script>
+
+ </block>

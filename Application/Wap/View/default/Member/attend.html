@@ -1,0 +1,171 @@
+<!--继承 模板 头和尾 模板 -->
+<extend name="Base/cg3"/>
+<block name="style">
+    <link rel="stylesheet" href="/Public/Wap/css/style_part.css"/>
+</block>
+<block name="body">
+
+<div class="main main_Pub">
+    <div class="atttend_list">
+		<!-- 个人中心参与记录 顶部导航开始-->   
+    <include file="Public/attend_nav" />
+	<!-- 个人中心参与记录 顶部导航结束-->
+        <ul class="product_list clearfix" id="data">
+        </ul>
+		<input type="hidden" id="state" name="lottery_id" value="{$states}"/>
+		<a class="add_more" id="more" style="width:100%;height:50px;line-height: 50px; text-align: center;display: block">点击查看更多</a>
+    </div>
+</div>
+
+
+<div class="huitop"></div>
+
+<!-- 模态框（Modal） -->
+<div class="fix_canyuma">
+	<div class="canyuma attendAlert" id="attend_list">
+		<div class="cymtit title">
+			<h4 class="tit">本期共参与了<span class="padding-l-r5" id="attend">533</span>人次</h4>
+		</div>
+		<div class="con" id="con"></div>		
+		<div class="close_cym">×</div>
+	</div>
+</div>
+</block>
+
+<block name="script">
+<script type="text/javascript" src="/Public/Wap/js/function.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/common_inc.js"></script>
+
+<script type="text/javascript" src="/Public/Wap/js/util.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/p.js"></script>
+<script type="text/javascript" src="/Public/Wap/js/get_code.js"></script>
+<script>
+    $(function(){
+        var state=$("#state").attr("value");
+        loadData({"state":state,"is_ajax":1});
+
+    });
+    function loadData(param){
+
+        new Page({
+            url:"{:U('member/attend')}",
+            param:param,
+            scroll:true,
+            count:10,
+            next:{
+                id:"more",
+                content:["点击加载更多","没有更多数据了"]
+            },
+            success:setData
+        });
+    }
+
+    function setData(json_data,p){
+        //console.log(p);
+
+        if(p.page == 1){
+            $("#data").html("");
+            if(p.total == 0){
+                //无数据时的展示
+            }
+        }
+        var state=parseInt(json_data['state']);
+        var jsondata=json_data['data'];
+        //alert(state);
+        var html="";
+        var word="";
+		var cart_href="";
+		var progress=''; 
+        for(var i=0; i<jsondata.length; i++){
+
+
+           var lottery_time = format(jsondata[i].lottery_time);
+
+
+            if(state<2){
+                if(state<1){
+                    word="立即参与";
+                    progress='<div class="jindu"><div class="xianjindu" style="width:'+jsondata[i].attend_ratio+'%;"></div></div>'; 
+					cart_href='/goods/detail/lottery_id/'+jsondata[i].lottery_id;
+                }else{
+                    word="待揭晓";
+					cart_href='/goods/detail/lottery_id/'+jsondata[i].lottery_id;
+                }
+
+                html='<li class="list clearfix">'+
+                        '<div class="img"><a href="/goods/detail/lottery_id/'+jsondata[i].lottery_id+'"><img src="'+jsondata[i].thumb+'"></a>'+
+                        '</div>'+
+                        '<div class="infos">'+
+                        '<h1 class="ellipsis"><a href="/goods/detail/lottery_id/'+jsondata[i].lottery_id+'">'+jsondata[i].title+'</a></h1>'+
+                        '<div class="renci_jindu noheight" style="padding-right: 0">'+
+                        progress+
+                        '<div class="renci clearfix position-re">'+
+                        '<div class="clearfix text-center">'+
+                        '<span class="fl">'+jsondata[i].attend_counts+'<br>已参与</span>'+
+
+                        '<span class="fr"><em>'+jsondata[i].remain_count+'</em><br>剩余人次</span>'+
+                        '</div>'+
+                        '<div class="margin-t5">'+
+                        '参与人次：<span class="text-red">'+jsondata[i].attend_count_total+'</span>人次'+
+                        ' <p class="margin-t5">'+
+
+                        ' <a href="javascript:;" class="text-blue" onclick="get_code($(this),'+jsondata[i].lottery_id+','+jsondata[i].uid+');">查看参与码</a>'+
+                        '</p>'+
+                        '<a href="'+cart_href+'" ><button type="button" class="btn btn-attend">'+word+'</button></a>'+
+                        '</div>'+
+                        '</div>'+
+
+                        '</div>'+
+                        '</div>'+
+                        ' </li>';
+            }else{
+                html='<li class="list clearfix">'+
+                        '<div class="img"><a href="/goods/detail/lottery_id/'+jsondata[i].lottery_id+'"><img src="'+jsondata[i].thumb+'"></a>'+
+                        '</div>'+
+                        '<div class="infos">'+
+                        '<h1 class="ellipsis margin_t10"><a href="/goods/detail/lottery_id/'+jsondata[i].lottery_id+'">'+jsondata[i].title+'</a></h1>'+
+                        '<div class="renci_jindu noheight" style="padding-right: 0">'+
+                        '<p class="text-size12 ellipsis">'+
+                        '<span class="text-gray">获得者：</span>'+
+                        '<a href="/member/other_info/uid/'+jsondata[i].lp_uid+'">'+
+                        '<span class="text-blue">'+jsondata[i].nickname+'<span class="text-gray">（共参与'+jsondata[i].lp_attend_count+'人次）</span></span>'+
+                        '</a>'+
+                        '</p>'+
+                        '<p class="text-size12">'+
+                        '<span class="text-gray">幸运号码：</span>'+
+                        '<span class="text-red">'+jsondata[i].lottery_code+'</span>'+
+                        '</p>'+
+                        '<p class="text-size12 text-gray">揭晓时间：'+lottery_time+'</p>'+
+                        '<p class="">'+
+                        '我的参与：<span class="text-red">'+jsondata[i].attend_count+'</span>人次'+
+                        ' <a href="javascript:;" class="text-blue padding-l10 lookyunma" onclick="get_code($(this),'+jsondata[i].lottery_id+','+jsondata[i].uid+');">查看云购号码</a>'+
+                        '</p>'+
+                        ' </div>'+
+                        '</div>'+
+                        ' </li>';
+            }
+
+            $("#data").append(html);
+        }
+
+
+    }
+    function format(shijianchuo)
+    {
+
+        shijianchuo= shijianchuo*1000;
+//shijianchuo是整数，否则要parseInt转换
+        var time = new Date(shijianchuo);
+        var y = time.getFullYear();
+        var m = time.getMonth()+1;
+        var d = time.getDate();
+        var h = time.getHours();
+        var mm = time.getMinutes();
+        var s = time.getSeconds();
+        return y+'-'+add0(m)+'-'+add0(d)+' '+add0(h)+':'+add0(mm)+':'+add0(s);
+    }
+    function add0(m){return m<10?'0'+m:m }
+
+</script>
+</block>
+
